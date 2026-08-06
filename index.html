@@ -749,7 +749,7 @@
             const generateUserWaLink = (order) => {
                 const adminPhone = "6285338731387";
                 const itemsList = order.items.map(item => `- ${item.qty}x ${item.name}`).join("\n");
-                const text = `Hi kak, aku ${order.customerName}, sudah melakukan pemesanan pisang kembung nih.\n\n*ID Pesanan:* ${order.id}\n*Detail Pesanan:*\n${itemsList}\n\n*Metode Pembayaran:* ${order.paymentMethod}\n*Total Bayar:* ${formatRp(order.grandTotal)}\n\nTerimakasih 💕`;
+                const text = `Hi kak, aku _${order.customerName}_, sudah melakukan pemesanan pisang kembung nih.\n\n*ID Pesanan:* ${order.id}\n*Detail Pesanan:*\n${itemsList}\n\n*Metode Pembayaran:* ${order.paymentMethod}\n*Total Bayar:* ${formatRp(order.grandTotal)}\n\nTerimakasih 💕`;
                 return `https://wa.me/${adminPhone}?text=${encodeURIComponent(text)}`;
             };
 
