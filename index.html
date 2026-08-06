@@ -155,7 +155,7 @@
             // State untuk PIN Admin
             const [showPinModal, setShowPinModal] = useState(false);
             const [pinInput, setPinInput] = useState('');
-            const ADMIN_PIN = 'Mayumi#1';
+            const [isCheckingPin, setIsCheckingPin] = useState(false); // Tambahan state loading
 
             // State untuk Cute Alert
             const [alertConfig, setAlertConfig] = useState(null);
@@ -227,14 +227,29 @@
                 }
             };
 
-            const handlePinSubmit = () => {
-                if (pinInput === ADMIN_PIN) {
-                    setRole('admin');
-                    setShowPinModal(false);
-                    setPinInput('');
-                } else {
-                    showAlert('Oops! PIN-nya salah nih. Coba inget-inget lagi yaa 🍌', '🙈');
-                    setPinInput('');
+            const handlePinSubmit = async () => {
+                if (!pinInput) return;
+                
+                setIsCheckingPin(true);
+                try {
+                    // Bertanya ke server Supabase, apakah PIN ini benar?
+                    const { data, error } = await supabase.rpc('check_admin_pin', { input_pin: pinInput });
+                    
+                    if (error) throw error;
+
+                    if (data === true) {
+                        setRole('admin');
+                        setShowPinModal(false);
+                        setPinInput('');
+                    } else {
+                        showAlert('Oops! PIN-nya salah nih. Coba inget-inget lagi yaa 🍌', '🙈');
+                        setPinInput('');
+                    }
+                } catch (error) {
+                    console.error("Error cek PIN:", error);
+                    showAlert('Gagal mengecek PIN ke server. Cek internetmu!', '🔌');
+                } finally {
+                    setIsCheckingPin(false);
                 }
             };
 
@@ -258,7 +273,7 @@
                             {/* Tengah: Maskot Pisang (Posisi Absolute agar di tengah pas) */}
                             <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none">
                                 <img 
-                                    src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhxV6yhpL_k0ZhI70PRISUNtvNB4oFayGkZaKOhJ0Vv2bXd_BoeVraa43uLF3lGr-UkuamsS4Ra5STvSXibU-XoSBf_Vz2AmDbUhvbjsT2OXAiQy5B4_lecTnXd4BqKkiq4pa-aNhmsKROrnliATN07hzvpeNexsfK1_lqPdrEx9WgQShMN7JxV4rXHgPob/s300/file_00000000f3408230ab45d1aa7623b404-removebg-preview.png" 
+                                    src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhxV6yhpL_k0ZhI70PRISUNtvNB4oFayGkZaKOhJ0Vv2bXd_BoeVraa43uLF3lGr-UkuamsS4Ra5STvSXibU-XoSBf_Vz2AmDbUhvbjsT2OXAiQy5B4_lecTnXd4BqKkiq4pa-aNhmsKROrnliATN07hzvpeNexsfK1_lqPdrEx9WgQShMN7JxV4rXHgPob/s500/file_00000000f3408230ab45d1aa7623b404-removebg-preview.png" 
                                     alt="Maskot Pisang Mayumi" 
                                     className="h-28 w-auto object-contain drop-shadow-xl"
                                 />
@@ -300,7 +315,13 @@
                                 
                                 <div className="flex gap-2">
                                     <button onClick={() => {setShowPinModal(false); setPinInput('');}} className="flex-1 p-3 bg-gray-200 rounded-xl text-sm font-bold text-gray-700 hover:bg-gray-300 transition">Batal</button>
-                                    <button onClick={handlePinSubmit} className="flex-1 p-3 bg-mayumi-orange text-white rounded-xl text-sm font-bold shadow-[0_3px_0_#c2410c] active:shadow-none active:translate-y-1 transition">Masuk</button>
+                                    <button 
+                                        onClick={handlePinSubmit} 
+                                        disabled={isCheckingPin}
+                                        className={`flex-1 p-3 text-white rounded-xl text-sm font-bold active:translate-y-1 transition flex justify-center items-center gap-2 ${isCheckingPin ? 'bg-gray-400 shadow-none' : 'bg-mayumi-orange shadow-[0_3px_0_#c2410c] active:shadow-none'}`}
+                                    >
+                                        {isCheckingPin ? <Icon name="loader" size={18} className="animate-spin" /> : 'Masuk'}
+                                    </button>
                                 </div>
                             </div>
                         </div>
