@@ -4,19 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Pisang Kembung Mayumi</title>
-    <!-- Google Fonts for cute typography -->
+    
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
     <!-- React & ReactDOM -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
     <!-- Babel for JSX -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    
     <!-- Supabase JS Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
@@ -63,9 +69,8 @@
         // ==========================================
         //         SUPABASE CONFIGURATION
         // ==========================================
-        // GANTI URL DAN KEY DI BAWAH INI DENGAN MILIK PROJECT SUPABASE KAMU
-       const SUPABASE_URL = 'https://mhbyivcjcnndqogjgzxb.supabase.co'; 
-       const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1oYnlpdmNqY25uZHFvZ2pnenhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU5NTY0NzUsImV4cCI6MjEwMTUzMjQ3NX0.rAeV91oayf6BdbBP6vZL7AYxfhTXBkM9_yWuJcgaB7M';  
+        const SUPABASE_URL = 'https://mhbyivcjcnndqogjgzxb.supabase.co'; 
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1oYnlpdmNqY25uZHFvZ2pnenhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU5NTY0NzUsImV4cCI6MjEwMTUzMjQ3NX0.rAeV91oayf6BdbBP6vZL7AYxfhTXBkM9_yWuJcgaB7M';  
         
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -75,13 +80,11 @@
             
             useEffect(() => {
                 if (iconRef.current) {
-                    // Buat tag di dalam span, agar perubahan SVG tidak merusak DOM React
                     iconRef.current.innerHTML = `<i data-lucide="${name}" width="${size}" height="${size}"></i>`;
                     lucide.createIcons();
                 }
             }, [name, size]);
 
-            // React HANYA mengatur <span> luarnya, sementara Lucide merender di dalamnya
             return (
                 <span 
                     ref={iconRef} 
@@ -90,7 +93,7 @@
             );
         };
 
-        // --- DATA PRODUK FALLBACK (Jika DB kosong / belum diset) ---
+        // --- DATA PRODUK FALLBACK (Jika DB kosong) ---
         const DEFAULT_PRODUCTS = [
             { id: 1, name: 'Coklat keju', price: 14000, label: '14K', imgId: '🍫🧀' },
             { id: 2, name: 'Coklat parut keju', price: 14000, label: '14K', imgId: '🍫🌨️' },
@@ -106,7 +109,6 @@
             return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(num);
         };
 
-        // Haversine formula untuk menghitung jarak
         function calculateDistance(lat1, lon1, lat2, lon2) {
             const R = 6371; 
             const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -141,7 +143,6 @@
 
         // --- KOMPONEN UTAMA ---
         const App = () => {
-            // State Global
             const [role, setRole] = useState('user'); // 'user' atau 'admin'
             const [products, setProducts] = useState(DEFAULT_PRODUCTS);
             const [orders, setOrders] = useState([]);
@@ -155,30 +156,27 @@
             // State untuk PIN Admin
             const [showPinModal, setShowPinModal] = useState(false);
             const [pinInput, setPinInput] = useState('');
-            const [isCheckingPin, setIsCheckingPin] = useState(false); // Tambahan state loading
+            const [isCheckingPin, setIsCheckingPin] = useState(false);
 
-            // State untuk Cute Alert
+            // State Alert
             const [alertConfig, setAlertConfig] = useState(null);
             const showAlert = (message, emoji, onConfirm = null) => {
                 setAlertConfig({ message, emoji, onConfirm });
             };
             const closeAlert = () => setAlertConfig(null);
 
-            // Fetch data dari Supabase saat aplikasi dimuat
+            // Fetch data dari Supabase
             useEffect(() => {
                 const fetchData = async () => {
                     try {
-                        // Ambil Produk
                         const { data: prodData, error: prodErr } = await supabase.from('products').select('*').order('id', { ascending: true });
                         if (prodData && prodData.length > 0) setProducts(prodData);
                         else if (prodErr) console.warn("Supabase Produk:", prodErr.message);
 
-                        // Ambil Pengaturan
                         const { data: setData, error: setErr } = await supabase.from('settings').select('*').eq('id', 1).single();
                         if (setData) setSettings(setData);
                         else if (setErr) console.warn("Supabase Settings:", setErr.message);
 
-                        // Ambil Pesanan
                         const { data: ordData, error: ordErr } = await supabase.from('orders').select('*').order('date', { ascending: false });
                         if (ordData) setOrders(ordData);
                         else if (ordErr) console.warn("Supabase Orders:", ordErr.message);
@@ -232,7 +230,7 @@
                 
                 setIsCheckingPin(true);
                 try {
-                    // Bertanya ke server Supabase, apakah PIN ini benar?
+                    // Mengecek PIN ke server secara aman via RPC
                     const { data, error } = await supabase.rpc('check_admin_pin', { input_pin: pinInput });
                     
                     if (error) throw error;
@@ -270,7 +268,7 @@
                                 </span>
                             </div>
 
-                            {/* Tengah: Maskot Pisang (Posisi Absolute agar di tengah pas) */}
+                            {/* Tengah: Maskot Pisang (Absolute) */}
                             <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none">
                                 <img 
                                     src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhxV6yhpL_k0ZhI70PRISUNtvNB4oFayGkZaKOhJ0Vv2bXd_BoeVraa43uLF3lGr-UkuamsS4Ra5STvSXibU-XoSBf_Vz2AmDbUhvbjsT2OXAiQy5B4_lecTnXd4BqKkiq4pa-aNhmsKROrnliATN07hzvpeNexsfK1_lqPdrEx9WgQShMN7JxV4rXHgPob/s500/file_00000000f3408230ab45d1aa7623b404-removebg-preview.png" 
@@ -289,7 +287,7 @@
                         </div>
                     </header>
 
-                    {/* Konten berdasarkan Role */}
+                    {/* Konten Utama */}
                     <main className="p-4 relative z-0">
                         {role === 'user' 
                             ? <UserView products={products} orders={orders} setOrders={setOrders} settings={settings} isKeyboardOpen={isKeyboardOpen} showAlert={showAlert} /> 
@@ -309,7 +307,7 @@
                                     value={pinInput} 
                                     onChange={(e) => setPinInput(e.target.value)}
                                     className="w-full p-4 rounded-xl border-4 border-dashed border-gray-200 focus:outline-none focus:border-mayumi-orange text-center text-3xl font-bold tracking-[0.2em] mb-4 text-mayumi-brown bg-gray-50"
-                                    placeholder="••••"
+                                    placeholder="••••••••"
                                     maxLength={12}
                                 />
                                 
@@ -383,7 +381,6 @@
             const [showMixModal, setShowMixModal] = useState(false);
             const [selectedFlavors, setSelectedFlavors] = useState([]);
             
-            // Filter menu bebas mix dari daftar (hanya ambil rasa utama)
             const baseFlavors = products.filter(p => p.id !== 7);
 
             const handleProductClick = (p) => {
@@ -425,7 +422,6 @@
                     </div>
                     
                     <div className="bg-white p-5 rounded-3xl border-4 border-mayumi-cream shadow-sm relative mt-8">
-                        {/* Ribbon Title */}
                         <div className="absolute -top-5 left-1/2 transform -translate-x-1/2 w-[80%]">
                             <div className="bg-mayumi-brown text-white text-center py-2 px-4 rounded-xl font-bold text-lg shadow-md border-b-4 border-orange-900 relative">
                                 <div className="absolute -left-2 top-2 w-4 h-4 bg-orange-900 rotate-45 -z-10"></div>
@@ -463,7 +459,6 @@
                         </div>
                     </div>
 
-                    {/* Modal Bebas Mix */}
                     {showMixModal && (
                         <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4">
                             <div className="bg-white rounded-3xl p-6 max-w-sm w-full border-4 border-mayumi-yellow shadow-xl relative transform transition-all">
@@ -513,7 +508,6 @@
 
             const itemsTotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
             
-            // Hitung Ongkir
             let distance = 0;
             let shippingCost = 0;
             if (userCoords) {
@@ -534,7 +528,6 @@
                         },
                         (error) => {
                             console.warn("Geolocation error, using mock location.");
-                            // Mock lokasi agar tetap bisa testing
                             setUserCoords({ lat: settings.storeLat + 0.05, lon: settings.storeLon + 0.05 });
                             showAlert("Yah, izin lokasinya ditolak nih. Kita pakai lokasi bohongan dulu ya buat nyobain fiturnya!", "😅");
                             setIsLoadingLoc(false);
@@ -566,20 +559,18 @@
                     date: new Date().toISOString(),
                     customerName: name,
                     phone: phone,
-                    items: cart, // Menjadi JSONB
+                    items: cart, 
                     itemsTotal,
                     shippingCost,
                     grandTotal,
                     paymentMethod: payment,
                     status: payment === 'QRIS' ? 'Menunggu Konfirmasi' : 'Pesanan Masuk', 
                     distance: distance.toFixed(2),
-                    coords: userCoords // Menjadi JSONB
+                    coords: userCoords
                 };
 
-                // Optimistic UI update
                 setOrders(prev => [newOrder, ...prev]);
                 
-                // Simpan ke Supabase
                 const { error } = await supabase.from('orders').insert([newOrder]);
                 
                 if (error) {
@@ -607,7 +598,6 @@
                         <Icon name="shopping-bag" /> Pesananku
                     </h2>
                     
-                    {/* List Item */}
                     <div className="bg-white rounded-3xl shadow-sm border-4 border-yellow-100 p-4 space-y-3">
                         {cart.map(item => (
                             <div key={item.id} className="flex justify-between items-center border-b-2 border-dashed border-gray-100 pb-3 last:border-0 last:pb-0">
@@ -630,7 +620,6 @@
                         ))}
                     </div>
 
-                    {/* Form Pengiriman */}
                     <div className="bg-white rounded-3xl p-5 space-y-3 border-4 border-mayumi-green shadow-sm relative overflow-hidden">
                         <div className="absolute top-0 right-0 bg-mayumi-green text-white px-4 py-1 rounded-bl-xl font-bold text-xs shadow-sm">PENGIRIMAN</div>
                         <h3 className="font-bold text-mayumi-darkGreen flex items-center gap-1 pt-2"><Icon name="user" size={18}/> Data Diri</h3>
@@ -655,7 +644,6 @@
                         </div>
                     </div>
 
-                    {/* Pembayaran */}
                     <div className="bg-white rounded-3xl shadow-sm border-4 border-yellow-100 p-5 space-y-3">
                         <h3 className="font-bold text-mayumi-brown">Bayar Pakai Apa?</h3>
                         <div className="flex gap-3">
@@ -670,7 +658,6 @@
                         </div>
                     </div>
 
-                    {/* Ringkasan Total */}
                     <div className="bg-mayumi-green text-white rounded-3xl p-5 shadow-lg border-4 border-dashed border-white relative mt-2">
                         <div className="absolute -top-4 -right-3 bg-mayumi-yellow text-mayumi-brown font-black px-4 py-1 rounded-full border-2 border-white transform rotate-12 text-sm shadow-md animate-pulse">
                             Yummy!
@@ -695,13 +682,12 @@
                         </button>
                     </div>
 
-                    {/* Modal QRIS */}
                     {qrisModal && (
                         <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4">
                             <div className="bg-white rounded-3xl p-6 max-w-sm w-full text-center space-y-4 border-4 border-mayumi-yellow shadow-xl">
                                 <h3 className="font-black text-2xl text-mayumi-brown">Scan QRIS 📱</h3>
-                                <div className="bg-gray-100 w-48 h-48 mx-auto flex items-center justify-center border-4 border-dashed border-gray-300 rounded-2xl">
-                                    <img src='https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiect9TQ-Wq7KyuLLkJoRLwh2XaaxBNQDDkYs7uFGLsvkf9RDY5jq3Zer07dh8sAABT6s9sDzIRr_3mkw0GOkYKcYLJM_i-XZYl9l6vWa7KHrcchOSdLMGJaG4xCtqUCL0T1mjJ8S59ib9y_5VoFZvBN2eP9ba2M4z7KSeuWvUuaJj6XrcvKayQZrdnbVqF/s1200/qris.jpeg' />
+                                <div className="bg-gray-100 w-48 h-48 mx-auto flex items-center justify-center border-4 border-dashed border-gray-300 rounded-2xl overflow-hidden">
+                                    <img src='https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiect9TQ-Wq7KyuLLkJoRLwh2XaaxBNQDDkYs7uFGLsvkf9RDY5jq3Zer07dh8sAABT6s9sDzIRr_3mkw0GOkYKcYLJM_i-XZYl9l6vWa7KHrcchOSdLMGJaG4xCtqUCL0T1mjJ8S59ib9y_5VoFZvBN2eP9ba2M4z7KSeuWvUuaJj6XrcvKayQZrdnbVqF/s1200/qris.jpeg' className="w-full h-full object-cover" />
                                 </div>
                                 <p className="text-lg font-black text-mayumi-orange bg-orange-50 py-2 rounded-xl">Total: {formatRp(grandTotal)}</p>
                                 <p className="text-xs text-gray-500 font-bold">Scan menggunakan aplikasi GoPay, OVO, Dana, ShopeePay, atau M-Banking Anda.</p>
@@ -727,7 +713,6 @@
                 setIsRefreshing(true);
                 
                 try {
-                    // Ambil data terbaru langsung dari database Supabase
                     const { data, error } = await supabase
                         .from('orders')
                         .select('*')
@@ -740,7 +725,6 @@
                     setHasSearched(true);
                 } catch (error) {
                     console.error("Gagal menarik data pesanan:", error);
-                    // Fallback jika internet jelek, pakai data dari state global
                     const filtered = orders.filter(o => o.phone === checkPhone).sort((a,b) => new Date(b.date) - new Date(a.date));
                     setMyOrders(filtered);
                     setHasSearched(true);
@@ -797,6 +781,7 @@
                                     {isRefreshing ? 'Mengecek...' : 'Refresh'}
                                 </button>
                             </div>
+                            
                             {myOrders.length === 0 ? (
                                 <div className="text-center py-10 bg-white rounded-3xl border-4 border-dashed border-gray-200">
                                     <span className="text-4xl mb-2 block">🥺</span>
@@ -873,7 +858,6 @@
         const AdminOrders = ({ orders, setOrders, settings, showAlert }) => {
             const [isRefreshing, setIsRefreshing] = useState(false);
 
-            // Fungsi baru untuk tombol Refresh
             const handleRefresh = async () => {
                 setIsRefreshing(true);
                 try {
@@ -891,10 +875,8 @@
             };
 
             const updateStatus = async (id, newStatus) => {
-                // Update UI langsung biar terasa cepat
                 setOrders(orders.map(o => o.id === id ? { ...o, status: newStatus } : o));
                 
-                // Update ke Supabase
                 const { error } = await supabase.from('orders').update({ status: newStatus }).eq('id', id);
                 if (error) {
                     console.error("Gagal update status:", error);
@@ -904,10 +886,8 @@
 
             const handleDelete = (id) => {
                 showAlert("Beneran mau hapus pesanan ini? Nanti datanya nggak bisa balik lho!", "🗑️", async () => {
-                    // Hapus dari UI
                     setOrders(orders.filter(o => o.id !== id));
                     
-                    // Hapus dari Supabase
                     const { error } = await supabase.from('orders').delete().eq('id', id);
                     if (error) {
                         console.error("Gagal menghapus pesanan:", error);
@@ -920,6 +900,16 @@
                 if(!coords) return showAlert("Lokasi pelanggan belum ada nih.", "🗺️");
                 const url = `https://www.google.com/maps/dir/?api=1&origin=${settings.storeLat},${settings.storeLon}&destination=${coords.lat},${coords.lon}`;
                 window.open(url, '_blank');
+            };
+
+            // Mengubah format nomor HP menjadi link WA
+            const getWaLink = (phone) => {
+                if (!phone) return '#';
+                let cleaned = phone.replace(/\D/g, '');
+                if (cleaned.startsWith('0')) {
+                    cleaned = '62' + cleaned.substring(1);
+                }
+                return `https://wa.me/${cleaned}`;
             };
 
             const STATUS_OPTIONS = [
@@ -954,7 +944,17 @@
                             <div className="flex justify-between items-start mb-3 pr-10">
                                 <div>
                                     <h3 className="font-bold text-gray-800 text-lg">{order.customerName}</h3>
-                                    <p className="text-xs font-mono text-gray-500 font-bold">{order.phone}</p>
+                                    
+                                    <a 
+                                        href={getWaLink(order.phone)}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-xs font-mono text-mayumi-green hover:text-mayumi-darkGreen font-bold flex items-center gap-1 mt-0.5 transition hover:underline"
+                                        title="Chat via WhatsApp"
+                                    >
+                                        <Icon name="message-circle" size={12} /> {order.phone}
+                                    </a>
+                                    
                                     <p className="text-[10px] text-gray-400 mt-1 font-bold flex items-center gap-1">
                                         <Icon name="clock" size={12} /> {new Date(order.date).toLocaleString('id-ID')}
                                     </p>
@@ -1011,7 +1011,6 @@
                 setIsSaving(true);
                 
                 try {
-                    // Update Settings ke DB
                     const { error: errSet } = await supabase.from('settings').update({
                         storeLat: localSet.storeLat,
                         storeLon: localSet.storeLon,
@@ -1020,7 +1019,6 @@
 
                     if (errSet) throw errSet;
 
-                    // Update Products ke DB
                     for (const product of localProducts) {
                         const { error: errProd } = await supabase.from('products').update({
                             price: product.price,
@@ -1030,7 +1028,6 @@
                         if (errProd) throw errProd;
                     }
 
-                    // Update UI State HANYA SETELAH sukses menyimpan (Mencegah crash)
                     setSettings(localSet);
                     setProducts(localProducts);
 
@@ -1039,7 +1036,7 @@
                     console.error("Error saving settings:", error);
                     showAlert('Gagal menyimpan pengaturan! (Cek log / console)', '😢');
                 } finally {
-                    setIsSaving(false); // Kembalikan tombol jadi normal
+                    setIsSaving(false); 
                 }
             };
 
@@ -1089,7 +1086,6 @@
                         </button>
                     </div>
 
-                    {/* Pengaturan Harga Produk */}
                     <div className="pt-5 border-t-2 border-dashed border-gray-200 space-y-3">
                         <label className="block text-sm font-bold text-gray-800 mb-3">Ubah Harga Menu 💰</label>
                         {localProducts.map(product => (
