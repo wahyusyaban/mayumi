@@ -955,6 +955,9 @@
                                 <div>
                                     <h3 className="font-bold text-gray-800 text-lg">{order.customerName}</h3>
                                     <p className="text-xs font-mono text-gray-500 font-bold">{order.phone}</p>
+                                    <p className="text-[10px] text-gray-400 mt-1 font-bold flex items-center gap-1">
+                                        <Icon name="clock" size={12} /> {new Date(order.date).toLocaleString('id-ID')}
+                                    </p>
                                 </div>
                                 <div className="text-right">
                                     <p className="font-black text-mayumi-orange text-lg">{formatRp(order.grandTotal)}</p>
