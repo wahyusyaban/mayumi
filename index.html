@@ -1144,28 +1144,6 @@
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
     </script>
-
-    <script>
-  
-  function openFullscreen() {
-    const elem = document.documentElement; // Mengambil seluruh halaman HTML
-
-    if (elem.requestFullscreen) {
-        elem.requestFullscreen();
-    } else if (elem.webkitRequestFullscreen) { /* Safari / iOS / WebKit */
-        elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) { /* IE11 & Edge lama */
-        elem.msRequestFullscreen();
-    }
-}
-
-// Menjalankan fungsi saat ada interaksi klik/sentuhan di layar
-document.addEventListener('click', function () {
-    openFullscreen();
-}, { once: true }); // 'once: true' membuat event listener ini hanya berjalan 1 kali 
-  
-     </script> 
-
     
 </body>
 </html>
