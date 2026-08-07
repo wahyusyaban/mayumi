@@ -74,7 +74,7 @@
         
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // --- ICONS (Perbaikan Bentrok React vs Lucide) ---
+        // --- ICONS ---
         const Icon = ({ name, size = 24, className = "" }) => {
             const iconRef = React.useRef(null);
             
@@ -146,6 +146,7 @@
             const [role, setRole] = useState('user'); // 'user' atau 'admin'
             const [products, setProducts] = useState(DEFAULT_PRODUCTS);
             const [orders, setOrders] = useState([]);
+            const [reviews, setReviews] = useState([]); // State untuk review konsumen
             const [settings, setSettings] = useState({
                 storeLat: -6.2088, 
                 storeLon: 106.8456,
@@ -169,17 +170,26 @@
             useEffect(() => {
                 const fetchData = async () => {
                     try {
+                        // Ambil Produk
                         const { data: prodData, error: prodErr } = await supabase.from('products').select('*').order('id', { ascending: true });
                         if (prodData && prodData.length > 0) setProducts(prodData);
                         else if (prodErr) console.warn("Supabase Produk:", prodErr.message);
 
+                        // Ambil Settings
                         const { data: setData, error: setErr } = await supabase.from('settings').select('*').eq('id', 1).single();
                         if (setData) setSettings(setData);
                         else if (setErr) console.warn("Supabase Settings:", setErr.message);
 
+                        // Ambil Pesanan
                         const { data: ordData, error: ordErr } = await supabase.from('orders').select('*').order('date', { ascending: false });
                         if (ordData) setOrders(ordData);
                         else if (ordErr) console.warn("Supabase Orders:", ordErr.message);
+
+                        // Ambil Review
+                        const { data: revData, error: revErr } = await supabase.from('reviews').select('*').order('created_at', { ascending: false });
+                        if (revData) setReviews(revData);
+                        else if (revErr) console.warn("Supabase Reviews:", revErr.message);
+                        
                     } catch (error) {
                         console.error("Gagal terhubung ke Supabase. Menggunakan data default.", error);
                     }
@@ -217,35 +227,28 @@
                 };
             }, []);
 
-            const handleRoleToggle = () => {
-                if (role === 'admin') {
-                    setRole('user');
-                } else {
-                    setShowPinModal(true);
-                }
-            };
-
             const handlePinSubmit = async () => {
                 if (!pinInput) return;
                 
                 setIsCheckingPin(true);
                 try {
-                    // Mengecek PIN ke server secara aman via RPC
-                    const { data, error } = await supabase.rpc('check_admin_pin', { input_pin: pinInput });
+                    // Login ke Supabase Auth menggunakan PIN sebagai password
+                    const { data, error } = await supabase.auth.signInWithPassword({
+                        email: 'admin@pisangmayumi.com',
+                        password: pinInput
+                    });
                     
                     if (error) throw error;
 
-                    if (data === true) {
+                    if (data.session) {
                         setRole('admin');
                         setShowPinModal(false);
-                        setPinInput('');
-                    } else {
-                        showAlert('Oops! PIN-nya salah nih. Coba inget-inget lagi yaa 🍌', '🙈');
                         setPinInput('');
                     }
                 } catch (error) {
                     console.error("Error cek PIN:", error);
-                    showAlert('Gagal mengecek PIN ke server. Cek internetmu!', '🔌');
+                    showAlert('Oops! PIN-nya salah nih. Coba inget-inget lagi yaa 🍌', '🙈');
+                    setPinInput('');
                 } finally {
                     setIsCheckingPin(false);
                 }
@@ -278,19 +281,29 @@
                             </div>
 
                             {/* Kanan: Tombol Mode */}
-                            <button 
-                                onClick={handleRoleToggle}
-                                className="text-xs bg-white text-mayumi-brown px-4 py-2 rounded-full font-bold shadow-md hover:bg-yellow-100 transition border-2 border-mayumi-brown border-dashed active:scale-95 relative z-20"
-                            >
-                                Mode: {role === 'user' ? 'User' : 'Admin'}
-                            </button>
+                            <div className="relative z-20">
+                                <button 
+                                    onClick={async () => {
+                                        if (role === 'user') {
+                                            setShowPinModal(true);
+                                        } else {
+                                            // Hapus sesi aman saat logout
+                                            await supabase.auth.signOut();
+                                            setRole('user');
+                                        }
+                                    }}
+                                    className="text-xs bg-white text-mayumi-brown px-4 py-2 rounded-full font-bold shadow-md hover:bg-yellow-100 transition border-2 border-mayumi-brown border-dashed active:scale-95"
+                                >
+                                    Mode: {role === 'user' ? 'User' : 'Admin'}
+                                </button>
+                            </div>
                         </div>
                     </header>
 
                     {/* Konten Utama */}
                     <main className="p-4 relative z-0">
                         {role === 'user' 
-                            ? <UserView products={products} orders={orders} setOrders={setOrders} settings={settings} isKeyboardOpen={isKeyboardOpen} showAlert={showAlert} /> 
+                            ? <UserView products={products} orders={orders} setOrders={setOrders} settings={settings} isKeyboardOpen={isKeyboardOpen} showAlert={showAlert} reviews={reviews} setReviews={setReviews} /> 
                             : <AdminView orders={orders} setOrders={setOrders} settings={settings} setSettings={setSettings} products={products} setProducts={setProducts} showAlert={showAlert} />
                         }
                     </main>
@@ -334,7 +347,7 @@
         // ==========================================
         //               USER VIEW
         // ==========================================
-        const UserView = ({ products, orders, setOrders, settings, isKeyboardOpen, showAlert }) => {
+        const UserView = ({ products, orders, setOrders, settings, isKeyboardOpen, showAlert, reviews, setReviews }) => {
             const [activeTab, setActiveTab] = useState('menu'); 
             const [cart, setCart] = useState([]);
 
@@ -354,22 +367,27 @@
                     {activeTab === 'menu' && <MenuTab products={products} onAdd={addToCart} />}
                     {activeTab === 'cart' && <CartTab cart={cart} setCart={setCart} settings={settings} setOrders={setOrders} onCheckoutSuccess={() => { setCart([]); setActiveTab('status'); }} showAlert={showAlert} />}
                     {activeTab === 'status' && <StatusTab orders={orders} showAlert={showAlert} />}
+                    {activeTab === 'review' && <ReviewTab reviews={reviews} setReviews={setReviews} showAlert={showAlert} />}
 
-                    {/* Bottom Navigation */}
+                    {/* Bottom Navigation dengan Tab Review baru */}
                     {!isKeyboardOpen && (
                         <nav className="fixed bottom-4 left-4 right-4 max-w-[calc(100%-2rem)] md:max-w-[calc(28rem-2rem)] mx-auto bg-white border-4 border-mayumi-yellow rounded-3xl flex justify-around p-2 z-50 shadow-[0_4px_0_#fde047]">
-                            <button onClick={() => setActiveTab('menu')} className={`flex flex-col items-center p-2 rounded-2xl transition w-1/3 ${activeTab === 'menu' ? 'bg-yellow-100 text-mayumi-brown font-bold' : 'text-gray-400 font-medium'}`}>
+                            <button onClick={() => setActiveTab('menu')} className={`flex flex-col items-center p-2 rounded-2xl transition w-1/4 ${activeTab === 'menu' ? 'bg-yellow-100 text-mayumi-brown font-bold' : 'text-gray-400 font-medium'}`}>
                                 <Icon name="store" />
-                                <span className="text-xs mt-1">Menu</span>
+                                <span className="text-[10px] sm:text-xs mt-1">Menu</span>
                             </button>
-                            <button onClick={() => setActiveTab('cart')} className={`flex flex-col items-center p-2 rounded-2xl relative transition w-1/3 ${activeTab === 'cart' ? 'bg-yellow-100 text-mayumi-brown font-bold' : 'text-gray-400 font-medium'}`}>
+                            <button onClick={() => setActiveTab('cart')} className={`flex flex-col items-center p-2 rounded-2xl relative transition w-1/4 ${activeTab === 'cart' ? 'bg-yellow-100 text-mayumi-brown font-bold' : 'text-gray-400 font-medium'}`}>
                                 <Icon name="shopping-bag" />
                                 {cartCount > 0 && <span className="absolute -top-1 right-3 bg-mayumi-red text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold border-2 border-white shadow-sm">{cartCount}</span>}
-                                <span className="text-xs mt-1">Keranjang</span>
+                                <span className="text-[10px] sm:text-xs mt-1">Keranjang</span>
                             </button>
-                            <button onClick={() => setActiveTab('status')} className={`flex flex-col items-center p-2 rounded-2xl transition w-1/3 ${activeTab === 'status' ? 'bg-yellow-100 text-mayumi-brown font-bold' : 'text-gray-400 font-medium'}`}>
+                            <button onClick={() => setActiveTab('status')} className={`flex flex-col items-center p-2 rounded-2xl transition w-1/4 ${activeTab === 'status' ? 'bg-yellow-100 text-mayumi-brown font-bold' : 'text-gray-400 font-medium'}`}>
                                 <Icon name="clipboard-list" />
-                                <span className="text-xs mt-1">Pesanan</span>
+                                <span className="text-[10px] sm:text-xs mt-1">Pesanan</span>
+                            </button>
+                            <button onClick={() => setActiveTab('review')} className={`flex flex-col items-center p-2 rounded-2xl transition w-1/4 ${activeTab === 'review' ? 'bg-yellow-100 text-mayumi-brown font-bold' : 'text-gray-400 font-medium'}`}>
+                                <Icon name="star" />
+                                <span className="text-[10px] sm:text-xs mt-1">Review</span>
                             </button>
                         </nav>
                     )}
@@ -745,7 +763,6 @@
                 }
             };
 
-            // Fungsi untuk membuat link otomatis ke WA admin beserta detail pesanan
             const generateUserWaLink = (order) => {
                 const adminPhone = "6285337513445";
                 const itemsList = order.items.map(item => `- ${item.qty}x ${item.name}`).join("\n");
@@ -825,7 +842,6 @@
                                             </div>
                                         </div>
 
-                                        {/* Tombol Chat Admin ke WA */}
                                         <a 
                                             href={generateUserWaLink(order)}
                                             target="_blank"
@@ -843,6 +859,128 @@
             );
         };
 
+        const ReviewTab = ({ reviews, setReviews, showAlert }) => {
+            const [showModal, setShowModal] = useState(false);
+            const [name, setName] = useState('');
+            const [rating, setRating] = useState(5);
+            const [comment, setComment] = useState('');
+            const [isSubmitting, setIsSubmitting] = useState(false);
+
+            const handleSubmit = async () => {
+                if(!name || !comment) return showAlert("Isi nama dan reviewnya dulu ya manis! 🥺", "🍰");
+                setIsSubmitting(true);
+                
+                const newReview = { 
+                    name, 
+                    rating, 
+                    comment, 
+                    created_at: new Date().toISOString() 
+                };
+                
+                try {
+                    const { data, error } = await supabase.from('reviews').insert([newReview]).select();
+                    if(error) throw error;
+                    
+                    // Update state lokal
+                    if(data && data.length > 0){
+                        setReviews([data[0], ...reviews]);
+                    } else {
+                        // Fallback jika .select() tidak mereturn data karena policy
+                        setReviews([newReview, ...reviews]);
+                    }
+
+                    setShowModal(false);
+                    setName('');
+                    setRating(5);
+                    setComment('');
+                    showAlert("Makasih review cantiknya! Makin semangat deh jualan 💖", "😍");
+                } catch (error) {
+                    console.error("Gagal mengirim review:", error);
+                    showAlert("Duh gagal kirim review, cek koneksi internetmu ya!", "🔌");
+                } finally {
+                    setIsSubmitting(false);
+                }
+            };
+
+            return (
+                <div className="space-y-4 pb-10">
+                    <div className="flex justify-between items-center bg-white p-4 rounded-3xl border-4 border-mayumi-yellow shadow-sm">
+                        <h2 className="font-bold text-xl text-mayumi-brown flex items-center gap-2">
+                            <Icon name="star" className="text-yellow-400 fill-current" /> Suara Konsumen
+                        </h2>
+                        <button 
+                            onClick={() => setShowModal(true)} 
+                            className="bg-mayumi-green text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-[0_3px_0_#4d7c0f] active:shadow-none active:translate-y-1 transition flex items-center gap-1"
+                        >
+                            <Icon name="edit-3" size={14}/> Tulis Review
+                        </button>
+                    </div>
+
+                    {reviews.length === 0 ? (
+                         <div className="text-center py-10 bg-white rounded-3xl border-4 border-dashed border-gray-200 shadow-sm mt-4">
+                            <span className="text-6xl mb-3 block animate-bounce">🥺</span>
+                            <p className="text-sm font-bold text-gray-400">Belum ada review nih.<br/>Yuk jadi yang pertama kasih komentar manis!</p>
+                        </div>
+                    ) : (
+                        <div className="space-y-4 mt-4">
+                            {reviews.map((r, i) => (
+                                <div key={r.id || i} className="bg-white p-5 rounded-3xl border-4 border-mayumi-cream shadow-sm relative">
+                                    <div className="absolute top-0 right-4 transform -translate-y-1/2 bg-yellow-100 border-2 border-white px-2 py-0.5 rounded-full shadow-sm text-xs text-yellow-600 font-bold flex gap-0.5">
+                                        {[...Array(5)].map((_, idx) => (
+                                            <Icon key={idx} name="star" size={12} className={idx < r.rating ? "text-yellow-400 fill-current" : "text-gray-300"} />
+                                        ))}
+                                    </div>
+                                    <div className="flex justify-between items-end mb-2">
+                                        <h4 className="font-black text-mayumi-brown text-lg">{r.name}</h4>
+                                        <p className="text-[10px] text-gray-400 font-bold bg-gray-100 px-2 py-1 rounded-md">{new Date(r.created_at).toLocaleDateString('id-ID')}</p>
+                                    </div>
+                                    <p className="text-gray-600 text-sm font-medium leading-relaxed bg-orange-50 p-3 rounded-xl border border-dashed border-orange-100">"{r.comment}"</p>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+
+                    {/* Modal Tambah Review */}
+                    {showModal && (
+                        <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4">
+                            <div className="bg-white rounded-3xl p-6 max-w-sm w-full border-4 border-mayumi-yellow shadow-xl relative transform transition-all space-y-5">
+                                <button onClick={() => setShowModal(false)} className="absolute top-3 right-3 text-gray-400 hover:text-mayumi-red bg-gray-100 rounded-full w-8 h-8 flex items-center justify-center font-bold transition">✕</button>
+                                <div className="text-center">
+                                    <span className="text-4xl block mb-2">✍️</span>
+                                    <h3 className="font-black text-2xl text-mayumi-brown">Tulis Review</h3>
+                                </div>
+                                
+                                <div>
+                                    <label className="text-xs font-bold text-gray-500 mb-1.5 block">Nama Panggilan Kamu</label>
+                                    <input type="text" value={name} onChange={e=>setName(e.target.value)} className="w-full p-3 rounded-xl border-2 border-gray-200 focus:outline-none focus:border-mayumi-orange text-sm font-bold text-mayumi-brown bg-gray-50" placeholder="Si manis..." />
+                                </div>
+
+                                <div>
+                                    <label className="text-xs font-bold text-gray-500 mb-2 block text-center">Kasih Bintang Berapa Nih?</label>
+                                    <div className="flex justify-center gap-2 bg-yellow-50 py-3 rounded-xl border-2 border-dashed border-yellow-200">
+                                        {[1, 2, 3, 4, 5].map(star => (
+                                            <button key={star} onClick={() => setRating(star)} className="focus:outline-none transform transition hover:scale-110 active:scale-95">
+                                                <Icon name="star" size={36} className={star <= rating ? "text-yellow-400 fill-current drop-shadow-sm" : "text-yellow-100 fill-current"} />
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label className="text-xs font-bold text-gray-500 mb-1.5 block">Kesan / Pesan (Jujur aja kak!)</label>
+                                    <textarea value={comment} onChange={e=>setComment(e.target.value)} rows="3" className="w-full p-3 rounded-xl border-2 border-gray-200 focus:outline-none focus:border-mayumi-orange text-sm font-bold text-mayumi-brown bg-gray-50 resize-none" placeholder="Pisangnya lumer banget sumpah..."></textarea>
+                                </div>
+
+                                <button onClick={handleSubmit} disabled={isSubmitting} className={`w-full py-3.5 rounded-xl font-black text-lg text-white transition flex justify-center items-center gap-2 border-b-4 ${isSubmitting ? 'bg-gray-400 border-gray-500 border-b-0 translate-y-1' : 'bg-mayumi-yellow text-mayumi-brown border-yellow-500 hover:bg-yellow-400 active:border-b-0 active:translate-y-1'}`}>
+                                    {isSubmitting ? <Icon name="loader" className="animate-spin" /> : 'Kirim Review! 🚀'}
+                                </button>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
 
         // ==========================================
         //               ADMIN VIEW
@@ -852,16 +990,16 @@
 
             return (
                 <div className="space-y-4 pb-10">
-                    <div className="flex gap-2 mb-4 bg-gray-200 p-1.5 rounded-xl">
+                    <div className="flex gap-2 mb-4 bg-gray-200 p-1.5 rounded-xl border-2 border-gray-300">
                         <button 
                             onClick={() => setTab('orders')} 
-                            className={`flex-1 py-2.5 text-sm font-bold rounded-lg transition ${tab === 'orders' ? 'bg-white shadow-sm text-mayumi-darkGreen' : 'text-gray-500 hover:bg-gray-300'}`}
+                            className={`flex-1 py-2.5 text-sm font-bold rounded-lg transition ${tab === 'orders' ? 'bg-white shadow-sm text-mayumi-darkGreen border border-gray-100' : 'text-gray-500 hover:bg-gray-300'}`}
                         >
                             Daftar Pesanan
                         </button>
                         <button 
                             onClick={() => setTab('settings')} 
-                            className={`flex-1 py-2.5 text-sm font-bold rounded-lg transition ${tab === 'settings' ? 'bg-white shadow-sm text-mayumi-darkGreen' : 'text-gray-500 hover:bg-gray-300'}`}
+                            className={`flex-1 py-2.5 text-sm font-bold rounded-lg transition ${tab === 'settings' ? 'bg-white shadow-sm text-mayumi-darkGreen border border-gray-100' : 'text-gray-500 hover:bg-gray-300'}`}
                         >
                             Pengaturan
                         </button>
@@ -936,18 +1074,18 @@
 
             return (
                 <div className="space-y-4">
-                    <div className="flex justify-between items-center mb-2">
-                        <h2 className="font-bold text-xl text-gray-800">Manajemen Pesanan</h2>
+                    <div className="flex justify-between items-center mb-2 bg-white p-3 rounded-2xl shadow-sm border-2 border-gray-100">
+                        <h2 className="font-bold text-lg text-gray-800 flex items-center gap-2"><Icon name="list" size={18}/> Pesanan</h2>
                         <button 
                             onClick={handleRefresh} 
                             disabled={isRefreshing}
-                            className={`px-4 py-2 rounded-xl font-bold text-sm shadow-sm flex items-center gap-2 active:scale-95 transition border-2 ${isRefreshing ? 'bg-gray-200 text-gray-500 border-gray-300' : 'bg-mayumi-yellow text-mayumi-brown border-yellow-300 hover:bg-yellow-400'}`}
+                            className={`px-4 py-2 rounded-xl font-bold text-xs shadow-sm flex items-center gap-2 active:scale-95 transition border-2 ${isRefreshing ? 'bg-gray-200 text-gray-500 border-gray-300' : 'bg-mayumi-yellow text-mayumi-brown border-yellow-300 hover:bg-yellow-400'}`}
                         >
-                            <Icon name="refresh-cw" size={16} className={isRefreshing ? "animate-spin" : ""} /> 
+                            <Icon name="refresh-cw" size={14} className={isRefreshing ? "animate-spin" : ""} /> 
                             {isRefreshing ? 'Memuat...' : 'Refresh'}
                         </button>
                     </div>
-                    {orders.length === 0 ? <p className="text-gray-500 text-sm font-bold">Belum ada pesanan masuk.</p> : null}
+                    {orders.length === 0 ? <div className="text-center p-10 bg-white rounded-3xl border-2 border-dashed"><span className="text-4xl block mb-2">📭</span><p className="text-gray-500 text-sm font-bold">Belum ada pesanan masuk.</p></div> : null}
                     
                     {orders.map(order => (
                         <div key={order.id} className="bg-white rounded-2xl shadow-sm border-l-8 border-mayumi-green border-y-2 border-r-2 p-4 relative overflow-hidden">
@@ -997,7 +1135,7 @@
                                 {order.coords && (
                                     <button 
                                         onClick={() => openGoogleMaps(order.coords)}
-                                        className="mt-3 w-full bg-blue-50 text-blue-600 py-2.5 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-blue-100 border-2 border-blue-200 transition"
+                                        className="mt-3 w-full bg-blue-50 text-blue-600 py-2.5 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-blue-100 border-2 border-blue-200 transition active:scale-95 shadow-sm"
                                     >
                                         <Icon name="map" size={16} /> Lacak Rute di Maps
                                     </button>
@@ -1099,7 +1237,7 @@
                             <input type="number" step="any" placeholder="Latitude" value={localSet.storeLat} onChange={(e) => setLocalSet({...localSet, storeLat: Number(e.target.value)})} className="w-full min-w-0 flex-1 p-3 border-2 border-gray-200 rounded-xl text-sm font-bold bg-gray-50 focus:outline-none focus:border-mayumi-green" />
                             <input type="number" step="any" placeholder="Longitude" value={localSet.storeLon} onChange={(e) => setLocalSet({...localSet, storeLon: Number(e.target.value)})} className="w-full min-w-0 flex-1 p-3 border-2 border-gray-200 rounded-xl text-sm font-bold bg-gray-50 focus:outline-none focus:border-mayumi-green" />
                         </div>
-                        <button onClick={handleGetAdminLocation} className="w-full text-sm bg-gray-100 border-2 border-gray-200 text-gray-700 py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-gray-200 transition">
+                        <button onClick={handleGetAdminLocation} className="w-full text-sm bg-gray-100 border-2 border-gray-200 text-gray-700 py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-gray-200 transition active:scale-95 shadow-sm">
                             <Icon name="map-pin" size={16} /> Gunakan GPS Saat Ini
                         </button>
                     </div>
@@ -1128,7 +1266,7 @@
                     <button 
                         onClick={handleSave} 
                         disabled={isSaving}
-                        className={`w-full mt-6 text-white font-black text-lg py-4 rounded-2xl shadow-[0_4px_0_#166534] active:shadow-none active:translate-y-1 transition flex justify-center items-center gap-2 ${isSaving ? 'bg-gray-400 shadow-none translate-y-1 cursor-not-allowed' : 'bg-mayumi-darkGreen hover:bg-green-800'}`}
+                        className={`w-full mt-6 text-white font-black text-lg py-4 rounded-2xl shadow-[0_4px_0_#166534] active:shadow-none active:translate-y-1 transition flex justify-center items-center gap-2 border-b-4 ${isSaving ? 'bg-gray-400 border-gray-500 border-b-0 translate-y-1 cursor-not-allowed shadow-none' : 'bg-mayumi-darkGreen border-green-800 hover:bg-green-800 active:border-b-0 active:translate-y-1'}`}
                     >
                         {isSaving ? (
                             <><Icon name="loader" size={20} className="animate-spin" /> MENYIMPAN...</>
