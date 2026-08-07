@@ -513,7 +513,7 @@
             if (userCoords) {
                 distance = calculateDistance(settings.storeLat, settings.storeLon, userCoords.lat, userCoords.lon);
                 shippingCost = Math.round((distance * settings.costPerKm) / 1000) * 1000; 
-                if (shippingCost < 1000) shippingCost = 1000; 
+                if (shippingCost < 0) shippingCost = 0; 
             }
 
             const grandTotal = itemsTotal + shippingCost;
