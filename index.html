@@ -542,6 +542,7 @@
             const [qrisModal, setQrisModal] = useState(false);
 
             const itemsTotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            const totalQty = cart.reduce((sum, item) => sum + item.qty, 0); // Modifikasi: Menghitung total kuantitas item
             
             let distance = 0;
             let shippingCost = 0;
@@ -549,6 +550,11 @@
                 distance = calculateDistance(settings.storeLat, settings.storeLon, userCoords.lat, userCoords.lon);
                 shippingCost = Math.round((distance * settings.costPerKm) / 1000) * 1000; 
                 if (shippingCost < 0) shippingCost = 0; 
+
+                // Modifikasi: Aturan Ongkir otomatis Rp0 jika total item >= 5
+                if (totalQty >= 5) {
+                    shippingCost = 0;
+                }
             }
 
             const grandTotal = itemsTotal + shippingCost;
@@ -722,7 +728,7 @@
                             <div className="bg-white rounded-3xl p-6 max-w-sm w-full text-center space-y-4 border-4 border-mayumi-yellow shadow-xl">
                                 <h3 className="font-black text-2xl text-mayumi-brown">Scan QRIS 📱</h3>
                                 <div className="bg-gray-100 w-48 h-48 mx-auto flex items-center justify-center border-4 border-dashed border-gray-300 rounded-2xl overflow-hidden">
-                                    <img src='https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhWbFjyblImQlr27EkoekU5YuzRQuH-Dc13geFEX9ZPPDYi235EGjUktXB1XmvjHEpJ5QtcO8X7dVAB45vsfinA7XKoSL4skGUPoHWtIcBJVp0qfkoAGTqrDHpICPxstJ0u5zT4W61MmcL_ebMQQQRpwZBEbvYKjSyMc1AT26FAjxnCTyuON3lDJhKLo4pb/s674/1000030101.png' className="w-full h-full object-cover" />
+                                    <img src='https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiect9TQ-Wq7KyuLLkJoRLwh2XaaxBNQDDkYs7uFGLsvkf9RDY5jq3Zer07dh8sAABT6s9sDzIRr_3mkw0GOkYKcYLJM_i-XZYl9l6vWa7KHrcchOSdLMGJaG4xCtqUCL0T1mjJ8S59ib9y_5VoFZvBN2eP9ba2M4z7KSeuWvUuaJj6XrcvKayQZrdnbVqF/s1200/qris.jpeg' className="w-full h-full object-cover" />
                                 </div>
                                 <p className="text-lg font-black text-mayumi-orange bg-orange-50 py-2 rounded-xl">Total: {formatRp(grandTotal)}</p>
                                 <p className="text-xs text-gray-500 font-bold">Scan menggunakan aplikasi GoPay, OVO, Dana, ShopeePay, atau M-Banking Anda.</p>
