@@ -112,13 +112,14 @@
 
         // --- DATA PRODUK FALLBACK (Jika DB kosong) ---
         const DEFAULT_PRODUCTS = [
-            { id: 1, name: 'Coklat keju', price: 14000, label: '14K', imgId: '🍫🧀' },
-            { id: 2, name: 'Coklat parut keju', price: 14000, label: '14K', imgId: '🍫🌨️' },
-            { id: 3, name: 'Coklat', price: 12000, label: '12K', imgId: '🍫' },
-            { id: 4, name: 'Tiramisu', price: 12000, label: '12K', imgId: '🍰' },
-            { id: 5, name: 'Matcha', price: 12000, label: '12K', imgId: '🍵' },
-            { id: 6, name: 'Gula aren', price: 10000, label: '10K', imgId: '🍯' },
-            { id: 7, name: 'Bebas mix', price: 12000, label: '12K', desc: '(Mix 2 varian)', imgId: '🎭' },
+            { id: 1, name: 'Coklat keju', price: 15000, label: '14K', imgId: '🍫🧀' },
+            { id: 2, name: 'Coklat parut keju', price: 15000, label: '14K', imgId: '🍫🌨️' },
+            { id: 3, name: 'Coklat', price: 13000, label: '12K', imgId: '🍫' },
+            { id: 4, name: 'Tiramisu', price: 13000, label: '12K', imgId: '🍰' },
+            { id: 5, name: 'Matcha', price: 13000, label: '12K', imgId: '🍵' },
+            { id: 6, name: 'Gula aren', price: 12000, label: '10K', imgId: '🍯' },
+            { id: 7, name: 'Bebas mix', price: 13000, label: '12K', desc: '(Mix 2 varian)', imgId: '🍪' },
+            { id: 8, name: 'Keju mix', price: 14000, label: '14K', desc: '(Mix 1 varian dengan Keju)', imgId: '🧀' },
         ];
 
         // --- UTILS ---
@@ -163,7 +164,7 @@
             const [role, setRole] = useState('user'); // 'user' atau 'admin'
             const [products, setProducts] = useState(DEFAULT_PRODUCTS);
             const [orders, setOrders] = useState([]);
-            const [reviews, setReviews] = useState([]); // State untuk review konsumen
+            const [reviews, setReviews] = useState([]);
             const [settings, setSettings] = useState({
                 storeLat: -6.2088, 
                 storeLon: 106.8456,
@@ -187,25 +188,18 @@
             useEffect(() => {
                 const fetchData = async () => {
                     try {
-                        // Ambil Produk
                         const { data: prodData, error: prodErr } = await supabase.from('products').select('*').order('id', { ascending: true });
                         if (prodData && prodData.length > 0) setProducts(prodData);
                         else if (prodErr) console.warn("Supabase Produk:", prodErr.message);
 
-                        // Ambil Settings
                         const { data: setData, error: setErr } = await supabase.from('settings').select('*').eq('id', 1).single();
                         if (setData) setSettings(setData);
-                        else if (setErr) console.warn("Supabase Settings:", setErr.message);
 
-                        // Ambil Pesanan
                         const { data: ordData, error: ordErr } = await supabase.from('orders').select('*').order('date', { ascending: false });
                         if (ordData) setOrders(ordData);
-                        else if (ordErr) console.warn("Supabase Orders:", ordErr.message);
 
-                        // Ambil Review
                         const { data: revData, error: revErr } = await supabase.from('reviews').select('*').order('created_at', { ascending: false });
                         if (revData) setReviews(revData);
-                        else if (revErr) console.warn("Supabase Reviews:", revErr.message);
                         
                     } catch (error) {
                         console.error("Gagal terhubung ke Supabase. Menggunakan data default.", error);
@@ -221,9 +215,7 @@
                         setIsKeyboardOpen(true);
                     }
                 };
-                const handleFocusOut = () => {
-                    setIsKeyboardOpen(false);
-                };
+                const handleFocusOut = () => setIsKeyboardOpen(false);
                 
                 const handleResize = () => {
                     if (window.innerHeight < 500) {
@@ -246,24 +238,20 @@
 
             const handlePinSubmit = async () => {
                 if (!pinInput) return;
-                
                 setIsCheckingPin(true);
                 try {
-                    // Login ke Supabase Auth menggunakan PIN sebagai password
                     const { data, error } = await supabase.auth.signInWithPassword({
                         email: 'admin@pisangmayumi.com',
                         password: pinInput
                     });
                     
                     if (error) throw error;
-
                     if (data.session) {
                         setRole('admin');
                         setShowPinModal(false);
                         setPinInput('');
                     }
                 } catch (error) {
-                    console.error("Error cek PIN:", error);
                     showAlert('Oops! PIN-nya salah nih. Coba inget-inget lagi yaa 🍌', '🙈');
                     setPinInput('');
                 } finally {
@@ -277,8 +265,6 @@
                     <header className={`bg-mayumi-yellow text-mayumi-brown p-5 rounded-b-[3rem] shadow-sm z-40 border-b-4 border-yellow-300 relative overflow-hidden ${isKeyboardOpen ? '' : 'sticky top-0'}`}>
                         <div className="absolute top-[-10px] right-[-10px] opacity-20 text-7xl">🍌</div>
                         <div className="flex justify-between items-center relative z-10">
-                            
-                            {/* Kiri: Judul */}
                             <div className="relative z-20">
                                 <h1 className="text-3xl font-black tracking-wider leading-none text-mayumi-brown drop-shadow-[2px_2px_0_rgba(255,255,255,1)]">
                                     Pisang<br/>Kembung
@@ -288,7 +274,6 @@
                                 </span>
                             </div>
 
-                            {/* Tengah: Maskot Pisang (Absolute) */}
                             <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none">
                                 <img 
                                     src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhxV6yhpL_k0ZhI70PRISUNtvNB4oFayGkZaKOhJ0Vv2bXd_BoeVraa43uLF3lGr-UkuamsS4Ra5STvSXibU-XoSBf_Vz2AmDbUhvbjsT2OXAiQy5B4_lecTnXd4BqKkiq4pa-aNhmsKROrnliATN07hzvpeNexsfK1_lqPdrEx9WgQShMN7JxV4rXHgPob/s500/file_00000000f3408230ab45d1aa7623b404-removebg-preview.png" 
@@ -297,14 +282,12 @@
                                 />
                             </div>
 
-                            {/* Kanan: Tombol Mode */}
                             <div className="relative z-20">
                                 <button 
                                     onClick={async () => {
                                         if (role === 'user') {
                                             setShowPinModal(true);
                                         } else {
-                                            // Hapus sesi aman saat logout
                                             await supabase.auth.signOut();
                                             setRole('user');
                                         }
@@ -317,7 +300,6 @@
                         </div>
                     </header>
 
-                    {/* Konten Utama */}
                     <main className="p-4 relative z-0">
                         {role === 'user' 
                             ? <UserView products={products} orders={orders} setOrders={setOrders} settings={settings} isKeyboardOpen={isKeyboardOpen} showAlert={showAlert} reviews={reviews} setReviews={setReviews} /> 
@@ -325,7 +307,6 @@
                         }
                     </main>
 
-                    {/* Modal PIN Admin */}
                     {showPinModal && (
                         <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4">
                             <div className="bg-white rounded-3xl p-6 max-w-sm w-full border-4 border-mayumi-yellow shadow-xl relative">
@@ -355,7 +336,6 @@
                         </div>
                     )}
 
-                    {/* Cute Global Alert */}
                     <CuteModal config={alertConfig} onClose={closeAlert} />
                 </div>
             );
@@ -386,7 +366,6 @@
                     {activeTab === 'status' && <StatusTab orders={orders} showAlert={showAlert} />}
                     {activeTab === 'review' && <ReviewTab reviews={reviews} setReviews={setReviews} showAlert={showAlert} />}
 
-                    {/* Bottom Navigation dengan Tab Review baru */}
                     {!isKeyboardOpen && (
                         <nav className="fixed bottom-4 left-4 right-4 max-w-[calc(100%-2rem)] md:max-w-[calc(28rem-2rem)] mx-auto bg-white border-4 border-mayumi-yellow rounded-3xl flex justify-around p-2 z-50 shadow-[0_4px_0_#fde047]">
                             <button onClick={() => setActiveTab('menu')} className={`flex flex-col items-center p-2 rounded-2xl transition w-1/4 ${activeTab === 'menu' ? 'bg-yellow-100 text-mayumi-brown font-bold' : 'text-gray-400 font-medium'}`}>
@@ -414,12 +393,35 @@
 
         const MenuTab = ({ products, onAdd }) => {
             const [showMixModal, setShowMixModal] = useState(false);
+            const [mixType, setMixType] = useState(''); // 'bebas' atau 'keju'
             const [selectedFlavors, setSelectedFlavors] = useState([]);
             
-            const baseFlavors = products.filter(p => p.id !== 7);
+            const baseFlavors = products.filter(p => !p.name.toLowerCase().includes('mix') && p.id !== 7 && p.id !== 8);
+            
+            // Logika pengecualian menu Mix
+            const selectableMixFlavors = baseFlavors.filter(p => {
+                const flavorName = p.name.toLowerCase();
+                
+                // 1. Selalu sembunyikan coklat keju dan coklat parut keju untuk SEMUA Mix
+                if (flavorName === 'coklat keju' || flavorName === 'coklat parut keju') {
+                    return false;
+                }
+                
+                // 2. Khusus untuk Keju mix, sembunyikan juga menu 'coklat'
+                if (mixType === 'keju' && flavorName === 'coklat') {
+                    return false;
+                }
+                
+                return true;
+            });
 
             const handleProductClick = (p) => {
-                if (p.id === 7) {
+                if (p.id === 7 || p.name.toLowerCase().includes('bebas mix')) {
+                    setMixType('bebas');
+                    setShowMixModal(true);
+                    setSelectedFlavors([]);
+                } else if (p.id === 8 || p.name.toLowerCase().includes('keju mix')) {
+                    setMixType('keju');
                     setShowMixModal(true);
                     setSelectedFlavors([]);
                 } else {
@@ -427,25 +429,37 @@
                 }
             };
 
+            const maxSelection = mixType === 'bebas' ? 2 : 1;
+
             const toggleFlavor = (flavorName) => {
                 if (selectedFlavors.includes(flavorName)) {
                     setSelectedFlavors(selectedFlavors.filter(f => f !== flavorName));
                 } else {
-                    if (selectedFlavors.length < 2) {
+                    if (selectedFlavors.length < maxSelection) {
                         setSelectedFlavors([...selectedFlavors, flavorName]);
                     }
                 }
             };
 
             const handleAddMix = () => {
-                if (selectedFlavors.length === 2) {
-                    const mixP = products.find(p => p.id === 7);
-                    const mixProduct = {
-                        ...mixP,
-                        id: `7-${selectedFlavors.join('-')}`, 
-                        name: `Bebas mix (${selectedFlavors.join(' & ')})`,
-                    };
-                    onAdd(mixProduct);
+                if (selectedFlavors.length === maxSelection) {
+                    if (mixType === 'bebas') {
+                        const mixP = products.find(p => p.id === 7) || { id: 7, name: 'Bebas mix', price: 12000, imgId: '🎭' };
+                        const mixProduct = {
+                            ...mixP,
+                            id: `7-${selectedFlavors.join('-')}`, 
+                            name: `Bebas mix (${selectedFlavors.join(' & ')})`,
+                        };
+                        onAdd(mixProduct);
+                    } else if (mixType === 'keju') {
+                        const mixP = products.find(p => p.id === 8) || { id: 8, name: 'Keju mix', price: 14000, imgId: '🧀' };
+                        const mixProduct = {
+                            ...mixP,
+                            id: `8-${selectedFlavors[0]}`, 
+                            name: `Keju mix (${selectedFlavors[0]} & Keju)`,
+                        };
+                        onAdd(mixProduct);
+                    }
                     setShowMixModal(false);
                 }
             };
@@ -498,13 +512,17 @@
                         <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4">
                             <div className="bg-white rounded-3xl p-6 max-w-sm w-full border-4 border-mayumi-yellow shadow-xl relative transform transition-all">
                                 <button onClick={() => setShowMixModal(false)} className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 bg-gray-100 rounded-full w-8 h-8 flex items-center justify-center font-bold transition">✕</button>
-                                <h3 className="font-black text-xl text-mayumi-brown mb-1">Bebas Mix! 🎭</h3>
-                                <p className="text-sm text-gray-500 font-bold mb-4">Pilih 2 varian rasa favoritmu:</p>
+                                <h3 className="font-black text-xl text-mayumi-brown mb-1">
+                                    {mixType === 'bebas' ? 'Bebas Mix! 🎭' : 'Keju Mix! 🧀'}
+                                </h3>
+                                <p className="text-sm text-gray-500 font-bold mb-4">
+                                    {mixType === 'bebas' ? 'Pilih 2 varian rasa favoritmu:' : 'Pilih 1 varian untuk di-mix dengan Keju:'}
+                                </p>
                                 
                                 <div className="grid grid-cols-2 gap-2 mb-6">
-                                    {baseFlavors.map(f => {
+                                    {selectableMixFlavors.map(f => {
                                         const isSelected = selectedFlavors.includes(f.name);
-                                        const isDisabled = selectedFlavors.length >= 2 && !isSelected;
+                                        const isDisabled = selectedFlavors.length >= maxSelection && !isSelected;
                                         return (
                                             <button 
                                                 key={f.id}
@@ -521,10 +539,13 @@
 
                                 <button 
                                     onClick={handleAddMix}
-                                    disabled={selectedFlavors.length !== 2}
-                                    className={`w-full py-3 rounded-2xl font-black flex justify-center items-center gap-2 transition border-b-4 ${selectedFlavors.length === 2 ? 'bg-mayumi-green text-white border-green-700 shadow-[0_3px_0_#4d7c0f] active:border-b-0 active:translate-y-1' : 'bg-gray-200 text-gray-400 border-gray-300 cursor-not-allowed'}`}
+                                    disabled={selectedFlavors.length !== maxSelection}
+                                    className={`w-full py-3 rounded-2xl font-black flex justify-center items-center gap-2 transition border-b-4 ${selectedFlavors.length === maxSelection ? 'bg-mayumi-green text-white border-green-700 shadow-[0_3px_0_#4d7c0f] active:border-b-0 active:translate-y-1' : 'bg-gray-200 text-gray-400 border-gray-300 cursor-not-allowed'}`}
                                 >
-                                    {selectedFlavors.length === 2 ? 'Tambahkan ke Keranjang' : `Pilih ${2 - selectedFlavors.length} Rasa Lagi`}
+                                    {selectedFlavors.length === maxSelection 
+                                        ? 'Tambahkan ke Keranjang' 
+                                        : (mixType === 'bebas' ? `Pilih ${maxSelection - selectedFlavors.length} Rasa Lagi` : 'Pilih 1 Rasa')
+                                    }
                                 </button>
                             </div>
                         </div>
@@ -542,7 +563,7 @@
             const [qrisModal, setQrisModal] = useState(false);
 
             const itemsTotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-            const totalQty = cart.reduce((sum, item) => sum + item.qty, 0); // Modifikasi: Menghitung total kuantitas item
+            const totalQty = cart.reduce((sum, item) => sum + item.qty, 0); 
             
             let distance = 0;
             let shippingCost = 0;
@@ -550,11 +571,7 @@
                 distance = calculateDistance(settings.storeLat, settings.storeLon, userCoords.lat, userCoords.lon);
                 shippingCost = Math.round((distance * settings.costPerKm) / 1000) * 1000; 
                 if (shippingCost < 0) shippingCost = 0; 
-
-                // Modifikasi: Aturan Ongkir otomatis Rp0 jika total item >= 5
-                if (totalQty >= 5) {
-                    shippingCost = 0;
-                }
+                if (totalQty >= 5) shippingCost = 0;
             }
 
             const grandTotal = itemsTotal + shippingCost;
@@ -765,7 +782,6 @@
                     setMyOrders(data || []);
                     setHasSearched(true);
                 } catch (error) {
-                    console.error("Gagal menarik data pesanan:", error);
                     const filtered = orders.filter(o => o.phone === checkPhone).sort((a,b) => new Date(b.date) - new Date(a.date));
                     setMyOrders(filtered);
                     setHasSearched(true);
@@ -904,11 +920,9 @@
                     const { data, error } = await supabase.from('reviews').insert([newReview]).select();
                     if(error) throw error;
                     
-                    // Update state lokal
                     if(data && data.length > 0){
                         setReviews([data[0], ...reviews]);
                     } else {
-                        // Fallback jika .select() tidak mereturn data karena policy
                         setReviews([newReview, ...reviews]);
                     }
 
@@ -963,7 +977,6 @@
                         </div>
                     )}
 
-                    {/* Modal Tambah Review */}
                     {showModal && (
                         <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4">
                             <div className="bg-white rounded-3xl p-6 max-w-sm w-full border-4 border-mayumi-yellow shadow-xl relative transform transition-all space-y-5">
@@ -1009,7 +1022,7 @@
         //               ADMIN VIEW
         // ==========================================
         const AdminView = ({ orders, setOrders, settings, setSettings, products, setProducts, showAlert }) => {
-            const [tab, setTab] = useState('orders'); // 'orders', 'settings'
+            const [tab, setTab] = useState('orders'); 
 
             return (
                 <div className="space-y-4 pb-10">
@@ -1081,7 +1094,6 @@
                 window.open(url, '_blank');
             };
 
-            // Mengubah format nomor HP menjadi link WA
             const getWaLink = (phone) => {
                 if (!phone) return '#';
                 let cleaned = phone.replace(/\D/g, '');
@@ -1123,17 +1135,14 @@
                             <div className="flex justify-between items-start mb-3 pr-10">
                                 <div>
                                     <h3 className="font-bold text-gray-800 text-lg">{order.customerName}</h3>
-                                    
                                     <a 
                                         href={getWaLink(order.phone)}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="text-xs font-mono text-mayumi-green hover:text-mayumi-darkGreen font-bold flex items-center gap-1 mt-0.5 transition hover:underline"
-                                        title="Chat via WhatsApp"
                                     >
                                         <Icon name="message-circle" size={12} /> {order.phone}
                                     </a>
-                                    
                                     <p className="text-[10px] text-gray-400 mt-1 font-bold flex items-center gap-1">
                                         <Icon name="clock" size={12} /> {new Date(order.date).toLocaleString('id-ID')}
                                     </p>
@@ -1184,45 +1193,31 @@
         const AdminSettings = ({ settings, setSettings, products, setProducts, showAlert }) => {
             const [localSet, setLocalSet] = useState(settings);
             const [localProducts, setLocalProducts] = useState(products);
-            const [isSaving, setIsSaving] = useState(false);
+            const [isSavingStore, setIsSavingStore] = useState(false);
             
-            const handleSave = async () => {
-                setIsSaving(true);
-                
+            // State untuk kelola Modal Produk
+            const [showProdModal, setShowProdModal] = useState(false);
+            const [editForm, setEditForm] = useState(null);
+
+            // 1. Simpan Pengaturan Toko (Ongkir & GPS)
+            const handleSaveSettings = async () => {
+                setIsSavingStore(true);
                 try {
-                    const { error: errSet } = await supabase.from('settings').update({
+                    const { error } = await supabase.from('settings').update({
                         storeLat: localSet.storeLat,
                         storeLon: localSet.storeLon,
                         costPerKm: localSet.costPerKm
                     }).eq('id', 1);
 
-                    if (errSet) throw errSet;
-
-                    for (const product of localProducts) {
-                        const { error: errProd } = await supabase.from('products').update({
-                            price: product.price,
-                            label: product.label
-                        }).eq('id', product.id);
-                        
-                        if (errProd) throw errProd;
-                    }
-
+                    if (error) throw error;
                     setSettings(localSet);
-                    setProducts(localProducts);
-
-                    showAlert('Yey! Pengaturan udah berhasil disimpen ke Server!', '🎉');
+                    showAlert('Pengaturan Lokasi & Ongkir berhasil disimpan!', '🎉');
                 } catch (error) {
                     console.error("Error saving settings:", error);
-                    showAlert('Gagal menyimpan pengaturan! (Cek log / console)', '😢');
+                    showAlert('Gagal menyimpan pengaturan!', '😢');
                 } finally {
-                    setIsSaving(false); 
+                    setIsSavingStore(false); 
                 }
-            };
-
-            const handlePriceChange = (id, newPrice) => {
-                const price = Number(newPrice);
-                const label = price >= 1000 ? (price / 1000) + 'K' : price.toString();
-                setLocalProducts(localProducts.map(p => p.id === id ? { ...p, price, label } : p));
             };
 
             const handleGetAdminLocation = () => {
@@ -1240,63 +1235,171 @@
                 }
             };
 
-            return (
-                <div className="bg-white rounded-3xl shadow-sm border-4 border-gray-100 p-5 space-y-5">
-                    <h2 className="font-bold text-xl text-gray-800 border-b-2 border-dashed border-gray-200 pb-3">Pengaturan Sistem ⚙️</h2>
-                    
-                    <div>
-                        <label className="block text-sm font-bold text-gray-600 mb-2">Tarif Ongkir / Km (Rp)</label>
-                        <input 
-                            type="number" 
-                            value={localSet.costPerKm} 
-                            onChange={(e) => setLocalSet({...localSet, costPerKm: Number(e.target.value)})}
-                            className="w-full p-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-mayumi-green font-bold text-gray-700 bg-gray-50"
-                        />
-                    </div>
+            // 2. Fungsi Tambah/Edit/Hapus Produk
+            const openAddProduct = () => {
+                // Perbaikan: Menggunakan urutan angka biasa (contoh ID: 9) alih-alih Date.now() yang kepanjangan
+                const newId = localProducts.length > 0 ? Math.max(...localProducts.map(p => p.id)) + 1 : 1;
+                setEditForm({ id: newId, name: '', price: '', desc: '', imgId: '🍌' });
+                setShowProdModal(true);
+            };
 
-                    <div className="pt-2">
-                        <label className="block text-sm font-bold text-gray-600 mb-2">Koordinat Toko (Base Lokasi)</label>
-                        <div className="flex gap-2 mb-3 w-full">
-                            <input type="number" step="any" placeholder="Latitude" value={localSet.storeLat} onChange={(e) => setLocalSet({...localSet, storeLat: Number(e.target.value)})} className="w-full min-w-0 flex-1 p-3 border-2 border-gray-200 rounded-xl text-sm font-bold bg-gray-50 focus:outline-none focus:border-mayumi-green" />
-                            <input type="number" step="any" placeholder="Longitude" value={localSet.storeLon} onChange={(e) => setLocalSet({...localSet, storeLon: Number(e.target.value)})} className="w-full min-w-0 flex-1 p-3 border-2 border-gray-200 rounded-xl text-sm font-bold bg-gray-50 focus:outline-none focus:border-mayumi-green" />
+            const openEditProduct = (p) => {
+                setEditForm(p);
+                setShowProdModal(true);
+            };
+
+            const handleDeleteProduct = (id) => {
+                showAlert("Yakin mau hapus menu ini? Nanti hilang permanen lho!", "🗑️", async () => {
+                    const updatedList = localProducts.filter(p => p.id !== id);
+                    setLocalProducts(updatedList);
+                    setProducts(updatedList);
+                    
+                    const { error } = await supabase.from('products').delete().eq('id', id);
+                    if (error) showAlert(`Gagal Hapus (Database Error): ${error.message}`, "😢");
+                });
+            };
+
+            const handleSaveProduct = async () => {
+                if(!editForm.name || !editForm.price) return showAlert("Nama dan Harga harus diisi ya!", "⚠️");
+                
+                const price = Number(editForm.price);
+                const label = price >= 1000 ? (price / 1000) + 'K' : price.toString();
+                
+                // Mencegah error jika deskripsi kosong
+                const payload = { 
+                    ...editForm, 
+                    price, 
+                    label,
+                    desc: editForm.desc ? editForm.desc : null 
+                };
+                
+                const { error } = await supabase.from('products').upsert([payload]);
+                
+                if (error) {
+                    console.error("Upsert error:", error);
+                    // Menampilkan pesan error asli Supabase ke layar (Lebih gampang dilacak)
+                    return showAlert(`Gagal simpan: ${error.message}`, "😢");
+                }
+                
+                const exists = localProducts.find(p => p.id === payload.id);
+                const newList = exists 
+                    ? localProducts.map(p => p.id === payload.id ? payload : p)
+                    : [...localProducts, payload];
+                
+                const sortedList = newList.sort((a,b) => a.id - b.id);
+                
+                setLocalProducts(sortedList);
+                setProducts(sortedList);
+                setShowProdModal(false);
+                showAlert("Berhasil memperbarui menu!", "✅");
+            };
+
+            return (
+                <div className="space-y-5">
+                    {/* Panel 1: Pengaturan Lokasi & Ongkir */}
+                    <div className="bg-white rounded-3xl shadow-sm border-4 border-gray-100 p-5">
+                        <h2 className="font-bold text-xl text-gray-800 border-b-2 border-dashed border-gray-200 pb-3 mb-4">Pengaturan Toko ⚙️</h2>
+                        
+                        <div>
+                            <label className="block text-sm font-bold text-gray-600 mb-2">Tarif Ongkir / Km (Rp)</label>
+                            <input 
+                                type="number" 
+                                value={localSet.costPerKm} 
+                                onChange={(e) => setLocalSet({...localSet, costPerKm: Number(e.target.value)})}
+                                className="w-full p-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-mayumi-green font-bold text-gray-700 bg-gray-50"
+                            />
                         </div>
-                        <button onClick={handleGetAdminLocation} className="w-full text-sm bg-gray-100 border-2 border-gray-200 text-gray-700 py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-gray-200 transition active:scale-95 shadow-sm">
-                            <Icon name="map-pin" size={16} /> Gunakan GPS Saat Ini
+
+                        <div className="pt-4">
+                            <label className="block text-sm font-bold text-gray-600 mb-2">Koordinat Toko (Base Lokasi)</label>
+                            <div className="flex gap-2 mb-3 w-full">
+                                <input type="number" step="any" placeholder="Latitude" value={localSet.storeLat} onChange={(e) => setLocalSet({...localSet, storeLat: Number(e.target.value)})} className="w-full min-w-0 flex-1 p-3 border-2 border-gray-200 rounded-xl text-sm font-bold bg-gray-50 focus:outline-none focus:border-mayumi-green" />
+                                <input type="number" step="any" placeholder="Longitude" value={localSet.storeLon} onChange={(e) => setLocalSet({...localSet, storeLon: Number(e.target.value)})} className="w-full min-w-0 flex-1 p-3 border-2 border-gray-200 rounded-xl text-sm font-bold bg-gray-50 focus:outline-none focus:border-mayumi-green" />
+                            </div>
+                            <button onClick={handleGetAdminLocation} className="w-full text-sm bg-gray-100 border-2 border-gray-200 text-gray-700 py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-gray-200 transition active:scale-95 shadow-sm">
+                                <Icon name="map-pin" size={16} /> Gunakan GPS Saat Ini
+                            </button>
+                        </div>
+                        
+                        <button 
+                            onClick={handleSaveSettings} 
+                            disabled={isSavingStore}
+                            className={`w-full mt-6 text-white font-black text-lg py-4 rounded-2xl shadow-[0_4px_0_#166534] active:shadow-none active:translate-y-1 transition flex justify-center items-center gap-2 border-b-4 ${isSavingStore ? 'bg-gray-400 border-gray-500 border-b-0 translate-y-1 cursor-not-allowed shadow-none' : 'bg-mayumi-darkGreen border-green-800 hover:bg-green-800 active:border-b-0 active:translate-y-1'}`}
+                        >
+                            {isSavingStore ? <><Icon name="loader" size={20} className="animate-spin" /> MENYIMPAN...</> : 'SIMPAN PENGATURAN'}
                         </button>
                     </div>
 
-                    <div className="pt-5 border-t-2 border-dashed border-gray-200 space-y-3">
-                        <label className="block text-sm font-bold text-gray-800 mb-3">Ubah Harga Menu 💰</label>
-                        {localProducts.map(product => (
-                            <div key={product.id} className="flex justify-between items-center gap-2 bg-gray-50 p-2.5 rounded-xl border-2 border-gray-100">
-                                <div className="flex items-center gap-3 flex-1">
-                                    <span className="text-2xl bg-white w-10 h-10 flex items-center justify-center rounded-lg border shadow-sm">{product.imgId}</span>
-                                    <span className="text-sm font-bold text-gray-700 leading-tight">{product.name}</span>
+                    {/* Panel 2: Kelola Menu */}
+                    <div className="bg-white rounded-3xl shadow-sm border-4 border-gray-100 p-5">
+                        <div className="flex justify-between items-center border-b-2 border-dashed border-gray-200 pb-3 mb-4">
+                            <h2 className="font-bold text-xl text-gray-800">Kelola Menu 🍕</h2>
+                        </div>
+                        
+                        <div className="space-y-3 mb-5">
+                            {localProducts.map(product => (
+                                <div key={product.id} className="flex justify-between items-center bg-gray-50 p-3 rounded-xl border-2 border-gray-100 hover:border-yellow-200 transition">
+                                    <div className="flex items-center gap-3">
+                                        <span className="text-2xl bg-white w-10 h-10 flex items-center justify-center rounded-lg border shadow-sm">{product.imgId}</span>
+                                        <div>
+                                            <h4 className="font-bold text-gray-800 text-sm">{product.name}</h4>
+                                            <p className="text-xs text-mayumi-orange font-bold">Rp{product.price.toLocaleString('id-ID')}</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex gap-2">
+                                        <button onClick={() => openEditProduct(product)} className="bg-blue-100 text-blue-600 p-2 rounded-lg hover:bg-blue-200 transition">
+                                            <Icon name="edit-2" size={16} />
+                                        </button>
+                                        <button onClick={() => handleDeleteProduct(product.id)} className="bg-red-100 text-red-600 p-2 rounded-lg hover:bg-red-200 transition">
+                                            <Icon name="trash-2" size={16} />
+                                        </button>
+                                    </div>
                                 </div>
-                                <div className="w-[45%] flex items-center bg-white border-2 border-gray-200 rounded-xl overflow-hidden focus-within:border-mayumi-green">
-                                    <span className="bg-gray-100 text-gray-500 text-xs px-3 py-3 font-bold border-r">Rp</span>
-                                    <input 
-                                        type="number" 
-                                        value={product.price}
-                                        onChange={(e) => handlePriceChange(product.id, e.target.value)}
-                                        className="w-full p-2 text-sm font-bold text-gray-700 focus:outline-none"
-                                    />
-                                </div>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
+
+                        <button 
+                            onClick={openAddProduct}
+                            className="w-full border-4 border-dashed border-mayumi-yellow text-mayumi-brown bg-yellow-50 hover:bg-yellow-100 font-bold py-3.5 rounded-xl transition flex justify-center items-center gap-2 active:scale-95"
+                        >
+                            <Icon name="plus" size={18}/> Tambah Menu Baru
+                        </button>
                     </div>
 
-                    <button 
-                        onClick={handleSave} 
-                        disabled={isSaving}
-                        className={`w-full mt-6 text-white font-black text-lg py-4 rounded-2xl shadow-[0_4px_0_#166534] active:shadow-none active:translate-y-1 transition flex justify-center items-center gap-2 border-b-4 ${isSaving ? 'bg-gray-400 border-gray-500 border-b-0 translate-y-1 cursor-not-allowed shadow-none' : 'bg-mayumi-darkGreen border-green-800 hover:bg-green-800 active:border-b-0 active:translate-y-1'}`}
-                    >
-                        {isSaving ? (
-                            <><Icon name="loader" size={20} className="animate-spin" /> MENYIMPAN...</>
-                        ) : (
-                            'SIMPAN PENGATURAN'
-                        )}
-                    </button>
+                    {/* Modal Tambah/Edit Produk */}
+                    {showProdModal && editForm && (
+                        <div className="fixed inset-0 bg-black/60 z-[200] flex items-center justify-center p-4">
+                            <div className="bg-white rounded-3xl p-6 max-w-sm w-full border-4 border-mayumi-yellow shadow-xl relative space-y-4">
+                                <button onClick={() => setShowProdModal(false)} className="absolute top-3 right-3 text-gray-400 hover:text-mayumi-red bg-gray-100 rounded-full w-8 h-8 flex items-center justify-center font-bold transition">✕</button>
+                                <h3 className="font-black text-xl text-mayumi-brown">{localProducts.find(p=>p.id === editForm.id) ? 'Edit Menu 📝' : 'Tambah Menu 🆕'}</h3>
+                                
+                                <div className="space-y-3">
+                                    <div>
+                                        <label className="text-xs font-bold text-gray-500 block mb-1">Nama Menu</label>
+                                        <input type="text" value={editForm.name} onChange={e=>setEditForm({...editForm, name: e.target.value})} className="w-full p-2.5 rounded-xl border-2 border-gray-200 focus:outline-none focus:border-mayumi-orange text-sm font-bold bg-gray-50" placeholder="Contoh: Coklat Keju" />
+                                    </div>
+                                    <div className="flex gap-2">
+                                        <div className="flex-1">
+                                            <label className="text-xs font-bold text-gray-500 block mb-1">Harga (Rp)</label>
+                                            <input type="number" value={editForm.price} onChange={e=>setEditForm({...editForm, price: e.target.value})} className="w-full p-2.5 rounded-xl border-2 border-gray-200 focus:outline-none focus:border-mayumi-orange text-sm font-bold bg-gray-50" placeholder="14000" />
+                                        </div>
+                                        <div className="w-20">
+                                            <label className="text-xs font-bold text-gray-500 block mb-1">Emoji</label>
+                                            <input type="text" value={editForm.imgId} onChange={e=>setEditForm({...editForm, imgId: e.target.value})} className="w-full p-2.5 rounded-xl border-2 border-gray-200 focus:outline-none focus:border-mayumi-orange text-sm text-center font-bold bg-gray-50" />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label className="text-xs font-bold text-gray-500 block mb-1">Deskripsi Pendek (Opsional)</label>
+                                        <input type="text" value={editForm.desc || ''} onChange={e=>setEditForm({...editForm, desc: e.target.value})} className="w-full p-2.5 rounded-xl border-2 border-gray-200 focus:outline-none focus:border-mayumi-orange text-sm font-bold bg-gray-50" placeholder="Misal: (Mix 2 varian)" />
+                                    </div>
+                                </div>
+
+                                <button onClick={handleSaveProduct} className="w-full bg-mayumi-green text-white font-bold py-3 mt-2 rounded-xl border-b-4 border-green-800 shadow-[0_3px_0_#166534] active:shadow-none active:translate-y-1 transition">
+                                    Simpan Menu
+                                </button>
+                            </div>
+                        </div>
+                    )}
                 </div>
             );
         }
