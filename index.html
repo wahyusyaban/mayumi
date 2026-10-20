@@ -4,28 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Pisang Kembung Mayumi</title>
-    <meta name="description" content="Pisang Kembung Manis, lembut, lumer di mulut!" />
-
-<!-- Open Graph (Facebook, WhatsApp, LinkedIn) -->
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://mayumiapp.vercel.app/" />
-<meta property="og:title" content="Pisang Kembung Mayumi" />
-<meta property="og:description" content="Pisang Kembung Manis, lembut, lumer di mulut!" />
-<meta property="og:image" content="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhxV6yhpL_k0ZhI70PRISUNtvNB4oFayGkZaKOhJ0Vv2bXd_BoeVraa43uLF3lGr-UkuamsS4Ra5STvSXibU-XoSBf_Vz2AmDbUhvbjsT2OXAiQy5B4_lecTnXd4BqKkiq4pa-aNhmsKROrnliATN07hzvpeNexsfK1_lqPdrEx9WgQShMN7JxV4rXHgPob/s500/file_00000000f3408230ab45d1aa7623b404-removebg-preview.png" />
-<meta property="og:image:width" content="1200" />
-<meta property="og:image:height" content="630" />
-
-<!-- Twitter Card -->
-<meta name="twitter:card" content="summary_large_image" />
-<meta property="og:url" content="https://mayumiapp.vercel.app/" />
-<meta property="og:title" content="Pisang Kembung Mayumi" />
-<meta property="og:description" content="Pisang Kembung Manis, lembut, lumer di mulut!" />
-<meta name="twitter:image" content="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhxV6yhpL_k0ZhI70PRISUNtvNB4oFayGkZaKOhJ0Vv2bXd_BoeVraa43uLF3lGr-UkuamsS4Ra5STvSXibU-XoSBf_Vz2AmDbUhvbjsT2OXAiQy5B4_lecTnXd4BqKkiq4pa-aNhmsKROrnliATN07hzvpeNexsfK1_lqPdrEx9WgQShMN7JxV4rXHgPob/s500/file_00000000f3408230ab45d1aa7623b404-removebg-preview.png" />
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://mayumiapp.vercel.app/" />
+    <meta property="og:title" content="Pisang Kembung Mayumi" />
+    <meta property="og:description" content="Pisang Kembung Manis, lembut, lumer di mulut!" />
+    <meta property="og:image" content="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhxV6yhpL_k0ZhI70PRISUNtvNB4oFayGkZaKOhJ0Vv2bXd_BoeVraa43uLF3lGr-UkuamsS4Ra5STvSXibU-XoSBf_Vz2AmDbUhvbjsT2OXAiQy5B4_lecTnXd4BqKkiq4pa-aNhmsKROrnliATN07hzvpeNexsfK1_lqPdrEx9WgQShMN7JxV4rXHgPob/s500/file_00000000f3408230ab45d1aa7623b404-removebg-preview.png" />
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -46,111 +36,195 @@
     <script>
         tailwind.config = {
             theme: {
-                extend: {
-                    colors: {
-                        mayumi: {
-                            yellow: '#fde047',
-                            green: '#65a30d',
-                            darkGreen: '#4d7c0f',
-                            brown: '#5d4037',
-                            cream: '#fff8e7',
-                            orange: '#ea580c',
-                            red: '#ef4444'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['"Fredoka"', 'sans-serif'],
-                    }
-                }
+                extend: { fontFamily: { sans: ['"Fredoka"', 'sans-serif'] } }
             }
         }
     </script>
+
+    <!-- CLAYMORPHISM CSS -->
     <style>
+        :root {
+            /* Palet Warna Ekstrak dari Gambar */
+            --bg-color: #d1d5db;       /* Abu-abu Latar Belakang */
+            --card-bg: #faedd6;        /* Krem / Peach untuk Kartu */
+            
+            --clay-orange: #ed7d31;    /* Oranye Bar Bawah */
+            --clay-yellow: #ffdf8c;    /* Kuning Icon */
+            --clay-green: #90d3b6;     /* Hijau Pastel */
+            --clay-red: #f48074;       /* Merah Pastel */
+            --clay-text: #475569;      /* Teks Gelap */
+            
+            --shadow-light: #ffffff;
+            --shadow-dark: #a1a5b0;
+        }
+
         body { 
-            background-color: #fefce8; 
-            background-image: radial-gradient(#fde047 1.5px, transparent 1.5px); 
-            background-size: 24px 24px; 
+            background-color: var(--bg-color); 
             font-family: 'Fredoka', sans-serif;
+            color: var(--clay-text);
             -webkit-tap-highlight-color: transparent;
         }
+
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* --- CLAY UI COMPONENTS --- */
+        
+        .clay-card {
+            background-color: var(--card-bg);
+            border-radius: 1.25rem;
+            box-shadow: 8px 8px 16px var(--shadow-dark), -8px -8px 16px var(--shadow-light), 
+                        inset 2px 2px 6px rgba(255,255,255,0.9), inset -2px -2px 6px rgba(0,0,0,0.03);
+            border: 1px solid rgba(255,255,255,0.4);
+        }
+
+        .clay-panel {
+            background-color: var(--bg-color);
+            border-radius: 1rem;
+            box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light);
+        }
+
+        .clay-btn {
+            background-color: var(--card-bg);
+            border-radius: 9999px;
+            box-shadow: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light), 
+                        inset 2px 2px 4px rgba(255,255,255,1), inset -2px -2px 4px rgba(0,0,0,0.05);
+            color: var(--clay-text);
+            transition: all 0.15s ease;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .clay-btn:active {
+            box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px rgba(255,255,255,0.7);
+            transform: scale(0.97);
+        }
+
+        .clay-btn-orange {
+            background-color: var(--clay-orange);
+            color: white;
+            border-radius: 9999px;
+            box-shadow: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light), 
+                        inset 2px 2px 5px rgba(255,255,255,0.4), inset -2px -2px 5px rgba(0,0,0,0.15);
+            transition: all 0.15s ease;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .clay-btn-orange:active {
+            box-shadow: inset 4px 4px 8px rgba(0,0,0,0.2), inset -4px -4px 8px rgba(255,255,255,0.2);
+            transform: scale(0.97);
+        }
+
+        .clay-box-yellow {
+            background-color: var(--clay-yellow);
+            border-radius: 0.75rem;
+            box-shadow: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light), 
+                        inset 2px 2px 5px rgba(255,255,255,0.8), inset -2px -2px 5px rgba(0,0,0,0.1);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            color: #a34c00;
+        }
+
+        .clay-badge-orange {
+            background-color: var(--clay-orange);
+            color: white;
+            border-radius: 9999px;
+            box-shadow: 2px 2px 4px var(--shadow-dark), -2px -2px 4px var(--shadow-light), 
+                        inset 1px 1px 2px rgba(255,255,255,0.4), inset -1px -1px 2px rgba(0,0,0,0.1);
+            padding: 0.25rem 0.75rem;
+            font-size: 0.65rem;
+            font-weight: 800;
+        }
+
+        .clay-badge-green {
+            background-color: var(--clay-green);
+            color: #0b513c;
+            border-radius: 9999px;
+            box-shadow: 2px 2px 4px var(--shadow-dark), -2px -2px 4px var(--shadow-light), 
+                        inset 1px 1px 2px rgba(255,255,255,0.6), inset -1px -1px 2px rgba(0,0,0,0.1);
+            padding: 0.25rem 0.75rem;
+            font-size: 0.65rem;
+            font-weight: 800;
+        }
+
+        .clay-input {
+            background-color: var(--card-bg);
+            border: none;
+            border-radius: 1rem;
+            box-shadow: inset 4px 4px 8px rgba(0,0,0,0.1), inset -4px -4px 8px rgba(255,255,255,1);
+            padding: 0.75rem 1rem;
+            width: 100%;
+            color: var(--clay-text);
+            font-weight: 700;
+            transition: all 0.2s ease;
+        }
+        .clay-input:focus {
+            outline: none;
+            box-shadow: inset 6px 6px 12px rgba(0,0,0,0.15), inset -6px -6px 12px rgba(255,255,255,1), 0 0 0 2px rgba(237,125,49,0.3);
+        }
     </style>
 </head>
 <body>
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState, useEffect, useMemo } = React;
+        const { useState, useEffect, useRef } = React;
 
         // ==========================================
         //         SUPABASE CONFIGURATION
         // ==========================================
         const SUPABASE_URL = 'https://mhbyivcjcnndqogjgzxb.supabase.co'; 
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1oYnlpdmNqY25uZHFvZ2pnenhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU5NTY0NzUsImV4cCI6MjEwMTUzMjQ3NX0.rAeV91oayf6BdbBP6vZL7AYxfhTXBkM9_yWuJcgaB7M';  
-        
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         // --- ICONS ---
         const Icon = ({ name, size = 24, className = "" }) => {
-            const iconRef = React.useRef(null);
-            
+            const iconRef = useRef(null);
             useEffect(() => {
                 if (iconRef.current) {
                     iconRef.current.innerHTML = `<i data-lucide="${name}" width="${size}" height="${size}"></i>`;
                     lucide.createIcons();
                 }
             }, [name, size]);
-
-            return (
-                <span 
-                    ref={iconRef} 
-                    className={`inline-flex items-center justify-center ${className}`}
-                ></span>
-            );
+            return <span ref={iconRef} className={`inline-flex items-center justify-center ${className}`}></span>;
         };
 
-        // --- DATA PRODUK FALLBACK (Jika DB kosong) ---
+        // --- DATA FALLBACK ---
         const DEFAULT_PRODUCTS = [
-            { id: 1, name: 'Coklat keju', price: 15000, label: '14K', imgId: '🍫🧀' },
-            { id: 2, name: 'Coklat parut keju', price: 15000, label: '14K', imgId: '🍫🌨️' },
+            { id: 1, name: 'Coklat keju', price: 15000, label: '14K', imgId: '🍫' },
+            { id: 2, name: 'Coklat parut keju', price: 15000, label: '14K', imgId: '🧀' },
             { id: 3, name: 'Coklat', price: 13000, label: '12K', imgId: '🍫' },
             { id: 4, name: 'Tiramisu', price: 13000, label: '12K', imgId: '🍰' },
             { id: 5, name: 'Matcha', price: 13000, label: '12K', imgId: '🍵' },
             { id: 6, name: 'Gula aren', price: 12000, label: '10K', imgId: '🍯' },
             { id: 7, name: 'Bebas mix', price: 13000, label: '12K', desc: '(Mix 2 varian)', imgId: '🍪' },
-            { id: 8, name: 'Keju mix', price: 14000, label: '14K', desc: '(Mix 1 varian dengan Keju)', imgId: '🧀' },
+            { id: 8, name: 'Keju mix', price: 14000, label: '14K', desc: '(Mix 1 varian & Keju)', imgId: '🧀' },
         ];
 
         // --- UTILS ---
-        const formatRp = (num) => {
-            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(num);
-        };
-
+        const formatRp = (num) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(num);
         function calculateDistance(lat1, lon1, lat2, lon2) {
-            const R = 6371; 
-            const dLat = (lat2 - lat1) * Math.PI / 180;
-            const dLon = (lon2 - lon1) * Math.PI / 180;
-            const a = 
-                Math.sin(dLat/2) * Math.sin(dLat/2) +
-                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
-            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-            return R * c;
+            const R = 6371; const dLat = (lat2 - lat1) * Math.PI / 180; const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
+            return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
         }
 
         // --- CUTE MODAL ALERT ---
         const CuteModal = ({ config, onClose }) => {
             if (!config) return null;
             return (
-                <div className="fixed inset-0 bg-black/60 z-[200] flex items-center justify-center p-4">
-                    <div className="bg-white rounded-3xl p-6 max-w-xs w-full text-center border-4 border-mayumi-yellow shadow-xl transform transition-all scale-100">
-                        <div className="text-6xl mb-3 animate-bounce">{config.emoji || '🥺'}</div>
-                        <h3 className="font-bold text-mayumi-brown mb-5 leading-tight">{config.message}</h3>
-                        <div className="flex gap-2">
-                            {config.onConfirm && (
-                                 <button onClick={onClose} className="flex-1 p-3 bg-gray-200 text-gray-700 rounded-xl font-bold hover:bg-gray-300 transition">Batal deh</button>
-                            )}
-                            <button onClick={() => { if(config.onConfirm) config.onConfirm(); onClose(); }} className={`flex-1 p-3 rounded-xl font-bold text-white shadow-[0_3px_0_rgba(0,0,0,0.2)] active:shadow-none active:translate-y-1 transition ${config.onConfirm ? 'bg-mayumi-red' : 'bg-mayumi-green'}`}>
+                <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[200] flex items-center justify-center p-4">
+                    <div className="clay-card p-6 max-w-xs w-full text-center">
+                        <div className="text-6xl mb-3 animate-bounce drop-shadow-md">{config.emoji || '🥺'}</div>
+                        <h3 className="font-bold text-gray-800 mb-6 leading-tight">{config.message}</h3>
+                        <div className="flex gap-3">
+                            {config.onConfirm && <button onClick={onClose} className="clay-btn flex-1 py-3">Batal</button>}
+                            <button onClick={() => { if(config.onConfirm) config.onConfirm(); onClose(); }} className={`flex-1 py-3 ${config.onConfirm ? 'clay-btn-orange' : 'clay-btn'}`}>
                                 {config.onConfirm ? 'Ya, Hapus!' : 'Okee!'}
                             </button>
                         </div>
@@ -159,176 +233,96 @@
             );
         };
 
-        // --- KOMPONEN UTAMA ---
+        // --- MAIN APP ---
         const App = () => {
-            const [role, setRole] = useState('user'); // 'user' atau 'admin'
+            const [role, setRole] = useState('user'); 
             const [products, setProducts] = useState(DEFAULT_PRODUCTS);
             const [orders, setOrders] = useState([]);
             const [reviews, setReviews] = useState([]);
-            const [settings, setSettings] = useState({
-                storeLat: -6.2088, 
-                storeLon: 106.8456,
-                costPerKm: 1000
-            });
+            const [settings, setSettings] = useState({ storeLat: -6.2088, storeLon: 106.8456, costPerKm: 1000 });
             const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
-            
-            // State untuk PIN Admin
             const [showPinModal, setShowPinModal] = useState(false);
             const [pinInput, setPinInput] = useState('');
             const [isCheckingPin, setIsCheckingPin] = useState(false);
-
-            // State Alert
             const [alertConfig, setAlertConfig] = useState(null);
-            const showAlert = (message, emoji, onConfirm = null) => {
-                setAlertConfig({ message, emoji, onConfirm });
-            };
+            
+            const showAlert = (message, emoji, onConfirm = null) => setAlertConfig({ message, emoji, onConfirm });
             const closeAlert = () => setAlertConfig(null);
 
-            // Fetch data dari Supabase
             useEffect(() => {
                 const fetchData = async () => {
                     try {
-                        const { data: prodData, error: prodErr } = await supabase.from('products').select('*').order('id', { ascending: true });
+                        const { data: prodData } = await supabase.from('products').select('*').order('id', { ascending: true });
                         if (prodData && prodData.length > 0) setProducts(prodData);
-                        else if (prodErr) console.warn("Supabase Produk:", prodErr.message);
-
-                        const { data: setData, error: setErr } = await supabase.from('settings').select('*').eq('id', 1).single();
+                        const { data: setData } = await supabase.from('settings').select('*').eq('id', 1).single();
                         if (setData) setSettings(setData);
-
-                        const { data: ordData, error: ordErr } = await supabase.from('orders').select('*').order('date', { ascending: false });
+                        const { data: ordData } = await supabase.from('orders').select('*').order('date', { ascending: false });
                         if (ordData) setOrders(ordData);
-
-                        const { data: revData, error: revErr } = await supabase.from('reviews').select('*').order('created_at', { ascending: false });
+                        const { data: revData } = await supabase.from('reviews').select('*').order('created_at', { ascending: false });
                         if (revData) setReviews(revData);
-                        
-                    } catch (error) {
-                        console.error("Gagal terhubung ke Supabase. Menggunakan data default.", error);
-                    }
+                    } catch (error) {}
                 };
-                
                 fetchData();
             }, []);
 
             useEffect(() => {
-                const handleFocusIn = (e) => {
-                    if (['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) {
-                        setIsKeyboardOpen(true);
-                    }
-                };
+                const handleFocusIn = (e) => { if (['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) setIsKeyboardOpen(true); };
                 const handleFocusOut = () => setIsKeyboardOpen(false);
-                
                 const handleResize = () => {
-                    if (window.innerHeight < 500) {
-                        setIsKeyboardOpen(true);
-                    } else if (!document.activeElement || !['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) {
-                        setIsKeyboardOpen(false);
-                    }
+                    if (window.innerHeight < 500) setIsKeyboardOpen(true);
+                    else if (!document.activeElement || !['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) setIsKeyboardOpen(false);
                 };
-
-                document.addEventListener('focusin', handleFocusIn);
-                document.addEventListener('focusout', handleFocusOut);
-                window.addEventListener('resize', handleResize);
-                
-                return () => {
-                    document.removeEventListener('focusin', handleFocusIn);
-                    document.removeEventListener('focusout', handleFocusOut);
-                    window.removeEventListener('resize', handleResize);
-                };
+                document.addEventListener('focusin', handleFocusIn); document.addEventListener('focusout', handleFocusOut); window.addEventListener('resize', handleResize);
+                return () => { document.removeEventListener('focusin', handleFocusIn); document.removeEventListener('focusout', handleFocusOut); window.removeEventListener('resize', handleResize); };
             }, []);
 
             const handlePinSubmit = async () => {
                 if (!pinInput) return;
                 setIsCheckingPin(true);
                 try {
-                    const { data, error } = await supabase.auth.signInWithPassword({
-                        email: 'admin@pisangmayumi.com',
-                        password: pinInput
-                    });
-                    
+                    const { data, error } = await supabase.auth.signInWithPassword({ email: 'admin@pisangmayumi.com', password: pinInput });
                     if (error) throw error;
-                    if (data.session) {
-                        setRole('admin');
-                        setShowPinModal(false);
-                        setPinInput('');
-                    }
+                    if (data.session) { setRole('admin'); setShowPinModal(false); setPinInput(''); }
                 } catch (error) {
-                    showAlert('Oops! PIN-nya salah nih. Coba inget-inget lagi yaa 🍌', '🙈');
-                    setPinInput('');
-                } finally {
-                    setIsCheckingPin(false);
-                }
+                    showAlert('Oops! PIN-nya salah nih. Coba inget-inget lagi yaa 🍌', '🙈'); setPinInput('');
+                } finally { setIsCheckingPin(false); }
             };
 
             return (
-                <div className={`min-h-screen max-w-md mx-auto bg-mayumi-cream shadow-2xl relative border-x-4 border-white ${isKeyboardOpen ? 'pb-4' : 'pb-24'}`}>
-                    {/* Header Global */}
-                    <header className={`bg-mayumi-yellow text-mayumi-brown p-5 rounded-b-[3rem] shadow-sm z-40 border-b-4 border-yellow-300 relative overflow-hidden ${isKeyboardOpen ? '' : 'sticky top-0'}`}>
-                        <div className="absolute top-[-10px] right-[-10px] opacity-20 text-7xl">🍌</div>
-                        <div className="flex justify-between items-center relative z-10">
-                            <div className="relative z-20">
-                                <h1 className="text-3xl font-black tracking-wider leading-none text-mayumi-brown drop-shadow-[2px_2px_0_rgba(255,255,255,1)]">
-                                    Pisang<br/>Kembung
+                <div className={`min-h-screen max-w-md mx-auto relative ${isKeyboardOpen ? 'pb-4' : 'pb-24'}`}>
+                    
+                    {/* Header Lengket - Style Island */}
+                    <header className={`px-4 pt-4 pb-2 z-40 ${isKeyboardOpen ? '' : 'sticky top-0 bg-[var(--bg-color)]'}`}>
+                        <div className="clay-card p-4 flex justify-between items-center relative overflow-hidden">
+                            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhxV6yhpL_k0ZhI70PRISUNtvNB4oFayGkZaKOhJ0Vv2bXd_BoeVraa43uLF3lGr-UkuamsS4Ra5STvSXibU-XoSBf_Vz2AmDbUhvbjsT2OXAiQy5B4_lecTnXd4BqKkiq4pa-aNhmsKROrnliATN07hzvpeNexsfK1_lqPdrEx9WgQShMN7JxV4rXHgPob/s500/file_00000000f3408230ab45d1aa7623b404-removebg-preview.png" 
+                                 alt="Maskot" className="h-14 w-auto absolute right-2 opacity-90 drop-shadow-[0_5px_5px_rgba(0,0,0,0.15)] pointer-events-none" />
+                            <div>
+                                <h1 className="text-2xl font-black tracking-wide leading-none text-gray-800">
+                                    Pisang Kembung
                                 </h1>
-                                <span className="bg-white text-mayumi-green font-bold px-3 py-1 rounded-full text-sm mt-1 inline-block border-2 border-mayumi-green transform -rotate-2 shadow-sm">
-                                    Mayumi
-                                </span>
-                            </div>
-
-                            <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none">
-                                <img 
-                                    src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhxV6yhpL_k0ZhI70PRISUNtvNB4oFayGkZaKOhJ0Vv2bXd_BoeVraa43uLF3lGr-UkuamsS4Ra5STvSXibU-XoSBf_Vz2AmDbUhvbjsT2OXAiQy5B4_lecTnXd4BqKkiq4pa-aNhmsKROrnliATN07hzvpeNexsfK1_lqPdrEx9WgQShMN7JxV4rXHgPob/s500/file_00000000f3408230ab45d1aa7623b404-removebg-preview.png" 
-                                    alt="Maskot Pisang Mayumi" 
-                                    className="h-28 w-auto object-contain drop-shadow-xl"
-                                />
-                            </div>
-
-                            <div className="relative z-20">
-                                <button 
-                                    onClick={async () => {
-                                        if (role === 'user') {
-                                            setShowPinModal(true);
-                                        } else {
-                                            await supabase.auth.signOut();
-                                            setRole('user');
-                                        }
-                                    }}
-                                    className="text-xs bg-white text-mayumi-brown px-4 py-2 rounded-full font-bold shadow-md hover:bg-yellow-100 transition border-2 border-mayumi-brown border-dashed active:scale-95"
-                                >
-                                    Mode: {role === 'user' ? 'User' : 'Admin'}
-                                </button>
+                                <span className="clay-badge-green bg-var(--clay-green) mt-1 inline-block transform -rotate-2 border border-white">Mayumi</span>
                             </div>
                         </div>
                     </header>
 
-                    <main className="p-4 relative z-0">
+                    <main className="px-4 py-2 relative z-0">
                         {role === 'user' 
-                            ? <UserView products={products} orders={orders} setOrders={setOrders} settings={settings} isKeyboardOpen={isKeyboardOpen} showAlert={showAlert} reviews={reviews} setReviews={setReviews} /> 
-                            : <AdminView orders={orders} setOrders={setOrders} settings={settings} setSettings={setSettings} products={products} setProducts={setProducts} showAlert={showAlert} />
+                            ? <UserView products={products} orders={orders} setOrders={setOrders} settings={settings} isKeyboardOpen={isKeyboardOpen} showAlert={showAlert} reviews={reviews} setReviews={setReviews} showPinModal={() => setShowPinModal(true)} /> 
+                            : <AdminView orders={orders} setOrders={setOrders} settings={settings} setSettings={setSettings} products={products} setProducts={setProducts} showAlert={showAlert} setRole={setRole} />
                         }
                     </main>
 
+                    {/* Modal PIN */}
                     {showPinModal && (
-                        <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4">
-                            <div className="bg-white rounded-3xl p-6 max-w-sm w-full border-4 border-mayumi-yellow shadow-xl relative">
-                                <h3 className="font-black text-2xl text-mayumi-brown mb-2 text-center">Akses Admin 🔒</h3>
-                                <p className="text-xs text-gray-500 font-bold mb-4 text-center">Masukkan PIN rahasia untuk masuk</p>
-                                
-                                <input 
-                                    type="password" 
-                                    value={pinInput} 
-                                    onChange={(e) => setPinInput(e.target.value)}
-                                    className="w-full p-4 rounded-xl border-4 border-dashed border-gray-200 focus:outline-none focus:border-mayumi-orange text-center text-3xl font-bold tracking-[0.2em] mb-4 text-mayumi-brown bg-gray-50"
-                                    placeholder="••••••••"
-                                    maxLength={12}
-                                />
-                                
-                                <div className="flex gap-2">
-                                    <button onClick={() => {setShowPinModal(false); setPinInput('');}} className="flex-1 p-3 bg-gray-200 rounded-xl text-sm font-bold text-gray-700 hover:bg-gray-300 transition">Batal</button>
-                                    <button 
-                                        onClick={handlePinSubmit} 
-                                        disabled={isCheckingPin}
-                                        className={`flex-1 p-3 text-white rounded-xl text-sm font-bold active:translate-y-1 transition flex justify-center items-center gap-2 ${isCheckingPin ? 'bg-gray-400 shadow-none' : 'bg-mayumi-orange shadow-[0_3px_0_#c2410c] active:shadow-none'}`}
-                                    >
+                        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+                            <div className="clay-card p-6 max-w-sm w-full text-center">
+                                <h3 className="font-black text-xl text-gray-800 mb-2">Akses Admin 🔒</h3>
+                                <p className="text-xs text-gray-500 font-bold mb-5">Masukkan PIN rahasia untuk masuk</p>
+                                <input type="password" value={pinInput} onChange={(e) => setPinInput(e.target.value)}
+                                    className="clay-input text-center text-3xl tracking-[0.3em] mb-5 py-3" placeholder="••••" maxLength={12} />
+                                <div className="flex gap-3">
+                                    <button onClick={() => {setShowPinModal(false); setPinInput('');}} className="clay-btn flex-1 py-3">Batal</button>
+                                    <button onClick={handlePinSubmit} disabled={isCheckingPin} className={`flex-1 py-3 flex justify-center items-center gap-2 ${isCheckingPin ? 'clay-btn text-gray-400' : 'clay-btn-orange'}`}>
                                         {isCheckingPin ? <Icon name="loader" size={18} className="animate-spin" /> : 'Masuk'}
                                     </button>
                                 </div>
@@ -344,19 +338,15 @@
         // ==========================================
         //               USER VIEW
         // ==========================================
-        const UserView = ({ products, orders, setOrders, settings, isKeyboardOpen, showAlert, reviews, setReviews }) => {
+        const UserView = ({ products, orders, setOrders, settings, isKeyboardOpen, showAlert, reviews, setReviews, showPinModal }) => {
             const [activeTab, setActiveTab] = useState('menu'); 
             const [cart, setCart] = useState([]);
 
             const addToCart = (product) => {
                 const existing = cart.find(item => item.id === product.id);
-                if (existing) {
-                    setCart(cart.map(item => item.id === product.id ? { ...item, qty: item.qty + 1 } : item));
-                } else {
-                    setCart([...cart, { ...product, qty: 1 }]);
-                }
+                if (existing) setCart(cart.map(item => item.id === product.id ? { ...item, qty: item.qty + 1 } : item));
+                else setCart([...cart, { ...product, qty: 1 }]);
             };
-
             const cartCount = cart.reduce((sum, item) => sum + item.qty, 0);
 
             return (
@@ -366,24 +356,38 @@
                     {activeTab === 'status' && <StatusTab orders={orders} showAlert={showAlert} />}
                     {activeTab === 'review' && <ReviewTab reviews={reviews} setReviews={setReviews} showAlert={showAlert} />}
 
+                    {/* BOTTOM NAV FLOATING (DIAMOND) */}
                     {!isKeyboardOpen && (
-                        <nav className="fixed bottom-4 left-4 right-4 max-w-[calc(100%-2rem)] md:max-w-[calc(28rem-2rem)] mx-auto bg-white border-4 border-mayumi-yellow rounded-3xl flex justify-around p-2 z-50 shadow-[0_4px_0_#fde047]">
-                            <button onClick={() => setActiveTab('menu')} className={`flex flex-col items-center p-2 rounded-2xl transition w-1/4 ${activeTab === 'menu' ? 'bg-yellow-100 text-mayumi-brown font-bold' : 'text-gray-400 font-medium'}`}>
-                                <Icon name="store" />
-                                <span className="text-[10px] sm:text-xs mt-1">Menu</span>
+                        <nav className="fixed bottom-0 left-0 right-0 max-w-md mx-auto h-[4.5rem] bg-[#ed7d31] rounded-t-3xl shadow-[0_-10px_20px_rgba(0,0,0,0.15),_inset_0_4px_6px_rgba(255,255,255,0.3)] flex justify-between items-center px-4 z-50">
+                            
+                            <button onClick={() => setActiveTab('menu')} className={`flex flex-col items-center justify-center w-14 transition ${activeTab === 'menu' ? 'text-white' : 'text-orange-200'}`}>
+                                <Icon name="store" size={24} className={activeTab === 'menu' ? 'fill-white/20' : ''} />
+                                <span className="text-[9px] mt-1 font-black tracking-wide uppercase">Home</span>
                             </button>
-                            <button onClick={() => setActiveTab('cart')} className={`flex flex-col items-center p-2 rounded-2xl relative transition w-1/4 ${activeTab === 'cart' ? 'bg-yellow-100 text-mayumi-brown font-bold' : 'text-gray-400 font-medium'}`}>
-                                <Icon name="shopping-bag" />
-                                {cartCount > 0 && <span className="absolute -top-1 right-3 bg-mayumi-red text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold border-2 border-white shadow-sm">{cartCount}</span>}
-                                <span className="text-[10px] sm:text-xs mt-1">Keranjang</span>
+                            
+                            <button onClick={() => setActiveTab('status')} className={`flex flex-col items-center justify-center w-14 transition ${activeTab === 'status' ? 'text-white' : 'text-orange-200'}`}>
+                                <Icon name="clipboard-list" size={24} className={activeTab === 'status' ? 'fill-white/20' : ''} />
+                                <span className="text-[9px] mt-1 font-black tracking-wide uppercase">Antrean</span>
                             </button>
-                            <button onClick={() => setActiveTab('status')} className={`flex flex-col items-center p-2 rounded-2xl transition w-1/4 ${activeTab === 'status' ? 'bg-yellow-100 text-mayumi-brown font-bold' : 'text-gray-400 font-medium'}`}>
-                                <Icon name="clipboard-list" />
-                                <span className="text-[10px] sm:text-xs mt-1">Pesanan</span>
+                            
+                            {/* Tombol Tengah Berlian (Cart) */}
+                            <div className="relative w-16 h-16 flex justify-center -top-6">
+                                <button onClick={() => setActiveTab('cart')} className="absolute w-16 h-16 bg-[#ed7d31] rotate-45 rounded-[1.2rem] flex items-center justify-center shadow-[6px_6px_12px_rgba(0,0,0,0.2),_-2px_-2px_10px_rgba(255,255,255,0.4),_inset_2px_2px_4px_rgba(255,255,255,0.5),_inset_-2px_-2px_4px_rgba(0,0,0,0.1)] z-50 transition active:scale-95">
+                                    <div className="w-11 h-11 bg-[#ffdf8c] -rotate-45 rounded-xl flex items-center justify-center shadow-[inset_2px_2px_4px_rgba(255,255,255,1),_inset_-2px_-2px_4px_rgba(0,0,0,0.1)] text-[#a34c00] relative">
+                                        <Icon name="shopping-cart" size={20} className="fill-[#ffdf8c]" />
+                                        {cartCount > 0 && <span className="absolute -top-3 -right-3 bg-[#f48074] text-white text-[10px] w-6 h-6 rounded-full flex items-center justify-center font-black border-2 border-[#ffdf8c] shadow-sm">{cartCount}</span>}
+                                    </div>
+                                </button>
+                            </div>
+
+                            <button onClick={() => setActiveTab('review')} className={`flex flex-col items-center justify-center w-14 transition ${activeTab === 'review' ? 'text-white' : 'text-orange-200'}`}>
+                                <Icon name="star" size={24} className={activeTab === 'review' ? 'fill-white/20' : ''} />
+                                <span className="text-[9px] mt-1 font-black tracking-wide uppercase">Customer</span>
                             </button>
-                            <button onClick={() => setActiveTab('review')} className={`flex flex-col items-center p-2 rounded-2xl transition w-1/4 ${activeTab === 'review' ? 'bg-yellow-100 text-mayumi-brown font-bold' : 'text-gray-400 font-medium'}`}>
-                                <Icon name="star" />
-                                <span className="text-[10px] sm:text-xs mt-1">Review</span>
+                            
+                            <button onClick={showPinModal} className="flex flex-col items-center justify-center w-14 transition text-orange-200">
+                                <Icon name="menu" size={24} />
+                                <span className="text-[9px] mt-1 font-black tracking-wide uppercase">Lainnya</span>
                             </button>
                         </nav>
                     )}
@@ -393,159 +397,101 @@
 
         const MenuTab = ({ products, onAdd }) => {
             const [showMixModal, setShowMixModal] = useState(false);
-            const [mixType, setMixType] = useState(''); // 'bebas' atau 'keju'
+            const [mixType, setMixType] = useState(''); 
             const [selectedFlavors, setSelectedFlavors] = useState([]);
             
             const baseFlavors = products.filter(p => !p.name.toLowerCase().includes('mix') && p.id !== 7 && p.id !== 8);
-            
-            // Logika pengecualian menu Mix
             const selectableMixFlavors = baseFlavors.filter(p => {
                 const flavorName = p.name.toLowerCase();
-                
-                // 1. Selalu sembunyikan coklat keju dan coklat parut keju untuk SEMUA Mix
-                if (flavorName === 'coklat keju' || flavorName === 'coklat parut keju') {
-                    return false;
-                }
-                
-                // 2. Khusus untuk Keju mix, sembunyikan juga menu 'coklat'
-                if (mixType === 'keju' && flavorName === 'coklat') {
-                    return false;
-                }
-                
+                if (flavorName === 'coklat keju' || flavorName === 'coklat parut keju') return false;
+                if (mixType === 'keju' && flavorName === 'coklat') return false;
                 return true;
             });
 
             const handleProductClick = (p) => {
-                if (p.id === 7 || p.name.toLowerCase().includes('bebas mix')) {
-                    setMixType('bebas');
-                    setShowMixModal(true);
-                    setSelectedFlavors([]);
-                } else if (p.id === 8 || p.name.toLowerCase().includes('keju mix')) {
-                    setMixType('keju');
-                    setShowMixModal(true);
-                    setSelectedFlavors([]);
-                } else {
-                    onAdd(p);
-                }
+                if (p.id === 7 || p.name.toLowerCase().includes('bebas mix')) { setMixType('bebas'); setShowMixModal(true); setSelectedFlavors([]); } 
+                else if (p.id === 8 || p.name.toLowerCase().includes('keju mix')) { setMixType('keju'); setShowMixModal(true); setSelectedFlavors([]); } 
+                else { onAdd(p); }
             };
 
             const maxSelection = mixType === 'bebas' ? 2 : 1;
-
             const toggleFlavor = (flavorName) => {
-                if (selectedFlavors.includes(flavorName)) {
-                    setSelectedFlavors(selectedFlavors.filter(f => f !== flavorName));
-                } else {
-                    if (selectedFlavors.length < maxSelection) {
-                        setSelectedFlavors([...selectedFlavors, flavorName]);
-                    }
-                }
+                if (selectedFlavors.includes(flavorName)) setSelectedFlavors(selectedFlavors.filter(f => f !== flavorName));
+                else if (selectedFlavors.length < maxSelection) setSelectedFlavors([...selectedFlavors, flavorName]);
             };
 
             const handleAddMix = () => {
                 if (selectedFlavors.length === maxSelection) {
                     if (mixType === 'bebas') {
                         const mixP = products.find(p => p.id === 7) || { id: 7, name: 'Bebas mix', price: 12000, imgId: '🎭' };
-                        const mixProduct = {
-                            ...mixP,
-                            id: `7-${selectedFlavors.join('-')}`, 
-                            name: `Bebas mix (${selectedFlavors.join(' & ')})`,
-                        };
-                        onAdd(mixProduct);
+                        onAdd({ ...mixP, id: `7-${selectedFlavors.join('-')}`, name: `Bebas mix (${selectedFlavors.join(' & ')})` });
                     } else if (mixType === 'keju') {
                         const mixP = products.find(p => p.id === 8) || { id: 8, name: 'Keju mix', price: 14000, imgId: '🧀' };
-                        const mixProduct = {
-                            ...mixP,
-                            id: `8-${selectedFlavors[0]}`, 
-                            name: `Keju mix (${selectedFlavors[0]} & Keju)`,
-                        };
-                        onAdd(mixProduct);
+                        onAdd({ ...mixP, id: `8-${selectedFlavors[0]}`, name: `Keju mix (${selectedFlavors[0]} & Keju)` });
                     }
                     setShowMixModal(false);
                 }
             };
 
             return (
-                <div className="space-y-6 pt-2 pb-10">
-                    <div className="text-center space-y-1">
-                        <p className="text-mayumi-brown font-bold text-lg">"Manis, lembut, lumer di mulut! <span className="text-pink-400">💕</span>"</p>
+                <div className="space-y-4 pt-2">
+                    {/* Filter Kategori (Dummy Visual) */}
+                    <div className="flex gap-2 overflow-x-auto hide-scrollbar pb-2">
+                        <button className="clay-btn-orange px-4 py-2 text-xs flex-shrink-0">Semua Menu</button>
+                        <button className="clay-btn px-4 py-2 text-xs flex-shrink-0">Rasa Original</button>
+                        <button className="clay-btn px-4 py-2 text-xs flex-shrink-0">Rasa Spesial</button>
                     </div>
-                    
-                    <div className="bg-white p-5 rounded-3xl border-4 border-mayumi-cream shadow-sm relative mt-8">
-                        <div className="absolute -top-5 left-1/2 transform -translate-x-1/2 w-[80%]">
-                            <div className="bg-mayumi-brown text-white text-center py-2 px-4 rounded-xl font-bold text-lg shadow-md border-b-4 border-orange-900 relative">
-                                <div className="absolute -left-2 top-2 w-4 h-4 bg-orange-900 rotate-45 -z-10"></div>
-                                <div className="absolute -right-2 top-2 w-4 h-4 bg-orange-900 rotate-45 -z-10"></div>
-                                Pilihan Rasa & Harga
-                            </div>
-                        </div>
 
-                        <div className="mt-6 space-y-3">
-                            {products.map((p) => (
-                                <div key={p.id} className="flex items-center justify-between border-b-2 border-dashed border-yellow-200 pb-3 last:border-0 last:pb-0">
-                                    <div className="flex items-center gap-3">
-                                        <div className="text-3xl bg-yellow-50 w-12 h-12 flex items-center justify-center rounded-2xl border-2 border-yellow-200 shadow-sm">{p.imgId}</div>
+                    <div className="space-y-4">
+                        {products.map((p) => (
+                            <div key={p.id} className="clay-card p-4 relative">
+                                <div className="flex justify-between items-start mb-3">
+                                    <div className="flex gap-3">
+                                        <div className="clay-box-yellow w-12 h-12 text-2xl">{p.imgId}</div>
                                         <div>
-                                            <h4 className="font-bold text-mayumi-brown text-base">{p.name}</h4>
-                                            {p.desc && <p className="text-[10px] text-gray-500 font-bold">{p.desc}</p>}
+                                            <h3 className="font-black text-gray-800 uppercase tracking-wide text-[11px] mt-1">{p.name}</h3>
+                                            <div className="flex gap-2 mt-1.5">
+                                                <span className="clay-badge-orange">{p.label}</span>
+                                                {p.desc && <span className="clay-badge-green text-[#0b513c] border border-white">{p.desc}</span>}
+                                            </div>
                                         </div>
                                     </div>
-                                    <div className="flex items-center gap-3">
-                                        <span className="bg-mayumi-red text-white font-bold px-3 py-1 rounded-full text-sm border-2 border-red-400 shadow-sm">
-                                            {p.label}
-                                        </span>
-                                        <button 
-                                            onClick={() => handleProductClick(p)}
-                                            className="bg-mayumi-green text-white p-2.5 rounded-full hover:bg-mayumi-darkGreen shadow-[0_3px_0_#4d7c0f] active:shadow-none active:translate-y-1 transition"
-                                        >
-                                            <Icon name="plus" size={18} />
-                                        </button>
+                                    <div className="text-right mt-1">
+                                        <p className="font-black text-[13px] text-gray-400 uppercase tracking-widest line-through mb-1">Rp{(p.price+2000).toLocaleString('id-ID')}</p>
+                                        <p className="font-black text-[#ed7d31] text-base leading-none">{formatRp(p.price)}</p>
                                     </div>
                                 </div>
-                            ))}
-                        </div>
-                        <div className="text-center mt-4 pt-3 border-t-2 border-dashed border-yellow-200">
-                            <p className="text-sm font-bold text-mayumi-green flex items-center justify-center gap-1">💕 Gratis ongkir pesanan 5 box atau lebih! 💕</p>
-                        </div>
+                                {/* Panel Dalam untuk Aksi */}
+                                <div className="clay-panel p-2 flex justify-between items-center rounded-xl">
+                                    <span className="text-[10px] font-bold text-gray-400 pl-2">⭐ Rekomendasi</span>
+                                    <button onClick={() => handleProductClick(p)} className="clay-btn px-4 py-2 text-xs text-[#ed7d31]">
+                                        Tambah <Icon name="plus" size={14} className="ml-1"/>
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
                     </div>
 
                     {showMixModal && (
-                        <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4">
-                            <div className="bg-white rounded-3xl p-6 max-w-sm w-full border-4 border-mayumi-yellow shadow-xl relative transform transition-all">
-                                <button onClick={() => setShowMixModal(false)} className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 bg-gray-100 rounded-full w-8 h-8 flex items-center justify-center font-bold transition">✕</button>
-                                <h3 className="font-black text-xl text-mayumi-brown mb-1">
-                                    {mixType === 'bebas' ? 'Bebas Mix! 🎭' : 'Keju Mix! 🧀'}
-                                </h3>
-                                <p className="text-sm text-gray-500 font-bold mb-4">
-                                    {mixType === 'bebas' ? 'Pilih 2 varian rasa favoritmu:' : 'Pilih 1 varian untuk di-mix dengan Keju:'}
-                                </p>
-                                
-                                <div className="grid grid-cols-2 gap-2 mb-6">
+                        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+                            <div className="clay-card p-6 max-w-sm w-full relative">
+                                <button onClick={() => setShowMixModal(false)} className="absolute top-4 right-4 clay-btn w-8 h-8 rounded-full">✕</button>
+                                <h3 className="font-black text-xl text-gray-800 mb-1">{mixType === 'bebas' ? 'Bebas Mix! 🎭' : 'Keju Mix! 🧀'}</h3>
+                                <p className="text-xs text-gray-500 font-bold mb-4">{mixType === 'bebas' ? 'Pilih 2 varian rasa favoritmu:' : 'Pilih 1 varian mix dengan Keju:'}</p>
+                                <div className="grid grid-cols-2 gap-3 mb-6">
                                     {selectableMixFlavors.map(f => {
                                         const isSelected = selectedFlavors.includes(f.name);
                                         const isDisabled = selectedFlavors.length >= maxSelection && !isSelected;
                                         return (
-                                            <button 
-                                                key={f.id}
-                                                onClick={() => toggleFlavor(f.name)}
-                                                disabled={isDisabled}
-                                                className={`p-2 rounded-xl border-2 text-sm font-bold flex flex-col items-center gap-1 transition ${isSelected ? 'border-mayumi-orange bg-yellow-100 text-mayumi-brown shadow-sm' : isDisabled ? 'border-gray-100 bg-gray-50 text-gray-400 opacity-50 cursor-not-allowed' : 'border-gray-200 bg-white text-gray-600 hover:border-mayumi-yellow hover:bg-yellow-50'}`}
-                                            >
-                                                <span className="text-2xl">{f.imgId}</span>
-                                                <span className="text-center leading-tight">{f.name}</span>
+                                            <button key={f.id} onClick={() => toggleFlavor(f.name)} disabled={isDisabled}
+                                                className={`py-3 px-2 flex flex-col items-center gap-2 rounded-xl transition ${isSelected ? 'clay-panel bg-[#ed7d31] text-white' : isDisabled ? 'clay-panel opacity-50' : 'clay-btn'}`}>
+                                                <span className="text-2xl">{f.imgId}</span><span className="text-[10px] font-bold text-center leading-tight uppercase">{f.name}</span>
                                             </button>
                                         );
                                     })}
                                 </div>
-
-                                <button 
-                                    onClick={handleAddMix}
-                                    disabled={selectedFlavors.length !== maxSelection}
-                                    className={`w-full py-3 rounded-2xl font-black flex justify-center items-center gap-2 transition border-b-4 ${selectedFlavors.length === maxSelection ? 'bg-mayumi-green text-white border-green-700 shadow-[0_3px_0_#4d7c0f] active:border-b-0 active:translate-y-1' : 'bg-gray-200 text-gray-400 border-gray-300 cursor-not-allowed'}`}
-                                >
-                                    {selectedFlavors.length === maxSelection 
-                                        ? 'Tambahkan ke Keranjang' 
-                                        : (mixType === 'bebas' ? `Pilih ${maxSelection - selectedFlavors.length} Rasa Lagi` : 'Pilih 1 Rasa')
-                                    }
+                                <button onClick={handleAddMix} disabled={selectedFlavors.length !== maxSelection} className={`w-full py-4 text-xs font-black uppercase tracking-wider ${selectedFlavors.length === maxSelection ? 'clay-btn-orange' : 'clay-btn text-gray-400'}`}>
+                                    {selectedFlavors.length === maxSelection ? 'Simpan Pilihan' : (mixType === 'bebas' ? `Pilih ${maxSelection - selectedFlavors.length} Lagi` : 'Pilih 1 Rasa')}
                                 </button>
                             </div>
                         </div>
@@ -555,203 +501,118 @@
         };
 
         const CartTab = ({ cart, setCart, settings, setOrders, onCheckoutSuccess, showAlert }) => {
-            const [name, setName] = useState('');
-            const [phone, setPhone] = useState('');
-            const [payment, setPayment] = useState('COD');
-            const [userCoords, setUserCoords] = useState(null);
-            const [isLoadingLoc, setIsLoadingLoc] = useState(false);
-            const [qrisModal, setQrisModal] = useState(false);
+            const [name, setName] = useState(''); const [phone, setPhone] = useState('');
+            const [payment, setPayment] = useState('COD'); const [userCoords, setUserCoords] = useState(null);
+            const [isLoadingLoc, setIsLoadingLoc] = useState(false); const [qrisModal, setQrisModal] = useState(false);
 
             const itemsTotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
             const totalQty = cart.reduce((sum, item) => sum + item.qty, 0); 
             
-            let distance = 0;
-            let shippingCost = 0;
+            let distance = 0; let shippingCost = 0;
             if (userCoords) {
                 distance = calculateDistance(settings.storeLat, settings.storeLon, userCoords.lat, userCoords.lon);
                 shippingCost = Math.round((distance * settings.costPerKm) / 1000) * 1000; 
-                if (shippingCost < 0) shippingCost = 0; 
-                if (totalQty >= 5) shippingCost = 0;
+                if (shippingCost < 0 || totalQty >= 5) shippingCost = 0; 
             }
-
             const grandTotal = itemsTotal + shippingCost;
 
             const handleGetLocation = () => {
                 setIsLoadingLoc(true);
                 if ("geolocation" in navigator) {
                     navigator.geolocation.getCurrentPosition(
-                        (position) => {
-                            setUserCoords({ lat: position.coords.latitude, lon: position.coords.longitude });
-                            setIsLoadingLoc(false);
-                        },
-                        (error) => {
-                            console.warn("Geolocation error, using mock location.");
-                            setUserCoords({ lat: settings.storeLat + 0.05, lon: settings.storeLon + 0.05 });
-                            showAlert("Yah, izin lokasinya ditolak nih. Kita pakai lokasi bohongan dulu ya buat nyobain fiturnya!", "😅");
-                            setIsLoadingLoc(false);
-                        },
-                        { timeout: 5000 }
+                        (pos) => { setUserCoords({ lat: pos.coords.latitude, lon: pos.coords.longitude }); setIsLoadingLoc(false); },
+                        (err) => { setUserCoords({ lat: settings.storeLat + 0.05, lon: settings.storeLon + 0.05 }); showAlert("Izin lokasi ditolak, simulasi lokasi aktif!", "😅"); setIsLoadingLoc(false); }, { timeout: 5000 }
                     );
-                } else {
-                    showAlert("Browser kamu nggak support baca lokasi nih 😭", "😥");
-                    setIsLoadingLoc(false);
                 }
             };
 
             const handleCheckout = () => {
-                if (!name || !phone) return showAlert("Eh tunggu! Nama & No HP belum diisi nih. Nanti kurirnya bingung nyariin kamu~", "🥺");
-                if (!userCoords) return showAlert("Ups! Kasih tau lokasi kamu dulu dong biar kita gampang ngirimnya~", "📍");
-                if (cart.length === 0) return showAlert("Keranjangnya masih kosong melompong nih. Jajan dulu yuk!", "🛒");
-
-                if (payment === 'QRIS') {
-                    setQrisModal(true);
-                    return; 
-                }
-
+                if (!name || !phone) return showAlert("Eh tunggu! Nama & No HP belum diisi nih.", "🥺");
+                if (!userCoords) return showAlert("Kasih tau lokasi kamu dulu dong~", "📍");
+                if (cart.length === 0) return showAlert("Keranjangnya kosong melompong nih.", "🛒");
+                if (payment === 'QRIS') { setQrisModal(true); return; }
                 processOrder();
             };
 
             const processOrder = async () => {
-                const newOrder = {
-                    id: 'ORD-' + Math.floor(Math.random() * 10000),
-                    date: new Date().toISOString(),
-                    customerName: name,
-                    phone: phone,
-                    items: cart, 
-                    itemsTotal,
-                    shippingCost,
-                    grandTotal,
-                    paymentMethod: payment,
-                    status: payment === 'QRIS' ? 'Menunggu Konfirmasi' : 'Pesanan Masuk', 
-                    distance: distance.toFixed(2),
-                    coords: userCoords
-                };
-
+                const newOrder = { id: 'ORD-' + Math.floor(Math.random() * 10000), date: new Date().toISOString(), customerName: name, phone: phone, items: cart, itemsTotal, shippingCost, grandTotal, paymentMethod: payment, status: payment === 'QRIS' ? 'Menunggu Konfirmasi' : 'Pesanan Masuk', distance: distance.toFixed(2), coords: userCoords };
                 setOrders(prev => [newOrder, ...prev]);
-                
                 const { error } = await supabase.from('orders').insert([newOrder]);
-                
-                if (error) {
-                    console.error("Gagal simpan pesanan:", error);
-                    showAlert("Duh, gagal menyimpan pesanan ke server nih. Pastikan URL & Key Supabase sudah benar ya!", "😢", null);
-                } else {
-                    showAlert("Yey! Pesanan berhasil dibuat. Tunggu camilan manismu sampai yaa!", "🎉", null);
-                    onCheckoutSuccess();
-                }
+                if (error) showAlert("Gagal menyimpan pesanan ke server.", "😢");
+                else { showAlert("Yey! Pesanan berhasil dibuat.", "🎉"); onCheckoutSuccess(); }
             };
 
-            if (cart.length === 0) {
-                return (
-                    <div className="text-center py-20 text-gray-500">
-                        <div className="text-7xl mb-4 opacity-50 animate-pulse">🛒</div>
-                        <p className="font-bold text-xl text-mayumi-brown">Keranjang masih kosong nih!</p>
-                        <p className="text-sm font-medium mt-1">Yuk, pesan cemilan manismu sekarang!</p>
-                    </div>
-                );
-            }
+            if (cart.length === 0) return (
+                <div className="text-center py-24">
+                    <div className="text-7xl mb-4 opacity-60 animate-bounce drop-shadow-md">🛒</div>
+                    <p className="font-black text-xl text-gray-800">Keranjang Kosong!</p>
+                </div>
+            );
 
             return (
-                <div className="space-y-5 pb-10">
-                    <h2 className="font-bold text-2xl text-mayumi-brown flex items-center gap-2">
-                        <Icon name="shopping-bag" /> Pesananku
-                    </h2>
-                    
-                    <div className="bg-white rounded-3xl shadow-sm border-4 border-yellow-100 p-4 space-y-3">
+                <div className="space-y-4 pt-2">
+                    <div className="clay-card p-4 space-y-3">
                         {cart.map(item => (
-                            <div key={item.id} className="flex justify-between items-center border-b-2 border-dashed border-gray-100 pb-3 last:border-0 last:pb-0">
+                            <div key={item.id} className="flex justify-between items-center border-b-2 border-dashed border-gray-300 pb-3 last:border-0 last:pb-0">
                                 <div className="flex items-center gap-3">
-                                    <span className="text-3xl">{item.imgId}</span>
+                                    <div className="clay-box-yellow w-10 h-10 text-xl">{item.imgId}</div>
                                     <div>
-                                        <h4 className="font-bold text-sm text-mayumi-brown">{item.name}</h4>
-                                        <div className="flex items-center gap-2 mt-1">
-                                            <button onClick={() => {
-                                                if(item.qty > 1) setCart(cart.map(i => i.id === item.id ? {...i, qty: i.qty-1} : i));
-                                                else setCart(cart.filter(i => i.id !== item.id));
-                                            }} className="bg-gray-100 w-7 h-7 rounded-full flex items-center justify-center font-bold text-gray-600 active:scale-90 transition">-</button>
-                                            <span className="font-bold text-sm w-4 text-center">{item.qty}</span>
-                                            <button onClick={() => setCart(cart.map(i => i.id === item.id ? {...i, qty: i.qty+1} : i))} className="bg-yellow-200 w-7 h-7 rounded-full flex items-center justify-center font-bold text-mayumi-brown active:scale-90 transition">+</button>
-                                        </div>
+                                        <h4 className="font-black text-xs uppercase tracking-wide text-gray-800 mb-1">{item.name}</h4>
+                                        <span className="font-black text-[10px] text-[#0b513c] bg-[#90d3b6] px-2 py-0.5 rounded-full">{formatRp(item.price * item.qty)}</span>
                                     </div>
                                 </div>
-                                <span className="font-bold text-sm text-mayumi-orange bg-orange-50 px-2 py-1 rounded-lg border border-orange-100">{formatRp(item.price * item.qty)}</span>
+                                <div className="clay-panel flex items-center gap-2 p-1 px-2 rounded-full">
+                                    <button onClick={() => { if(item.qty > 1) setCart(cart.map(i => i.id === item.id ? {...i, qty: i.qty-1} : i)); else setCart(cart.filter(i => i.id !== item.id)); }} className="text-gray-500 font-black p-1">-</button>
+                                    <span className="font-black text-xs w-3 text-center">{item.qty}</span>
+                                    <button onClick={() => setCart(cart.map(i => i.id === item.id ? {...i, qty: i.qty+1} : i))} className="text-[#ed7d31] font-black p-1">+</button>
+                                </div>
                             </div>
                         ))}
                     </div>
 
-                    <div className="bg-white rounded-3xl p-5 space-y-3 border-4 border-mayumi-green shadow-sm relative overflow-hidden">
-                        <div className="absolute top-0 right-0 bg-mayumi-green text-white px-4 py-1 rounded-bl-xl font-bold text-xs shadow-sm">PENGIRIMAN</div>
-                        <h3 className="font-bold text-mayumi-darkGreen flex items-center gap-1 pt-2"><Icon name="user" size={18}/> Data Diri</h3>
-                        <input 
-                            type="text" placeholder="Nama Lengkap" value={name} onChange={e => setName(e.target.value)}
-                            className="w-full p-3 rounded-xl border-2 border-gray-200 focus:outline-none focus:border-mayumi-green text-sm font-bold text-mayumi-brown placeholder-gray-400 bg-gray-50 focus:bg-white transition"
-                        />
-                        <input 
-                            type="tel" placeholder="Nomor HP / WhatsApp" value={phone} onChange={e => setPhone(e.target.value)}
-                            className="w-full p-3 rounded-xl border-2 border-gray-200 focus:outline-none focus:border-mayumi-green text-sm font-bold text-mayumi-brown placeholder-gray-400 bg-gray-50 focus:bg-white transition"
-                        />
-                        
-                        <div className="pt-2">
-                            <button 
-                                onClick={handleGetLocation}
-                                disabled={isLoadingLoc}
-                                className={`w-full font-bold py-3 rounded-xl text-sm flex justify-center items-center gap-2 transition border-b-4 active:border-b-0 active:translate-y-1 ${userCoords ? 'bg-mayumi-yellow text-mayumi-brown border-yellow-500 shadow-[0_3px_0_#ca8a04]' : 'bg-gray-100 text-gray-600 border-gray-300 shadow-[0_3px_0_#d1d5db]'}`}
-                            >
-                                <Icon name={isLoadingLoc ? "loader" : "map-pin"} size={18} className={isLoadingLoc ? "animate-spin" : ""} />
-                                {userCoords ? "📍 Lokasi Tersimpan (Ganti?)" : "Cek Lokasi (Hitung Ongkir)"}
-                            </button>
-                        </div>
+                    <div className="clay-card p-5 space-y-4">
+                        <h3 className="font-black text-sm uppercase tracking-wider text-gray-800 flex items-center gap-2"><Icon name="user" size={16}/> Data Pengiriman</h3>
+                        <input type="text" placeholder="Nama Lengkap" value={name} onChange={e => setName(e.target.value)} className="clay-input text-sm" />
+                        <input type="tel" placeholder="Nomor HP / WhatsApp" value={phone} onChange={e => setPhone(e.target.value)} className="clay-input text-sm" />
+                        <button onClick={handleGetLocation} disabled={isLoadingLoc} className={`w-full py-3.5 text-xs flex justify-center items-center gap-2 mt-2 uppercase font-black tracking-wide ${userCoords ? 'clay-btn-orange' : 'clay-btn'}`}>
+                            <Icon name={isLoadingLoc ? "loader" : "map-pin"} size={16} className={isLoadingLoc ? "animate-spin" : ""} /> {userCoords ? "📍 Lokasi Tersimpan (Ganti)" : "Cek Lokasi (Hitung Ongkir)"}
+                        </button>
                     </div>
 
-                    <div className="bg-white rounded-3xl shadow-sm border-4 border-yellow-100 p-5 space-y-3">
-                        <h3 className="font-bold text-mayumi-brown">Bayar Pakai Apa?</h3>
-                        <div className="flex gap-3">
-                            <label className={`flex-1 border-4 rounded-2xl p-3 text-center cursor-pointer font-bold transition ${payment === 'COD' ? 'border-mayumi-green bg-green-50 text-mayumi-darkGreen shadow-sm' : 'border-gray-100 text-gray-400 hover:border-gray-200'}`}>
-                                <input type="radio" name="payment" value="COD" className="hidden" checked={payment === 'COD'} onChange={() => setPayment('COD')} />
-                                💵 COD<br/><span className="text-[10px] font-normal">Bayar di Tempat</span>
-                            </label>
-                            <label className={`flex-1 border-4 rounded-2xl p-3 text-center cursor-pointer font-bold transition ${payment === 'QRIS' ? 'border-mayumi-green bg-green-50 text-mayumi-darkGreen shadow-sm' : 'border-gray-100 text-gray-400 hover:border-gray-200'}`}>
-                                <input type="radio" name="payment" value="QRIS" className="hidden" checked={payment === 'QRIS'} onChange={() => setPayment('QRIS')} />
-                                📱 QRIS<br/><span className="text-[10px] font-normal">Gopay/Ovo/Dana</span>
-                            </label>
-                        </div>
+                    <div className="flex gap-3">
+                        <label className={`flex-1 py-4 text-center cursor-pointer font-black flex flex-col items-center justify-center gap-1 rounded-2xl transition ${payment === 'COD' ? 'clay-panel border-2 border-[#ed7d31] text-[#ed7d31]' : 'clay-btn text-gray-500'}`}>
+                            <input type="radio" name="payment" value="COD" className="hidden" checked={payment === 'COD'} onChange={() => setPayment('COD')} />
+                            💵 COD<span className="text-[9px] font-bold text-gray-400">Bayar di Tempat</span>
+                        </label>
+                        <label className={`flex-1 py-4 text-center cursor-pointer font-black flex flex-col items-center justify-center gap-1 rounded-2xl transition ${payment === 'QRIS' ? 'clay-panel border-2 border-[#ed7d31] text-[#ed7d31]' : 'clay-btn text-gray-500'}`}>
+                            <input type="radio" name="payment" value="QRIS" className="hidden" checked={payment === 'QRIS'} onChange={() => setPayment('QRIS')} />
+                            📱 QRIS<span className="text-[9px] font-bold text-gray-400">Gopay/OVO/Dana</span>
+                        </label>
                     </div>
 
-                    <div className="bg-mayumi-green text-white rounded-3xl p-5 shadow-lg border-4 border-dashed border-white relative mt-2">
-                        <div className="absolute -top-4 -right-3 bg-mayumi-yellow text-mayumi-brown font-black px-4 py-1 rounded-full border-2 border-white transform rotate-12 text-sm shadow-md animate-pulse">
-                            Yummy!
-                        </div>
-                        <div className="flex justify-between text-sm mb-2 font-bold">
-                            <span className="opacity-90">Total Jajan:</span>
-                            <span>{formatRp(itemsTotal)}</span>
-                        </div>
-                        <div className="flex justify-between text-sm mb-3 font-bold bg-white/20 p-2 rounded-lg">
-                            <span className="opacity-100 flex items-center gap-1"><Icon name="truck" size={16}/> Ongkir {userCoords ? `(${distance.toFixed(1)}km)` : ''}</span>
+                    <div className="clay-card !bg-gray-800 text-white p-5 border-none mt-2 shadow-[8px_8px_16px_#a1a5b0,_-8px_-8px_16px_#ffffff]">
+                        <div className="flex justify-between text-xs mb-3 font-bold text-gray-400"><span>Total Jajan:</span><span>{formatRp(itemsTotal)}</span></div>
+                        <div className="flex justify-between text-xs mb-4 font-bold bg-black/40 p-3 rounded-xl text-gray-300">
+                            <span className="flex items-center gap-2"><Icon name="truck" size={14}/> Ongkir {userCoords ? `(${distance.toFixed(1)}km)` : ''}</span>
                             <span>{userCoords ? formatRp(shippingCost) : "..."}</span>
                         </div>
-                        <div className="flex justify-between font-black text-2xl border-t-2 border-white/30 pt-3 mb-5">
-                            <span>TOTAL</span>
-                            <span className="text-mayumi-yellow drop-shadow-md">{userCoords ? formatRp(grandTotal) : "-"}</span>
-                        </div>
-                        <button 
-                            onClick={handleCheckout}
-                            className="w-full bg-mayumi-yellow text-mayumi-brown text-xl font-black py-4 rounded-2xl hover:bg-yellow-400 shadow-[0_4px_0_#d97706] active:shadow-none active:translate-y-1 transition flex justify-center items-center gap-2"
-                        >
-                            PESAN SEKARANG! <Icon name="heart" size={20} className="text-mayumi-red fill-current" />
+                        <div className="flex justify-between font-black text-xl border-t border-gray-600 pt-4 mb-5"><span>TOTAL</span><span className="text-[#ffdf8c]">{userCoords ? formatRp(grandTotal) : "-"}</span></div>
+                        <button onClick={handleCheckout} className="clay-btn-orange w-full text-sm py-4 rounded-xl flex justify-center items-center gap-2 uppercase tracking-widest">
+                            Pesan Sekarang <Icon name="chevron-right" size={18} />
                         </button>
                     </div>
 
                     {qrisModal && (
-                        <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4">
-                            <div className="bg-white rounded-3xl p-6 max-w-sm w-full text-center space-y-4 border-4 border-mayumi-yellow shadow-xl">
-                                <h3 className="font-black text-2xl text-mayumi-brown">Scan QRIS 📱</h3>
-                                <div className="bg-gray-100 w-48 h-48 mx-auto flex items-center justify-center border-4 border-dashed border-gray-300 rounded-2xl overflow-hidden">
-                                    <img src='https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiect9TQ-Wq7KyuLLkJoRLwh2XaaxBNQDDkYs7uFGLsvkf9RDY5jq3Zer07dh8sAABT6s9sDzIRr_3mkw0GOkYKcYLJM_i-XZYl9l6vWa7KHrcchOSdLMGJaG4xCtqUCL0T1mjJ8S59ib9y_5VoFZvBN2eP9ba2M4z7KSeuWvUuaJj6XrcvKayQZrdnbVqF/s1200/qris.jpeg' className="w-full h-full object-cover" />
+                        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+                            <div className="clay-card p-6 max-w-sm w-full text-center space-y-4">
+                                <h3 className="font-black text-xl text-gray-800">Scan QRIS 📱</h3>
+                                <div className="clay-panel p-2 w-48 h-48 mx-auto flex items-center justify-center rounded-2xl">
+                                    <img src='https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiect9TQ-Wq7KyuLLkJoRLwh2XaaxBNQDDkYs7uFGLsvkf9RDY5jq3Zer07dh8sAABT6s9sDzIRr_3mkw0GOkYKcYLJM_i-XZYl9l6vWa7KHrcchOSdLMGJaG4xCtqUCL0T1mjJ8S59ib9y_5VoFZvBN2eP9ba2M4z7KSeuWvUuaJj6XrcvKayQZrdnbVqF/s1200/qris.jpeg' className="w-full h-full object-cover rounded-xl" />
                                 </div>
-                                <p className="text-lg font-black text-mayumi-orange bg-orange-50 py-2 rounded-xl">Total: {formatRp(grandTotal)}</p>
-                                <p className="text-xs text-gray-500 font-bold">Scan menggunakan aplikasi GoPay, OVO, Dana, ShopeePay, atau M-Banking Anda.</p>
+                                <p className="text-lg font-black text-[#ed7d31]">Total: {formatRp(grandTotal)}</p>
                                 <div className="flex gap-2 pt-2">
-                                    <button onClick={() => setQrisModal(false)} className="flex-1 p-3 bg-gray-200 rounded-xl text-sm font-bold text-gray-700 hover:bg-gray-300 transition">Batal</button>
-                                    <button onClick={() => { setQrisModal(false); processOrder(); }} className="flex-1 p-3 bg-mayumi-green text-white rounded-xl text-sm font-bold shadow-[0_3px_0_#4d7c0f] active:shadow-none active:translate-y-1 transition">Sudah Bayar</button>
+                                    <button onClick={() => setQrisModal(false)} className="clay-btn flex-1 py-3 text-xs">Batal</button>
+                                    <button onClick={() => { setQrisModal(false); processOrder(); }} className="clay-btn-orange flex-1 py-3 text-xs">Sudah Bayar</button>
                                 </div>
                             </div>
                         </div>
@@ -761,134 +622,73 @@
         };
 
         const StatusTab = ({ orders, showAlert }) => {
-            const [checkPhone, setCheckPhone] = useState('');
-            const [myOrders, setMyOrders] = useState([]);
-            const [hasSearched, setHasSearched] = useState(false);
-            const [isRefreshing, setIsRefreshing] = useState(false);
+            const [checkPhone, setCheckPhone] = useState(''); const [myOrders, setMyOrders] = useState([]);
+            const [hasSearched, setHasSearched] = useState(false); const [isRefreshing, setIsRefreshing] = useState(false);
 
             const handleCek = async () => {
                 if(!checkPhone) return showAlert('Ketik dulu dong nomor HP nya~', '📱');
                 setIsRefreshing(true);
-                
                 try {
-                    const { data, error } = await supabase
-                        .from('orders')
-                        .select('*')
-                        .eq('phone', checkPhone)
-                        .order('date', { ascending: false });
-
-                    if (error) throw error;
-                    
-                    setMyOrders(data || []);
-                    setHasSearched(true);
-                } catch (error) {
-                    const filtered = orders.filter(o => o.phone === checkPhone).sort((a,b) => new Date(b.date) - new Date(a.date));
-                    setMyOrders(filtered);
-                    setHasSearched(true);
-                } finally {
-                    setIsRefreshing(false);
-                }
+                    const { data, error } = await supabase.from('orders').select('*').eq('phone', checkPhone).order('date', { ascending: false });
+                    if (error) throw error; setMyOrders(data || []); setHasSearched(true);
+                } catch (error) { setMyOrders(orders.filter(o => o.phone === checkPhone).sort((a,b) => new Date(b.date) - new Date(a.date))); setHasSearched(true); } finally { setIsRefreshing(false); }
             };
 
-            const getStatusColor = (status) => {
-                switch(status) {
-                    case 'Pesanan Masuk': return 'bg-yellow-200 text-yellow-900 border-yellow-400';
-                    case 'Menunggu Konfirmasi': return 'bg-orange-200 text-orange-900 border-orange-400';
-                    case 'Sedang Diproses': return 'bg-blue-200 text-blue-900 border-blue-400';
-                    case 'Sedang Dikirim': return 'bg-purple-200 text-purple-900 border-purple-400';
-                    case 'Selesai': return 'bg-mayumi-green text-white border-green-600';
-                    case 'Dibatalkan': return 'bg-mayumi-red text-white border-red-600';
-                    default: return 'bg-gray-100 text-gray-800 border-gray-300';
-                }
+            const getStatusBadge = (status) => {
+                if (status === 'Selesai') return <span className="clay-badge-green border border-white">{status}</span>;
+                if (status === 'Dibatalkan') return <span className="clay-badge-orange bg-[#f48074] border border-white">{status}</span>;
+                return <span className="clay-badge-orange bg-gray-400 border border-white">{status}</span>;
             };
 
             const generateUserWaLink = (order) => {
-                const adminPhone = "6285337513445";
-                const itemsList = order.items.map(item => `- ${item.qty}x ${item.name}`).join("\n");
-                const text = `Hi kak, aku _${order.customerName}_, sudah melakukan pemesanan pisang kembung nih.\n\n*ID Pesanan:* ${order.id}\n*Detail Pesanan:*\n${itemsList}\n\n*Metode Pembayaran:* ${order.paymentMethod}\n*Total Bayar:* ${formatRp(order.grandTotal)}\n\nTerimakasih 💕`;
-                return `https://wa.me/${adminPhone}?text=${encodeURIComponent(text)}`;
+                const text = `Hi kak, aku _${order.customerName}_, sudah pesan.\n\n*ID:* ${order.id}\n*Bayar:* ${formatRp(order.grandTotal)}`;
+                return `https://wa.me/6285337513445?text=${encodeURIComponent(text)}`;
             };
 
             return (
-                <div className="space-y-6 pb-10">
-                    <div className="bg-white rounded-3xl p-6 border-4 border-mayumi-yellow shadow-sm text-center relative overflow-hidden">
-                        <div className="absolute top-2 left-2 text-4xl opacity-20">🔎</div>
-                        <h2 className="font-bold text-xl text-mayumi-brown mb-2 relative z-10">Lacak Pesananmu!</h2>
-                        <p className="text-xs text-gray-500 mb-5 font-bold relative z-10">Masukkan nomor HP yang dipakai saat pesan yaa 🍌</p>
+                <div className="space-y-4 pt-2">
+                    <div className="clay-card p-5 text-center relative overflow-hidden">
+                        <div className="absolute top-2 left-2 text-4xl opacity-10">🔎</div>
+                        <h2 className="font-black text-sm uppercase tracking-wider text-gray-800 mb-1">Lacak Antrean</h2>
+                        <p className="text-[10px] text-gray-500 font-bold mb-4">Masukkan nomor WhatsApp saat pesan</p>
                         <div className="flex gap-2 relative z-10">
-                            <input 
-                                type="tel" placeholder="Nomor HP..." value={checkPhone} onChange={e => setCheckPhone(e.target.value)}
-                                className="flex-1 p-3 rounded-xl border-2 border-yellow-300 focus:outline-none focus:border-mayumi-orange text-sm font-bold text-mayumi-brown bg-gray-50 focus:bg-white transition"
-                            />
-                            <button 
-                                onClick={handleCek} 
-                                disabled={isRefreshing}
-                                className={`font-bold px-5 rounded-xl border-b-4 transition shadow-sm flex items-center justify-center gap-1 ${isRefreshing ? 'bg-gray-400 text-white border-gray-500 cursor-not-allowed translate-y-1 border-b-0' : 'bg-mayumi-orange text-white border-orange-700 active:border-b-0 active:translate-y-1'}`}
-                            >
-                                {isRefreshing ? <Icon name="loader" size={18} className="animate-spin" /> : 'Cek'}
+                            <input type="tel" placeholder="Nomor HP..." value={checkPhone} onChange={e => setCheckPhone(e.target.value)} className="clay-input flex-1 text-sm" />
+                            <button onClick={handleCek} disabled={isRefreshing} className={`px-4 flex items-center justify-center ${isRefreshing ? 'clay-btn text-gray-400' : 'clay-btn-orange'}`}>
+                                {isRefreshing ? <Icon name="loader" size={16} className="animate-spin" /> : <Icon name="search" size={16} />}
                             </button>
                         </div>
                     </div>
 
                     {hasSearched && (
-                        <div className="space-y-4">
-                            <div className="flex justify-between items-center px-2">
-                                <h3 className="font-bold text-mayumi-brown text-lg flex items-center gap-2">
-                                    <Icon name="clock" size={20}/> Riwayat Jajan
-                                </h3>
-                                <button 
-                                    onClick={handleCek}
-                                    disabled={isRefreshing}
-                                    className={`text-xs font-bold px-3 py-1.5 rounded-xl flex items-center gap-1 border-2 shadow-sm transition active:scale-95 ${isRefreshing ? 'bg-gray-100 text-gray-400 border-gray-200' : 'bg-white text-mayumi-darkGreen border-mayumi-green hover:bg-green-50'}`}
-                                >
-                                    <Icon name="refresh-cw" size={14} className={isRefreshing ? "animate-spin" : ""} />
-                                    {isRefreshing ? 'Mengecek...' : 'Refresh'}
-                                </button>
-                            </div>
-                            
+                        <div className="space-y-4 mt-2">
                             {myOrders.length === 0 ? (
-                                <div className="text-center py-10 bg-white rounded-3xl border-4 border-dashed border-gray-200">
-                                    <span className="text-4xl mb-2 block">🥺</span>
-                                    <p className="text-sm font-bold text-gray-400">Belum ada pesanan nih...</p>
-                                </div>
+                                <div className="text-center py-10 clay-panel"><span className="text-4xl mb-2 block opacity-50">🥺</span><p className="text-xs font-bold text-gray-500">Belum ada pesanan nih...</p></div>
                             ) : (
                                 myOrders.map(order => (
-                                    <div key={order.id} className="bg-white border-4 border-mayumi-cream rounded-3xl p-5 shadow-sm">
-                                        <div className="flex justify-between items-start mb-3 border-b-2 border-dashed border-gray-100 pb-3">
+                                    <div key={order.id} className="clay-card p-4 relative">
+                                        <div className="flex justify-between items-start mb-3 border-b-2 border-dashed border-gray-300 pb-3">
                                             <div>
-                                                <span className="text-xs font-black text-mayumi-orange bg-orange-50 px-2 py-1 rounded-md">{order.id}</span>
-                                                <p className="text-[10px] text-gray-400 mt-1 font-bold">{new Date(order.date).toLocaleString('id-ID')}</p>
+                                                <span className="clay-badge-orange bg-[#ed7d31]">{order.id}</span>
+                                                <p className="text-[9px] text-gray-400 mt-2 font-black tracking-widest">{new Date(order.date).toLocaleString('id-ID')}</p>
                                             </div>
-                                            <span className={`text-[10px] px-3 py-1.5 rounded-full font-bold border-2 shadow-sm ${getStatusColor(order.status)}`}>
-                                                {order.status}
-                                            </span>
+                                            {getStatusBadge(order.status)}
                                         </div>
-                                        <div className="mb-3 space-y-1">
+                                        <div className="clay-panel p-3 space-y-2 mb-3">
                                             {order.items.map(item => (
-                                                <div key={item.id} className="text-sm flex justify-between font-bold text-mayumi-brown">
-                                                    <span className="flex items-center gap-1"><span className="text-mayumi-green">{item.qty}x</span> {item.name}</span>
+                                                <div key={item.id} className="text-xs flex justify-between font-black text-gray-700 uppercase">
+                                                    <span><span className="text-[#ed7d31] mr-1">{item.qty}x</span> {item.name}</span>
                                                 </div>
                                             ))}
-                                        </div>
-                                        <div className="flex justify-between items-end mt-3 pt-3 border-t-2 border-dashed border-gray-100">
-                                            <div className="text-xs font-bold text-gray-500">
-                                                <p className="mb-1">💳 {order.paymentMethod}</p>
-                                                <p>🛵 Ongkir: {formatRp(order.shippingCost)}</p>
-                                            </div>
-                                            <div className="text-right">
-                                                <p className="text-[10px] font-bold text-gray-400 mb-1">TOTAL BAYAR</p>
-                                                <p className="font-black text-xl text-mayumi-orange bg-orange-50 px-3 py-1 rounded-xl border-2 border-orange-100">{formatRp(order.grandTotal)}</p>
+                                            <div className="border-t-2 border-dashed border-gray-300 pt-2 flex justify-between text-[10px] text-gray-500 font-black uppercase">
+                                                <span>Ongkir ({order.distance}km)</span><span>{formatRp(order.shippingCost)}</span>
                                             </div>
                                         </div>
-
-                                        <a 
-                                            href={generateUserWaLink(order)}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="mt-4 w-full bg-green-50 text-mayumi-darkGreen border-2 border-mayumi-green font-bold py-3 rounded-xl hover:bg-green-100 transition flex justify-center items-center gap-2 active:scale-95 shadow-sm"
-                                        >
-                                            <Icon name="message-circle" size={18} /> Konfirmasi ke WA Admin
-                                        </a>
+                                        <div className="flex justify-between items-end mt-2">
+                                            <p className="font-black text-sm text-[#ed7d31]">{formatRp(order.grandTotal)}</p>
+                                            <a href={generateUserWaLink(order)} target="_blank" rel="noopener noreferrer" className="clay-btn px-4 py-2 text-[10px] text-gray-600 uppercase tracking-wider flex items-center gap-1">
+                                                <Icon name="message-circle" size={12} /> WA Admin
+                                            </a>
+                                        </div>
                                     </div>
                                 ))
                             )}
@@ -899,117 +699,58 @@
         };
 
         const ReviewTab = ({ reviews, setReviews, showAlert }) => {
-            const [showModal, setShowModal] = useState(false);
-            const [name, setName] = useState('');
-            const [rating, setRating] = useState(5);
-            const [comment, setComment] = useState('');
+            const [showModal, setShowModal] = useState(false); const [name, setName] = useState('');
+            const [rating, setRating] = useState(5); const [comment, setComment] = useState('');
             const [isSubmitting, setIsSubmitting] = useState(false);
 
             const handleSubmit = async () => {
-                if(!name || !comment) return showAlert("Isi nama dan reviewnya dulu ya manis! 🥺", "🍰");
+                if(!name || !comment) return showAlert("Isi nama dan reviewnya dulu ya! 🥺", "🍰");
                 setIsSubmitting(true);
-                
-                const newReview = { 
-                    name, 
-                    rating, 
-                    comment, 
-                    created_at: new Date().toISOString() 
-                };
-                
+                const newReview = { name, rating, comment, created_at: new Date().toISOString() };
                 try {
                     const { data, error } = await supabase.from('reviews').insert([newReview]).select();
                     if(error) throw error;
-                    
-                    if(data && data.length > 0){
-                        setReviews([data[0], ...reviews]);
-                    } else {
-                        setReviews([newReview, ...reviews]);
-                    }
-
-                    setShowModal(false);
-                    setName('');
-                    setRating(5);
-                    setComment('');
-                    showAlert("Makasih review cantiknya! Makin semangat deh jualan 💖", "😍");
-                } catch (error) {
-                    console.error("Gagal mengirim review:", error);
-                    showAlert("Duh gagal kirim review, cek koneksi internetmu ya!", "🔌");
-                } finally {
-                    setIsSubmitting(false);
-                }
+                    if(data && data.length > 0) setReviews([data[0], ...reviews]); else setReviews([newReview, ...reviews]);
+                    setShowModal(false); setName(''); setRating(5); setComment('');
+                } catch (error) { showAlert("Gagal kirim review, cek koneksi!", "🔌"); } finally { setIsSubmitting(false); }
             };
 
             return (
-                <div className="space-y-4 pb-10">
-                    <div className="flex justify-between items-center bg-white p-4 rounded-3xl border-4 border-mayumi-yellow shadow-sm">
-                        <h2 className="font-bold text-xl text-mayumi-brown flex items-center gap-2">
-                            <Icon name="star" className="text-yellow-400 fill-current" /> Suara Konsumen
-                        </h2>
-                        <button 
-                            onClick={() => setShowModal(true)} 
-                            className="bg-mayumi-green text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-[0_3px_0_#4d7c0f] active:shadow-none active:translate-y-1 transition flex items-center gap-1"
-                        >
-                            <Icon name="edit-3" size={14}/> Tulis Review
-                        </button>
+                <div className="space-y-4 pt-2">
+                    <div className="flex justify-between items-center mb-2 px-1">
+                        <h2 className="font-black text-sm uppercase tracking-wider text-gray-800">Ulasan Pelanggan</h2>
+                        <button onClick={() => setShowModal(true)} className="clay-btn-orange px-3 py-1.5 text-[10px] uppercase">Tulis Review</button>
                     </div>
 
-                    {reviews.length === 0 ? (
-                         <div className="text-center py-10 bg-white rounded-3xl border-4 border-dashed border-gray-200 shadow-sm mt-4">
-                            <span className="text-6xl mb-3 block animate-bounce">🥺</span>
-                            <p className="text-sm font-bold text-gray-400">Belum ada review nih.<br/>Yuk jadi yang pertama kasih komentar manis!</p>
-                        </div>
-                    ) : (
-                        <div className="space-y-4 mt-4">
-                            {reviews.map((r, i) => (
-                                <div key={r.id || i} className="bg-white p-5 rounded-3xl border-4 border-mayumi-cream shadow-sm relative">
-                                    <div className="absolute top-0 right-4 transform -translate-y-1/2 bg-yellow-100 border-2 border-white px-2 py-0.5 rounded-full shadow-sm text-xs text-yellow-600 font-bold flex gap-0.5">
-                                        {[...Array(5)].map((_, idx) => (
-                                            <Icon key={idx} name="star" size={12} className={idx < r.rating ? "text-yellow-400 fill-current" : "text-gray-300"} />
-                                        ))}
-                                    </div>
-                                    <div className="flex justify-between items-end mb-2">
-                                        <h4 className="font-black text-mayumi-brown text-lg">{r.name}</h4>
-                                        <p className="text-[10px] text-gray-400 font-bold bg-gray-100 px-2 py-1 rounded-md">{new Date(r.created_at).toLocaleDateString('id-ID')}</p>
-                                    </div>
-                                    <p className="text-gray-600 text-sm font-medium leading-relaxed bg-orange-50 p-3 rounded-xl border border-dashed border-orange-100">"{r.comment}"</p>
+                    {reviews.map((r, i) => (
+                        <div key={r.id || i} className="clay-card p-4 relative mb-4">
+                            <div className="absolute top-4 right-4 clay-panel px-2 py-1 flex gap-0.5 rounded-full">
+                                {[...Array(5)].map((_, idx) => ( <Icon key={idx} name="star" size={10} className={idx < r.rating ? "text-[#ed7d31] fill-current" : "text-gray-400"} /> ))}
+                            </div>
+                            <div className="flex items-center gap-3 mb-3">
+                                <div className="clay-box-yellow w-10 h-10 text-lg uppercase">{r.name.charAt(0)}</div>
+                                <div>
+                                    <h4 className="font-black text-gray-800 text-xs uppercase tracking-wide">{r.name}</h4>
+                                    <p className="text-[9px] text-gray-400 font-black mt-0.5">{new Date(r.created_at).toLocaleDateString('id-ID')}</p>
                                 </div>
-                            ))}
+                            </div>
+                            <p className="text-gray-600 text-xs font-bold leading-relaxed clay-panel p-3">"{r.comment}"</p>
                         </div>
-                    )}
+                    ))}
 
                     {showModal && (
-                        <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4">
-                            <div className="bg-white rounded-3xl p-6 max-w-sm w-full border-4 border-mayumi-yellow shadow-xl relative transform transition-all space-y-5">
-                                <button onClick={() => setShowModal(false)} className="absolute top-3 right-3 text-gray-400 hover:text-mayumi-red bg-gray-100 rounded-full w-8 h-8 flex items-center justify-center font-bold transition">✕</button>
-                                <div className="text-center">
-                                    <span className="text-4xl block mb-2">✍️</span>
-                                    <h3 className="font-black text-2xl text-mayumi-brown">Tulis Review</h3>
-                                </div>
-                                
-                                <div>
-                                    <label className="text-xs font-bold text-gray-500 mb-1.5 block">Nama Panggilan Kamu</label>
-                                    <input type="text" value={name} onChange={e=>setName(e.target.value)} className="w-full p-3 rounded-xl border-2 border-gray-200 focus:outline-none focus:border-mayumi-orange text-sm font-bold text-mayumi-brown bg-gray-50" placeholder="Si manis..." />
-                                </div>
-
-                                <div>
-                                    <label className="text-xs font-bold text-gray-500 mb-2 block text-center">Kasih Bintang Berapa Nih?</label>
-                                    <div className="flex justify-center gap-2 bg-yellow-50 py-3 rounded-xl border-2 border-dashed border-yellow-200">
-                                        {[1, 2, 3, 4, 5].map(star => (
-                                            <button key={star} onClick={() => setRating(star)} className="focus:outline-none transform transition hover:scale-110 active:scale-95">
-                                                <Icon name="star" size={36} className={star <= rating ? "text-yellow-400 fill-current drop-shadow-sm" : "text-yellow-100 fill-current"} />
-                                            </button>
-                                        ))}
+                        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+                            <div className="clay-card p-6 max-w-sm w-full relative space-y-4">
+                                <button onClick={() => setShowModal(false)} className="absolute top-4 right-4 clay-btn w-8 h-8 rounded-full">✕</button>
+                                <h3 className="font-black text-lg text-gray-800">Tulis Review</h3>
+                                <div className="space-y-3">
+                                    <input type="text" value={name} onChange={e=>setName(e.target.value)} className="clay-input text-sm" placeholder="Nama..." />
+                                    <div className="flex justify-center gap-2 clay-panel py-3 rounded-xl">
+                                        {[1, 2, 3, 4, 5].map(star => ( <button key={star} onClick={() => setRating(star)} className="focus:outline-none"><Icon name="star" size={28} className={star <= rating ? "text-[#ffdf8c] fill-current drop-shadow-md" : "text-gray-400"} /></button> ))}
                                     </div>
+                                    <textarea value={comment} onChange={e=>setComment(e.target.value)} rows="3" className="clay-input resize-none py-2 text-sm" placeholder="Pendapatmu..."></textarea>
                                 </div>
-
-                                <div>
-                                    <label className="text-xs font-bold text-gray-500 mb-1.5 block">Kesan / Pesan (Jujur aja kak!)</label>
-                                    <textarea value={comment} onChange={e=>setComment(e.target.value)} rows="3" className="w-full p-3 rounded-xl border-2 border-gray-200 focus:outline-none focus:border-mayumi-orange text-sm font-bold text-mayumi-brown bg-gray-50 resize-none" placeholder="Pisangnya lumer banget sumpah..."></textarea>
-                                </div>
-
-                                <button onClick={handleSubmit} disabled={isSubmitting} className={`w-full py-3.5 rounded-xl font-black text-lg text-white transition flex justify-center items-center gap-2 border-b-4 ${isSubmitting ? 'bg-gray-400 border-gray-500 border-b-0 translate-y-1' : 'bg-mayumi-yellow text-mayumi-brown border-yellow-500 hover:bg-yellow-400 active:border-b-0 active:translate-y-1'}`}>
-                                    {isSubmitting ? <Icon name="loader" className="animate-spin" /> : 'Kirim Review! 🚀'}
-                                </button>
+                                <button onClick={handleSubmit} disabled={isSubmitting} className={`w-full py-3.5 text-xs uppercase font-black tracking-wide ${isSubmitting ? 'clay-btn text-gray-400' : 'clay-btn-orange'}`}>Kirim Review</button>
                             </div>
                         </div>
                     )}
@@ -1017,28 +758,18 @@
             );
         };
 
-
         // ==========================================
         //               ADMIN VIEW
         // ==========================================
-        const AdminView = ({ orders, setOrders, settings, setSettings, products, setProducts, showAlert }) => {
+        const AdminView = ({ orders, setOrders, settings, setSettings, products, setProducts, showAlert, setRole }) => {
             const [tab, setTab] = useState('orders'); 
 
             return (
-                <div className="space-y-4 pb-10">
-                    <div className="flex gap-2 mb-4 bg-gray-200 p-1.5 rounded-xl border-2 border-gray-300">
-                        <button 
-                            onClick={() => setTab('orders')} 
-                            className={`flex-1 py-2.5 text-sm font-bold rounded-lg transition ${tab === 'orders' ? 'bg-white shadow-sm text-mayumi-darkGreen border border-gray-100' : 'text-gray-500 hover:bg-gray-300'}`}
-                        >
-                            Daftar Pesanan
-                        </button>
-                        <button 
-                            onClick={() => setTab('settings')} 
-                            className={`flex-1 py-2.5 text-sm font-bold rounded-lg transition ${tab === 'settings' ? 'bg-white shadow-sm text-mayumi-darkGreen border border-gray-100' : 'text-gray-500 hover:bg-gray-300'}`}
-                        >
-                            Pengaturan
-                        </button>
+                <div className="space-y-4 pt-2">
+                    <div className="clay-card p-2 flex gap-2 mb-4">
+                        <button onClick={() => setTab('orders')} className={`flex-1 py-2 text-xs font-black uppercase tracking-wider ${tab === 'orders' ? 'clay-btn-orange' : 'clay-btn'}`}>Pesanan</button>
+                        <button onClick={() => setTab('settings')} className={`flex-1 py-2 text-xs font-black uppercase tracking-wider ${tab === 'settings' ? 'clay-btn-orange' : 'clay-btn'}`}>Pengaturan</button>
+                        <button onClick={() => { supabase.auth.signOut(); setRole('user'); }} className="w-10 clay-btn text-red-400"><Icon name="log-out" size={14}/></button>
                     </div>
 
                     {tab === 'orders' && <AdminOrders orders={orders} setOrders={setOrders} settings={settings} showAlert={showAlert} />}
@@ -1048,142 +779,35 @@
         };
 
         const AdminOrders = ({ orders, setOrders, settings, showAlert }) => {
-            const [isRefreshing, setIsRefreshing] = useState(false);
-
-            const handleRefresh = async () => {
-                setIsRefreshing(true);
-                try {
-                    const { data, error } = await supabase.from('orders').select('*').order('date', { ascending: false });
-                    if (error) throw error;
-                    if (data) {
-                        setOrders(data);
-                    }
-                } catch (error) {
-                    console.error("Gagal refresh pesanan:", error);
-                    showAlert("Gagal memperbarui pesanan. Cek koneksimu ya!", "😢");
-                } finally {
-                    setIsRefreshing(false);
-                }
-            };
-
             const updateStatus = async (id, newStatus) => {
                 setOrders(orders.map(o => o.id === id ? { ...o, status: newStatus } : o));
-                
-                const { error } = await supabase.from('orders').update({ status: newStatus }).eq('id', id);
-                if (error) {
-                    console.error("Gagal update status:", error);
-                    showAlert("Gagal update status di server.", "😢");
-                }
+                await supabase.from('orders').update({ status: newStatus }).eq('id', id);
             };
-
             const handleDelete = (id) => {
-                showAlert("Beneran mau hapus pesanan ini? Nanti datanya nggak bisa balik lho!", "🗑️", async () => {
-                    setOrders(orders.filter(o => o.id !== id));
-                    
-                    const { error } = await supabase.from('orders').delete().eq('id', id);
-                    if (error) {
-                        console.error("Gagal menghapus pesanan:", error);
-                        showAlert("Gagal menghapus pesanan di server.", "😢");
-                    }
-                });
+                showAlert("Beneran mau hapus pesanan ini?", "🗑️", async () => { setOrders(orders.filter(o => o.id !== id)); await supabase.from('orders').delete().eq('id', id); });
             };
-
-            const openGoogleMaps = (coords) => {
-                if(!coords) return showAlert("Lokasi pelanggan belum ada nih.", "🗺️");
-                const url = `https://www.google.com/maps/dir/?api=1&origin=${settings.storeLat},${settings.storeLon}&destination=${coords.lat},${coords.lon}`;
-                window.open(url, '_blank');
-            };
-
-            const getWaLink = (phone) => {
-                if (!phone) return '#';
-                let cleaned = phone.replace(/\D/g, '');
-                if (cleaned.startsWith('0')) {
-                    cleaned = '62' + cleaned.substring(1);
-                }
-                return `https://wa.me/${cleaned}`;
-            };
-
-            const STATUS_OPTIONS = [
-                'Menunggu Konfirmasi', 'Pesanan Masuk', 'Sedang Diproses', 'Sedang Dikirim', 'Selesai', 'Dibatalkan'
-            ];
 
             return (
                 <div className="space-y-4">
-                    <div className="flex justify-between items-center mb-2 bg-white p-3 rounded-2xl shadow-sm border-2 border-gray-100">
-                        <h2 className="font-bold text-lg text-gray-800 flex items-center gap-2"><Icon name="list" size={18}/> Pesanan</h2>
-                        <button 
-                            onClick={handleRefresh} 
-                            disabled={isRefreshing}
-                            className={`px-4 py-2 rounded-xl font-bold text-xs shadow-sm flex items-center gap-2 active:scale-95 transition border-2 ${isRefreshing ? 'bg-gray-200 text-gray-500 border-gray-300' : 'bg-mayumi-yellow text-mayumi-brown border-yellow-300 hover:bg-yellow-400'}`}
-                        >
-                            <Icon name="refresh-cw" size={14} className={isRefreshing ? "animate-spin" : ""} /> 
-                            {isRefreshing ? 'Memuat...' : 'Refresh'}
-                        </button>
-                    </div>
-                    {orders.length === 0 ? <div className="text-center p-10 bg-white rounded-3xl border-2 border-dashed"><span className="text-4xl block mb-2">📭</span><p className="text-gray-500 text-sm font-bold">Belum ada pesanan masuk.</p></div> : null}
-                    
                     {orders.map(order => (
-                        <div key={order.id} className="bg-white rounded-2xl shadow-sm border-l-8 border-mayumi-green border-y-2 border-r-2 p-4 relative overflow-hidden">
-                            <button 
-                                onClick={() => handleDelete(order.id)}
-                                className="absolute top-3 right-3 text-gray-300 hover:text-mayumi-red transition bg-gray-50 rounded-lg p-2 z-10 border border-transparent hover:border-red-200"
-                                title="Hapus Pesanan"
-                            >
-                                <Icon name="trash-2" size={16} />
-                            </button>
-                            
-                            <div className="flex justify-between items-start mb-3 pr-10">
+                        <div key={order.id} className="clay-card p-4 relative">
+                            <button onClick={() => handleDelete(order.id)} className="absolute top-4 right-4 clay-btn w-8 h-8 rounded-full text-red-400"><Icon name="trash-2" size={14} /></button>
+                            <div className="flex justify-between items-start mb-3 border-b-2 border-dashed border-gray-300 pb-3 pr-10">
                                 <div>
-                                    <h3 className="font-bold text-gray-800 text-lg">{order.customerName}</h3>
-                                    <a 
-                                        href={getWaLink(order.phone)}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="text-xs font-mono text-mayumi-green hover:text-mayumi-darkGreen font-bold flex items-center gap-1 mt-0.5 transition hover:underline"
-                                    >
-                                        <Icon name="message-circle" size={12} /> {order.phone}
-                                    </a>
-                                    <p className="text-[10px] text-gray-400 mt-1 font-bold flex items-center gap-1">
-                                        <Icon name="clock" size={12} /> {new Date(order.date).toLocaleString('id-ID')}
-                                    </p>
+                                    <h3 className="font-black text-gray-800 text-sm uppercase">{order.customerName}</h3>
+                                    <p className="text-[10px] text-gray-500 font-bold mt-0.5">{order.phone}</p>
                                 </div>
                                 <div className="text-right">
-                                    <p className="font-black text-mayumi-orange text-lg">{formatRp(order.grandTotal)}</p>
-                                    <p className="text-[10px] bg-gray-100 px-2 py-0.5 rounded-md text-gray-600 mt-1 inline-block font-bold border">{order.paymentMethod}</p>
+                                    <p className="font-black text-[#ed7d31] text-sm">{formatRp(order.grandTotal)}</p>
+                                    <p className="text-[9px] text-gray-400 font-black mt-1 uppercase">{order.paymentMethod}</p>
                                 </div>
                             </div>
-
-                            <div className="bg-gray-50 p-3 rounded-xl border border-dashed border-gray-200 text-sm text-gray-700 mb-4">
-                                <p className="font-bold text-gray-500 mb-2 text-xs">Detail Item:</p>
-                                {order.items.map(item => (
-                                    <div key={item.id} className="flex justify-between font-bold mb-1">
-                                        <span><span className="text-mayumi-green">{item.qty}x</span> {item.name}</span>
-                                    </div>
-                                ))}
-                                <div className="border-t border-dashed border-gray-300 mt-2 pt-2 flex justify-between text-gray-500 text-xs font-bold">
-                                    <span>Ongkir ({order.distance}km):</span>
-                                    <span>{formatRp(order.shippingCost)}</span>
-                                </div>
-                                {order.coords && (
-                                    <button 
-                                        onClick={() => openGoogleMaps(order.coords)}
-                                        className="mt-3 w-full bg-blue-50 text-blue-600 py-2.5 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-blue-100 border-2 border-blue-200 transition active:scale-95 shadow-sm"
-                                    >
-                                        <Icon name="map" size={16} /> Lacak Rute di Maps
-                                    </button>
-                                )}
+                            <div className="clay-panel p-3 mb-3">
+                                {order.items.map(item => <div key={item.id} className="text-[10px] font-black uppercase text-gray-600 mb-1"><span>{item.qty}x</span> {item.name}</div>)}
                             </div>
-
-                            <div className="flex items-center gap-3 bg-yellow-50 p-3 rounded-xl border border-yellow-100">
-                                <span className="text-xs font-bold text-gray-500">Status:</span>
-                                <select 
-                                    value={order.status}
-                                    onChange={(e) => updateStatus(order.id, e.target.value)}
-                                    className="flex-1 text-sm bg-white border-2 border-yellow-200 p-2 rounded-lg focus:outline-none focus:border-mayumi-orange font-bold text-gray-700 shadow-sm"
-                                >
-                                    {STATUS_OPTIONS.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                                </select>
-                            </div>
+                            <select value={order.status} onChange={(e) => updateStatus(order.id, e.target.value)} className="clay-input text-xs text-center py-2">
+                                {['Menunggu Konfirmasi', 'Pesanan Masuk', 'Sedang Diproses', 'Sedang Dikirim', 'Selesai', 'Dibatalkan'].map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                            </select>
                         </div>
                     ))}
                 </div>
@@ -1191,212 +815,60 @@
         };
 
         const AdminSettings = ({ settings, setSettings, products, setProducts, showAlert }) => {
-            const [localSet, setLocalSet] = useState(settings);
-            const [localProducts, setLocalProducts] = useState(products);
-            const [isSavingStore, setIsSavingStore] = useState(false);
-            
-            // State untuk kelola Modal Produk
-            const [showProdModal, setShowProdModal] = useState(false);
-            const [editForm, setEditForm] = useState(null);
+            const [localSet, setLocalSet] = useState(settings); const [localProducts, setLocalProducts] = useState(products);
+            const [showProdModal, setShowProdModal] = useState(false); const [editForm, setEditForm] = useState(null);
 
-            // 1. Simpan Pengaturan Toko (Ongkir & GPS)
             const handleSaveSettings = async () => {
-                setIsSavingStore(true);
-                try {
-                    const { error } = await supabase.from('settings').update({
-                        storeLat: localSet.storeLat,
-                        storeLon: localSet.storeLon,
-                        costPerKm: localSet.costPerKm
-                    }).eq('id', 1);
-
-                    if (error) throw error;
-                    setSettings(localSet);
-                    showAlert('Pengaturan Lokasi & Ongkir berhasil disimpan!', '🎉');
-                } catch (error) {
-                    console.error("Error saving settings:", error);
-                    showAlert('Gagal menyimpan pengaturan!', '😢');
-                } finally {
-                    setIsSavingStore(false); 
-                }
+                await supabase.from('settings').update({ storeLat: localSet.storeLat, storeLon: localSet.storeLon, costPerKm: localSet.costPerKm }).eq('id', 1);
+                setSettings(localSet); showAlert('Pengaturan disimpan!', '🎉');
             };
-
-            const handleGetAdminLocation = () => {
-                if ("geolocation" in navigator) {
-                    navigator.geolocation.getCurrentPosition(
-                        (position) => {
-                            setLocalSet({
-                                ...localSet,
-                                storeLat: position.coords.latitude,
-                                storeLon: position.coords.longitude
-                            });
-                        },
-                        (error) => showAlert("Yah gagal ngambil lokasi dari GPS nih.", "😢")
-                    );
-                }
-            };
-
-            // 2. Fungsi Tambah/Edit/Hapus Produk
-            const openAddProduct = () => {
-                // Perbaikan: Menggunakan urutan angka biasa (contoh ID: 9) alih-alih Date.now() yang kepanjangan
-                const newId = localProducts.length > 0 ? Math.max(...localProducts.map(p => p.id)) + 1 : 1;
-                setEditForm({ id: newId, name: '', price: '', desc: '', imgId: '🍌' });
-                setShowProdModal(true);
-            };
-
-            const openEditProduct = (p) => {
-                setEditForm(p);
-                setShowProdModal(true);
-            };
-
-            const handleDeleteProduct = (id) => {
-                showAlert("Yakin mau hapus menu ini? Nanti hilang permanen lho!", "🗑️", async () => {
-                    const updatedList = localProducts.filter(p => p.id !== id);
-                    setLocalProducts(updatedList);
-                    setProducts(updatedList);
-                    
-                    const { error } = await supabase.from('products').delete().eq('id', id);
-                    if (error) showAlert(`Gagal Hapus (Database Error): ${error.message}`, "😢");
-                });
-            };
-
+            const handleDeleteProduct = (id) => { showAlert("Hapus menu ini?", "🗑️", async () => { const updatedList = localProducts.filter(p => p.id !== id); setLocalProducts(updatedList); setProducts(updatedList); await supabase.from('products').delete().eq('id', id); }); };
             const handleSaveProduct = async () => {
-                if(!editForm.name || !editForm.price) return showAlert("Nama dan Harga harus diisi ya!", "⚠️");
-                
-                const price = Number(editForm.price);
-                const label = price >= 1000 ? (price / 1000) + 'K' : price.toString();
-                
-                // Mencegah error jika deskripsi kosong
-                const payload = { 
-                    ...editForm, 
-                    price, 
-                    label,
-                    desc: editForm.desc ? editForm.desc : null 
-                };
-                
-                const { error } = await supabase.from('products').upsert([payload]);
-                
-                if (error) {
-                    console.error("Upsert error:", error);
-                    // Menampilkan pesan error asli Supabase ke layar (Lebih gampang dilacak)
-                    return showAlert(`Gagal simpan: ${error.message}`, "😢");
-                }
-                
-                const exists = localProducts.find(p => p.id === payload.id);
-                const newList = exists 
-                    ? localProducts.map(p => p.id === payload.id ? payload : p)
-                    : [...localProducts, payload];
-                
-                const sortedList = newList.sort((a,b) => a.id - b.id);
-                
-                setLocalProducts(sortedList);
-                setProducts(sortedList);
-                setShowProdModal(false);
-                showAlert("Berhasil memperbarui menu!", "✅");
+                if(!editForm.name || !editForm.price) return showAlert("Nama dan Harga wajib diisi!", "⚠️");
+                const payload = { ...editForm, price: Number(editForm.price), label: Number(editForm.price) >= 1000 ? (Number(editForm.price)/1000)+'K' : editForm.price.toString() };
+                await supabase.from('products').upsert([payload]);
+                const sortedList = (localProducts.find(p => p.id === payload.id) ? localProducts.map(p => p.id === payload.id ? payload : p) : [...localProducts, payload]).sort((a,b) => a.id - b.id);
+                setLocalProducts(sortedList); setProducts(sortedList); setShowProdModal(false);
             };
 
             return (
-                <div className="space-y-5">
-                    {/* Panel 1: Pengaturan Lokasi & Ongkir */}
-                    <div className="bg-white rounded-3xl shadow-sm border-4 border-gray-100 p-5">
-                        <h2 className="font-bold text-xl text-gray-800 border-b-2 border-dashed border-gray-200 pb-3 mb-4">Pengaturan Toko ⚙️</h2>
-                        
-                        <div>
-                            <label className="block text-sm font-bold text-gray-600 mb-2">Tarif Ongkir / Km (Rp)</label>
-                            <input 
-                                type="number" 
-                                value={localSet.costPerKm} 
-                                onChange={(e) => setLocalSet({...localSet, costPerKm: Number(e.target.value)})}
-                                className="w-full p-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-mayumi-green font-bold text-gray-700 bg-gray-50"
-                            />
-                        </div>
-
-                        <div className="pt-4">
-                            <label className="block text-sm font-bold text-gray-600 mb-2">Koordinat Toko (Base Lokasi)</label>
-                            <div className="flex gap-2 mb-3 w-full">
-                                <input type="number" step="any" placeholder="Latitude" value={localSet.storeLat} onChange={(e) => setLocalSet({...localSet, storeLat: Number(e.target.value)})} className="w-full min-w-0 flex-1 p-3 border-2 border-gray-200 rounded-xl text-sm font-bold bg-gray-50 focus:outline-none focus:border-mayumi-green" />
-                                <input type="number" step="any" placeholder="Longitude" value={localSet.storeLon} onChange={(e) => setLocalSet({...localSet, storeLon: Number(e.target.value)})} className="w-full min-w-0 flex-1 p-3 border-2 border-gray-200 rounded-xl text-sm font-bold bg-gray-50 focus:outline-none focus:border-mayumi-green" />
-                            </div>
-                            <button onClick={handleGetAdminLocation} className="w-full text-sm bg-gray-100 border-2 border-gray-200 text-gray-700 py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-gray-200 transition active:scale-95 shadow-sm">
-                                <Icon name="map-pin" size={16} /> Gunakan GPS Saat Ini
-                            </button>
-                        </div>
-                        
-                        <button 
-                            onClick={handleSaveSettings} 
-                            disabled={isSavingStore}
-                            className={`w-full mt-6 text-white font-black text-lg py-4 rounded-2xl shadow-[0_4px_0_#166534] active:shadow-none active:translate-y-1 transition flex justify-center items-center gap-2 border-b-4 ${isSavingStore ? 'bg-gray-400 border-gray-500 border-b-0 translate-y-1 cursor-not-allowed shadow-none' : 'bg-mayumi-darkGreen border-green-800 hover:bg-green-800 active:border-b-0 active:translate-y-1'}`}
-                        >
-                            {isSavingStore ? <><Icon name="loader" size={20} className="animate-spin" /> MENYIMPAN...</> : 'SIMPAN PENGATURAN'}
-                        </button>
+                <div className="space-y-4">
+                    <div className="clay-card p-4">
+                        <h2 className="font-black text-sm uppercase mb-3">Pengaturan Lokasi</h2>
+                        <input type="number" value={localSet.costPerKm} onChange={(e) => setLocalSet({...localSet, costPerKm: Number(e.target.value)})} className="clay-input text-sm mb-2" placeholder="Tarif / Km" />
+                        <button onClick={handleSaveSettings} className="w-full clay-btn-orange py-3 text-xs uppercase font-black mt-2">Simpan Lokasi</button>
                     </div>
 
-                    {/* Panel 2: Kelola Menu */}
-                    <div className="bg-white rounded-3xl shadow-sm border-4 border-gray-100 p-5">
-                        <div className="flex justify-between items-center border-b-2 border-dashed border-gray-200 pb-3 mb-4">
-                            <h2 className="font-bold text-xl text-gray-800">Kelola Menu 🍕</h2>
-                        </div>
-                        
-                        <div className="space-y-3 mb-5">
+                    <div className="clay-card p-4">
+                        <h2 className="font-black text-sm uppercase mb-3">Kelola Menu</h2>
+                        <div className="space-y-3 mb-4">
                             {localProducts.map(product => (
-                                <div key={product.id} className="flex justify-between items-center bg-gray-50 p-3 rounded-xl border-2 border-gray-100 hover:border-yellow-200 transition">
-                                    <div className="flex items-center gap-3">
-                                        <span className="text-2xl bg-white w-10 h-10 flex items-center justify-center rounded-lg border shadow-sm">{product.imgId}</span>
-                                        <div>
-                                            <h4 className="font-bold text-gray-800 text-sm">{product.name}</h4>
-                                            <p className="text-xs text-mayumi-orange font-bold">Rp{product.price.toLocaleString('id-ID')}</p>
-                                        </div>
+                                <div key={product.id} className="flex justify-between items-center clay-panel p-2">
+                                    <div className="flex items-center gap-2">
+                                        <div className="clay-box-yellow w-8 h-8 text-sm">{product.imgId}</div>
+                                        <h4 className="font-black text-[10px] uppercase text-gray-700">{product.name}</h4>
                                     </div>
                                     <div className="flex gap-2">
-                                        <button onClick={() => openEditProduct(product)} className="bg-blue-100 text-blue-600 p-2 rounded-lg hover:bg-blue-200 transition">
-                                            <Icon name="edit-2" size={16} />
-                                        </button>
-                                        <button onClick={() => handleDeleteProduct(product.id)} className="bg-red-100 text-red-600 p-2 rounded-lg hover:bg-red-200 transition">
-                                            <Icon name="trash-2" size={16} />
-                                        </button>
+                                        <button onClick={() => {setEditForm(product); setShowProdModal(true);}} className="clay-btn w-8 h-8 text-[#ed7d31]"><Icon name="edit-2" size={12} /></button>
+                                        <button onClick={() => handleDeleteProduct(product.id)} className="clay-btn w-8 h-8 text-red-400"><Icon name="trash-2" size={12} /></button>
                                     </div>
                                 </div>
                             ))}
                         </div>
-
-                        <button 
-                            onClick={openAddProduct}
-                            className="w-full border-4 border-dashed border-mayumi-yellow text-mayumi-brown bg-yellow-50 hover:bg-yellow-100 font-bold py-3.5 rounded-xl transition flex justify-center items-center gap-2 active:scale-95"
-                        >
-                            <Icon name="plus" size={18}/> Tambah Menu Baru
-                        </button>
+                        <button onClick={() => {setEditForm({ id: Date.now(), name: '', price: '', imgId: '🍌' }); setShowProdModal(true);}} className="w-full clay-btn py-3 text-xs uppercase font-black text-[#ed7d31]">Tambah Menu</button>
                     </div>
 
-                    {/* Modal Tambah/Edit Produk */}
                     {showProdModal && editForm && (
-                        <div className="fixed inset-0 bg-black/60 z-[200] flex items-center justify-center p-4">
-                            <div className="bg-white rounded-3xl p-6 max-w-sm w-full border-4 border-mayumi-yellow shadow-xl relative space-y-4">
-                                <button onClick={() => setShowProdModal(false)} className="absolute top-3 right-3 text-gray-400 hover:text-mayumi-red bg-gray-100 rounded-full w-8 h-8 flex items-center justify-center font-bold transition">✕</button>
-                                <h3 className="font-black text-xl text-mayumi-brown">{localProducts.find(p=>p.id === editForm.id) ? 'Edit Menu 📝' : 'Tambah Menu 🆕'}</h3>
-                                
-                                <div className="space-y-3">
-                                    <div>
-                                        <label className="text-xs font-bold text-gray-500 block mb-1">Nama Menu</label>
-                                        <input type="text" value={editForm.name} onChange={e=>setEditForm({...editForm, name: e.target.value})} className="w-full p-2.5 rounded-xl border-2 border-gray-200 focus:outline-none focus:border-mayumi-orange text-sm font-bold bg-gray-50" placeholder="Contoh: Coklat Keju" />
-                                    </div>
-                                    <div className="flex gap-2">
-                                        <div className="flex-1">
-                                            <label className="text-xs font-bold text-gray-500 block mb-1">Harga (Rp)</label>
-                                            <input type="number" value={editForm.price} onChange={e=>setEditForm({...editForm, price: e.target.value})} className="w-full p-2.5 rounded-xl border-2 border-gray-200 focus:outline-none focus:border-mayumi-orange text-sm font-bold bg-gray-50" placeholder="14000" />
-                                        </div>
-                                        <div className="w-20">
-                                            <label className="text-xs font-bold text-gray-500 block mb-1">Emoji</label>
-                                            <input type="text" value={editForm.imgId} onChange={e=>setEditForm({...editForm, imgId: e.target.value})} className="w-full p-2.5 rounded-xl border-2 border-gray-200 focus:outline-none focus:border-mayumi-orange text-sm text-center font-bold bg-gray-50" />
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <label className="text-xs font-bold text-gray-500 block mb-1">Deskripsi Pendek (Opsional)</label>
-                                        <input type="text" value={editForm.desc || ''} onChange={e=>setEditForm({...editForm, desc: e.target.value})} className="w-full p-2.5 rounded-xl border-2 border-gray-200 focus:outline-none focus:border-mayumi-orange text-sm font-bold bg-gray-50" placeholder="Misal: (Mix 2 varian)" />
-                                    </div>
+                        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[200] flex items-center justify-center p-4">
+                            <div className="clay-card p-6 max-w-sm w-full relative space-y-3">
+                                <button onClick={() => setShowProdModal(false)} className="absolute top-4 right-4 clay-btn w-8 h-8 rounded-full">✕</button>
+                                <h3 className="font-black text-lg text-gray-800">{localProducts.find(p=>p.id === editForm.id) ? 'Edit Menu' : 'Tambah Menu'}</h3>
+                                <input type="text" value={editForm.name} onChange={e=>setEditForm({...editForm, name: e.target.value})} className="clay-input text-sm" placeholder="Nama Menu" />
+                                <div className="flex gap-2">
+                                    <input type="number" value={editForm.price} onChange={e=>setEditForm({...editForm, price: e.target.value})} className="clay-input text-sm flex-1" placeholder="Harga" />
+                                    <input type="text" value={editForm.imgId} onChange={e=>setEditForm({...editForm, imgId: e.target.value})} className="clay-input text-sm w-16 text-center" placeholder="Emoji" />
                                 </div>
-
-                                <button onClick={handleSaveProduct} className="w-full bg-mayumi-green text-white font-bold py-3 mt-2 rounded-xl border-b-4 border-green-800 shadow-[0_3px_0_#166534] active:shadow-none active:translate-y-1 transition">
-                                    Simpan Menu
-                                </button>
+                                <button onClick={handleSaveProduct} className="w-full clay-btn-orange py-3 text-xs uppercase font-black mt-2">Simpan Menu</button>
                             </div>
                         </div>
                     )}
@@ -1404,10 +876,8 @@
             );
         }
 
-        // Render the app
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
     </script>
-    
 </body>
 </html>
