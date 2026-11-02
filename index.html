@@ -606,7 +606,6 @@
 
             const handleCheckout = () => {
                 if (!name || !phone) return showAlert("Eh tunggu! Nama & No HP belum diisi nih. Nanti kurirnya bingung nyariin kamu~", "🥺");
-                if (!phone.trim().startsWith('0')) return showAlert("Nomor HP harus dimulai dengan angka 0 yaa (contoh: 0853...)", "📱");
                 if (!userCoords) return showAlert("Ups! Kasih tau lokasi kamu dulu dong biar kita gampang ngirimnya~", "📍");
                 if (cart.length === 0) return showAlert("Keranjangnya masih kosong melompong nih. Jajan dulu yuk!", "🛒");
 
@@ -623,7 +622,7 @@
                     id: 'ORD-' + Math.floor(Math.random() * 10000),
                     date: new Date().toISOString(),
                     customerName: name,
-                    phone: phone.trim(),
+                    phone: phone,
                     items: cart, 
                     itemsTotal,
                     shippingCost,
@@ -693,7 +692,7 @@
                             className="w-full p-3 rounded-xl border-2 border-gray-200 focus:outline-none focus:border-mayumi-green text-sm font-bold text-mayumi-brown placeholder-gray-400 bg-gray-50 focus:bg-white transition"
                         />
                         <input 
-                            type="tel" placeholder="Nomor HP / WhatsApp (Awali dengan 0)" value={phone} onChange={e => setPhone(e.target.value.replace(/[^0-9]/g, ''))}
+                            type="tel" placeholder="Nomor HP / WhatsApp" value={phone} onChange={e => setPhone(e.target.value)}
                             className="w-full p-3 rounded-xl border-2 border-gray-200 focus:outline-none focus:border-mayumi-green text-sm font-bold text-mayumi-brown placeholder-gray-400 bg-gray-50 focus:bg-white transition"
                         />
                         
@@ -775,11 +774,10 @@
 
             const handleCek = async () => {
                 if(!checkPhone) return showAlert('Ketik dulu dong nomor HP nya~', '📱');
-                if(!checkPhone.trim().startsWith('0')) return showAlert('Nomor HP harus dimulai dengan angka 0 yaa (contoh: 0853...)', '📱');
                 setIsRefreshing(true);
                 
                 try {
-                    const res = await gasGet({ action: 'getOrdersByPhone', phone: checkPhone.trim() });
+                    const res = await gasGet({ action: 'getOrdersByPhone', phone: checkPhone });
                     if (res && res.status === 'success') {
                         setMyOrders(res.data || []);
                         setHasSearched(true);
@@ -787,7 +785,7 @@
                         throw new Error('Gagal mengambil data');
                     }
                 } catch (error) {
-                    const filtered = orders.filter(o => o.phone === checkPhone.trim()).sort((a,b) => new Date(b.date) - new Date(a.date));
+                    const filtered = orders.filter(o => o.phone === checkPhone).sort((a,b) => new Date(b.date) - new Date(a.date));
                     setMyOrders(filtered);
                     setHasSearched(true);
                 } finally {
@@ -809,8 +807,7 @@
 
             const generateUserWaLink = (order) => {
                 const adminPhone = "6285337513445";
-                const itemsList = order.items.map(item => `- ${item.qty}x ${item.name}`).join("
-");
+                const itemsList = order.items.map(item => `- ${item.qty}x ${item.name}`).join("\n");
                 const text = `Hi kak, aku _${order.customerName}_, sudah melakukan pemesanan pisang kembung nih.\n\n*ID Pesanan:* ${order.id}\n*Detail Pesanan:*\n${itemsList}\n\n*Metode Pembayaran:* ${order.paymentMethod}\n*Total Bayar:* ${formatRp(order.grandTotal)}\n\nTerimakasih 💕`;
                 return `https://wa.me/${adminPhone}?text=${encodeURIComponent(text)}`;
             };
@@ -823,7 +820,7 @@
                         <p className="text-xs text-gray-500 mb-5 font-bold relative z-10">Masukkan nomor HP yang dipakai saat pesan yaa 🍌</p>
                         <div className="flex gap-2 relative z-10">
                             <input 
-                                type="tel" placeholder="Nomor HP (Awali dengan 0)..." value={checkPhone} onChange={e => setCheckPhone(e.target.value.replace(/[^0-9]/g, ''))}
+                                type="tel" placeholder="Nomor HP..." value={checkPhone} onChange={e => setCheckPhone(e.target.value)}
                                 className="flex-1 p-3 rounded-xl border-2 border-yellow-300 focus:outline-none focus:border-mayumi-orange text-sm font-bold text-mayumi-brown bg-gray-50 focus:bg-white transition"
                             />
                             <button 
