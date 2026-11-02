@@ -40,9 +40,6 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     
-    <!-- Supabase JS Client -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    
     <script>
         tailwind.config = {
             theme: {
@@ -84,12 +81,27 @@
         const { useState, useEffect, useMemo } = React;
 
         // ==========================================
-        //         SUPABASE CONFIGURATION
+        //      GOOGLE APPS SCRIPT CONFIGURATION
         // ==========================================
-        const SUPABASE_URL = 'https://mhbyivcjcnndqogjgzxb.supabase.co'; 
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1oYnlpdmNqY25uZHFvZ2pnenhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU5NTY0NzUsImV4cCI6MjEwMTUzMjQ3NX0.rAeV91oayf6BdbBP6vZL7AYxfhTXBkM9_yWuJcgaB7M';  
-        
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        // Ganti URL di bawah ini dengan URL Web App Google Apps Script Anda
+        const GAS_WEB_APP_URL = 'PASTE_URL_WEB_APP_GAS_ANDA_DI_SINI';
+
+        const gasGet = async (params = {}) => {
+            const url = new URL(GAS_WEB_APP_URL);
+            Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+            const res = await fetch(url.toString(), { method: 'GET', redirect: 'follow' });
+            return await res.json();
+        };
+
+        const gasPost = async (payload = {}) => {
+            const res = await fetch(GAS_WEB_APP_URL, {
+                method: 'POST',
+                redirect: 'follow',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify(payload)
+            });
+            return await res.json();
+        };
 
         // --- ICONS ---
         const Icon = ({ name, size = 24, className = "" }) => {
@@ -184,25 +196,19 @@
             };
             const closeAlert = () => setAlertConfig(null);
 
-            // Fetch data dari Supabase
+            // Fetch data dari Google Apps Script
             useEffect(() => {
                 const fetchData = async () => {
                     try {
-                        const { data: prodData, error: prodErr } = await supabase.from('products').select('*').order('id', { ascending: true });
-                        if (prodData && prodData.length > 0) setProducts(prodData);
-                        else if (prodErr) console.warn("Supabase Produk:", prodErr.message);
-
-                        const { data: setData, error: setErr } = await supabase.from('settings').select('*').eq('id', 1).single();
-                        if (setData) setSettings(setData);
-
-                        const { data: ordData, error: ordErr } = await supabase.from('orders').select('*').order('date', { ascending: false });
-                        if (ordData) setOrders(ordData);
-
-                        const { data: revData, error: revErr } = await supabase.from('reviews').select('*').order('created_at', { ascending: false });
-                        if (revData) setReviews(revData);
-                        
+                        const res = await gasGet({ action: 'getInitialData' });
+                        if (res && res.status === 'success') {
+                            if (res.products && res.products.length > 0) setProducts(res.products);
+                            if (res.settings) setSettings(res.settings);
+                            if (res.orders) setOrders(res.orders);
+                            if (res.reviews) setReviews(res.reviews);
+                        }
                     } catch (error) {
-                        console.error("Gagal terhubung ke Supabase. Menggunakan data default.", error);
+                        console.error("Gagal terhubung ke Google Apps Script. Menggunakan data default.", error);
                     }
                 };
                 
@@ -240,16 +246,17 @@
                 if (!pinInput) return;
                 setIsCheckingPin(true);
                 try {
-                    const { data, error } = await supabase.auth.signInWithPassword({
-                        email: 'admin@pisangmayumi.com',
-                        password: pinInput
+                    const res = await gasPost({
+                        action: 'verifyPin',
+                        pin: pinInput
                     });
                     
-                    if (error) throw error;
-                    if (data.session) {
+                    if (res && res.valid) {
                         setRole('admin');
                         setShowPinModal(false);
                         setPinInput('');
+                    } else {
+                        throw new Error('PIN salah');
                     }
                 } catch (error) {
                     showAlert('Oops! PIN-nya salah nih. Coba inget-inget lagi yaa 🍌', '🙈');
@@ -284,11 +291,10 @@
 
                             <div className="relative z-20">
                                 <button 
-                                    onClick={async () => {
+                                    onClick={() => {
                                         if (role === 'user') {
                                             setShowPinModal(true);
                                         } else {
-                                            await supabase.auth.signOut();
                                             setRole('user');
                                         }
                                     }}
@@ -629,14 +635,14 @@
 
                 setOrders(prev => [newOrder, ...prev]);
                 
-                const { error } = await supabase.from('orders').insert([newOrder]);
-                
-                if (error) {
-                    console.error("Gagal simpan pesanan:", error);
-                    showAlert("Duh, gagal menyimpan pesanan ke server nih. Pastikan URL & Key Supabase sudah benar ya!", "😢", null);
-                } else {
+                try {
+                    const res = await gasPost({ action: 'insertOrder', order: newOrder });
+                    if (!res || res.status !== 'success') throw new Error('Gagal simpan');
                     showAlert("Yey! Pesanan berhasil dibuat. Tunggu camilan manismu sampai yaa!", "🎉", null);
                     onCheckoutSuccess();
+                } catch (error) {
+                    console.error("Gagal simpan pesanan:", error);
+                    showAlert("Duh, gagal menyimpan pesanan ke server nih. Pastikan URL Web App GAS sudah benar ya!", "😢", null);
                 }
             };
 
@@ -771,16 +777,13 @@
                 setIsRefreshing(true);
                 
                 try {
-                    const { data, error } = await supabase
-                        .from('orders')
-                        .select('*')
-                        .eq('phone', checkPhone)
-                        .order('date', { ascending: false });
-
-                    if (error) throw error;
-                    
-                    setMyOrders(data || []);
-                    setHasSearched(true);
+                    const res = await gasGet({ action: 'getOrdersByPhone', phone: checkPhone });
+                    if (res && res.status === 'success') {
+                        setMyOrders(res.data || []);
+                        setHasSearched(true);
+                    } else {
+                        throw new Error('Gagal mengambil data');
+                    }
                 } catch (error) {
                     const filtered = orders.filter(o => o.phone === checkPhone).sort((a,b) => new Date(b.date) - new Date(a.date));
                     setMyOrders(filtered);
@@ -917,11 +920,11 @@
                 };
                 
                 try {
-                    const { data, error } = await supabase.from('reviews').insert([newReview]).select();
-                    if(error) throw error;
+                    const res = await gasPost({ action: 'insertReview', review: newReview });
+                    if (!res || res.status !== 'success') throw new Error('Gagal kirim review');
                     
-                    if(data && data.length > 0){
-                        setReviews([data[0], ...reviews]);
+                    if (res.data) {
+                        setReviews([res.data, ...reviews]);
                     } else {
                         setReviews([newReview, ...reviews]);
                     }
@@ -1053,10 +1056,11 @@
             const handleRefresh = async () => {
                 setIsRefreshing(true);
                 try {
-                    const { data, error } = await supabase.from('orders').select('*').order('date', { ascending: false });
-                    if (error) throw error;
-                    if (data) {
-                        setOrders(data);
+                    const res = await gasGet({ action: 'getOrders' });
+                    if (res && res.status === 'success') {
+                        setOrders(res.data || []);
+                    } else {
+                        throw new Error('Gagal memuat pesanan');
                     }
                 } catch (error) {
                     console.error("Gagal refresh pesanan:", error);
@@ -1069,8 +1073,10 @@
             const updateStatus = async (id, newStatus) => {
                 setOrders(orders.map(o => o.id === id ? { ...o, status: newStatus } : o));
                 
-                const { error } = await supabase.from('orders').update({ status: newStatus }).eq('id', id);
-                if (error) {
+                try {
+                    const res = await gasPost({ action: 'updateOrderStatus', id, status: newStatus });
+                    if (!res || res.status !== 'success') throw new Error('Gagal update status');
+                } catch (error) {
                     console.error("Gagal update status:", error);
                     showAlert("Gagal update status di server.", "😢");
                 }
@@ -1080,8 +1086,10 @@
                 showAlert("Beneran mau hapus pesanan ini? Nanti datanya nggak bisa balik lho!", "🗑️", async () => {
                     setOrders(orders.filter(o => o.id !== id));
                     
-                    const { error } = await supabase.from('orders').delete().eq('id', id);
-                    if (error) {
+                    try {
+                        const res = await gasPost({ action: 'deleteOrder', id });
+                        if (!res || res.status !== 'success') throw new Error('Gagal hapus pesanan');
+                    } catch (error) {
                         console.error("Gagal menghapus pesanan:", error);
                         showAlert("Gagal menghapus pesanan di server.", "😢");
                     }
@@ -1203,13 +1211,16 @@
             const handleSaveSettings = async () => {
                 setIsSavingStore(true);
                 try {
-                    const { error } = await supabase.from('settings').update({
-                        storeLat: localSet.storeLat,
-                        storeLon: localSet.storeLon,
-                        costPerKm: localSet.costPerKm
-                    }).eq('id', 1);
+                    const res = await gasPost({
+                        action: 'updateSettings',
+                        settings: {
+                            storeLat: localSet.storeLat,
+                            storeLon: localSet.storeLon,
+                            costPerKm: localSet.costPerKm
+                        }
+                    });
 
-                    if (error) throw error;
+                    if (!res || res.status !== 'success') throw new Error('Gagal simpan pengaturan');
                     setSettings(localSet);
                     showAlert('Pengaturan Lokasi & Ongkir berhasil disimpan!', '🎉');
                 } catch (error) {
@@ -1237,7 +1248,6 @@
 
             // 2. Fungsi Tambah/Edit/Hapus Produk
             const openAddProduct = () => {
-                // Perbaikan: Menggunakan urutan angka biasa (contoh ID: 9) alih-alih Date.now() yang kepanjangan
                 const newId = localProducts.length > 0 ? Math.max(...localProducts.map(p => p.id)) + 1 : 1;
                 setEditForm({ id: newId, name: '', price: '', desc: '', imgId: '🍌' });
                 setShowProdModal(true);
@@ -1254,8 +1264,12 @@
                     setLocalProducts(updatedList);
                     setProducts(updatedList);
                     
-                    const { error } = await supabase.from('products').delete().eq('id', id);
-                    if (error) showAlert(`Gagal Hapus (Database Error): ${error.message}`, "😢");
+                    try {
+                        const res = await gasPost({ action: 'deleteProduct', id });
+                        if (!res || res.status !== 'success') throw new Error(res?.message || 'Error');
+                    } catch (error) {
+                        showAlert(`Gagal Hapus (Database Error): ${error.message}`, "😢");
+                    }
                 });
             };
 
@@ -1265,7 +1279,6 @@
                 const price = Number(editForm.price);
                 const label = price >= 1000 ? (price / 1000) + 'K' : price.toString();
                 
-                // Mencegah error jika deskripsi kosong
                 const payload = { 
                     ...editForm, 
                     price, 
@@ -1273,25 +1286,25 @@
                     desc: editForm.desc ? editForm.desc : null 
                 };
                 
-                const { error } = await supabase.from('products').upsert([payload]);
-                
-                if (error) {
+                try {
+                    const res = await gasPost({ action: 'upsertProduct', product: payload });
+                    if (!res || res.status !== 'success') throw new Error(res?.message || 'Gagal menyimpan ke Sheet');
+                    
+                    const exists = localProducts.find(p => p.id === payload.id);
+                    const newList = exists 
+                        ? localProducts.map(p => p.id === payload.id ? payload : p)
+                        : [...localProducts, payload];
+                    
+                    const sortedList = newList.sort((a,b) => a.id - b.id);
+                    
+                    setLocalProducts(sortedList);
+                    setProducts(sortedList);
+                    setShowProdModal(false);
+                    showAlert("Berhasil memperbarui menu!", "✅");
+                } catch (error) {
                     console.error("Upsert error:", error);
-                    // Menampilkan pesan error asli Supabase ke layar (Lebih gampang dilacak)
                     return showAlert(`Gagal simpan: ${error.message}`, "😢");
                 }
-                
-                const exists = localProducts.find(p => p.id === payload.id);
-                const newList = exists 
-                    ? localProducts.map(p => p.id === payload.id ? payload : p)
-                    : [...localProducts, payload];
-                
-                const sortedList = newList.sort((a,b) => a.id - b.id);
-                
-                setLocalProducts(sortedList);
-                setProducts(sortedList);
-                setShowProdModal(false);
-                showAlert("Berhasil memperbarui menu!", "✅");
             };
 
             return (
