@@ -84,7 +84,7 @@
         //      GOOGLE APPS SCRIPT CONFIGURATION
         // ==========================================
         // Ganti URL di bawah ini dengan URL Web App Google Apps Script Anda
-        const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyq46oDnwShLSRG2ihN7d4meOoM9MTrvYcHHxesOcXDlxnxce_ZjkQ7XWAB9Hp-BaUH/exec';
+        const GAS_WEB_APP_URL = 'PASTE_URL_WEB_APP_GAS_ANDA_DI_SINI';
 
         const gasGet = async (params = {}) => {
             const url = new URL(GAS_WEB_APP_URL);
@@ -124,13 +124,13 @@
 
         // --- DATA PRODUK FALLBACK (Jika DB kosong) ---
         const DEFAULT_PRODUCTS = [
-            { id: 1, name: 'Coklat keju', price: 15000, label: '15K', imgId: '🍫🧀' },
-            { id: 2, name: 'Coklat parut keju', price: 15000, label: '15K', imgId: '🍫🌨️' },
-            { id: 3, name: 'Coklat', price: 13000, label: '13K', imgId: '🍫' },
-            { id: 4, name: 'Tiramisu', price: 13000, label: '13K', imgId: '🍰' },
-            { id: 5, name: 'Matcha', price: 13000, label: '13K', imgId: '🍵' },
-            { id: 6, name: 'Gula aren', price: 12000, label: '12K', imgId: '🍯' },
-            { id: 7, name: 'Bebas mix', price: 13000, label: '13K', desc: '(Mix 2 varian)', imgId: '🍪' },
+            { id: 1, name: 'Coklat keju', price: 15000, label: '14K', imgId: '🍫🧀' },
+            { id: 2, name: 'Coklat parut keju', price: 15000, label: '14K', imgId: '🍫🌨️' },
+            { id: 3, name: 'Coklat', price: 13000, label: '12K', imgId: '🍫' },
+            { id: 4, name: 'Tiramisu', price: 13000, label: '12K', imgId: '🍰' },
+            { id: 5, name: 'Matcha', price: 13000, label: '12K', imgId: '🍵' },
+            { id: 6, name: 'Gula aren', price: 12000, label: '10K', imgId: '🍯' },
+            { id: 7, name: 'Bebas mix', price: 13000, label: '12K', desc: '(Mix 2 varian)', imgId: '🍪' },
             { id: 8, name: 'Keju mix', price: 14000, label: '14K', desc: '(Mix 1 varian dengan Keju)', imgId: '🧀' },
         ];
 
@@ -617,14 +617,13 @@
 
                 processOrder();
             };
-            };
 
             const processOrder = async () => {
                 const newOrder = {
                     id: 'ORD-' + Math.floor(Math.random() * 10000),
                     date: new Date().toISOString(),
                     customerName: name,
-                    phone: phone,
+                    phone: phone.trim(),
                     items: cart, 
                     itemsTotal,
                     shippingCost,
@@ -694,7 +693,7 @@
                             className="w-full p-3 rounded-xl border-2 border-gray-200 focus:outline-none focus:border-mayumi-green text-sm font-bold text-mayumi-brown placeholder-gray-400 bg-gray-50 focus:bg-white transition"
                         />
                         <input 
-                            type="tel" placeholder="Nomor HP / WhatsApp" value={phone} onChange={e => setPhone(e.target.value)}
+                            type="tel" placeholder="Nomor HP / WhatsApp (Awali dengan 0)" value={phone} onChange={e => setPhone(e.target.value.replace(/[^0-9]/g, ''))}
                             className="w-full p-3 rounded-xl border-2 border-gray-200 focus:outline-none focus:border-mayumi-green text-sm font-bold text-mayumi-brown placeholder-gray-400 bg-gray-50 focus:bg-white transition"
                         />
                         
@@ -810,7 +809,8 @@
 
             const generateUserWaLink = (order) => {
                 const adminPhone = "6285337513445";
-                const itemsList = order.items.map(item => `- ${item.qty}x ${item.name}`).join("\n");
+                const itemsList = order.items.map(item => `- ${item.qty}x ${item.name}`).join("
+");
                 const text = `Hi kak, aku _${order.customerName}_, sudah melakukan pemesanan pisang kembung nih.\n\n*ID Pesanan:* ${order.id}\n*Detail Pesanan:*\n${itemsList}\n\n*Metode Pembayaran:* ${order.paymentMethod}\n*Total Bayar:* ${formatRp(order.grandTotal)}\n\nTerimakasih 💕`;
                 return `https://wa.me/${adminPhone}?text=${encodeURIComponent(text)}`;
             };
@@ -823,7 +823,7 @@
                         <p className="text-xs text-gray-500 mb-5 font-bold relative z-10">Masukkan nomor HP yang dipakai saat pesan yaa 🍌</p>
                         <div className="flex gap-2 relative z-10">
                             <input 
-                                type="tel" placeholder="Nomor HP..." value={checkPhone} onChange={e => setCheckPhone(e.target.value)}
+                                type="tel" placeholder="Nomor HP (Awali dengan 0)..." value={checkPhone} onChange={e => setCheckPhone(e.target.value.replace(/[^0-9]/g, ''))}
                                 className="flex-1 p-3 rounded-xl border-2 border-yellow-300 focus:outline-none focus:border-mayumi-orange text-sm font-bold text-mayumi-brown bg-gray-50 focus:bg-white transition"
                             />
                             <button 
