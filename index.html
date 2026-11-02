@@ -606,6 +606,7 @@
 
             const handleCheckout = () => {
                 if (!name || !phone) return showAlert("Eh tunggu! Nama & No HP belum diisi nih. Nanti kurirnya bingung nyariin kamu~", "🥺");
+                if (!phone.trim().startsWith('0')) return showAlert("Nomor HP harus dimulai dengan angka 0 yaa (contoh: 0853...)", "📱");
                 if (!userCoords) return showAlert("Ups! Kasih tau lokasi kamu dulu dong biar kita gampang ngirimnya~", "📍");
                 if (cart.length === 0) return showAlert("Keranjangnya masih kosong melompong nih. Jajan dulu yuk!", "🛒");
 
@@ -615,6 +616,7 @@
                 }
 
                 processOrder();
+            };
             };
 
             const processOrder = async () => {
@@ -774,10 +776,11 @@
 
             const handleCek = async () => {
                 if(!checkPhone) return showAlert('Ketik dulu dong nomor HP nya~', '📱');
+                if(!checkPhone.trim().startsWith('0')) return showAlert('Nomor HP harus dimulai dengan angka 0 yaa (contoh: 0853...)', '📱');
                 setIsRefreshing(true);
                 
                 try {
-                    const res = await gasGet({ action: 'getOrdersByPhone', phone: checkPhone });
+                    const res = await gasGet({ action: 'getOrdersByPhone', phone: checkPhone.trim() });
                     if (res && res.status === 'success') {
                         setMyOrders(res.data || []);
                         setHasSearched(true);
@@ -785,7 +788,7 @@
                         throw new Error('Gagal mengambil data');
                     }
                 } catch (error) {
-                    const filtered = orders.filter(o => o.phone === checkPhone).sort((a,b) => new Date(b.date) - new Date(a.date));
+                    const filtered = orders.filter(o => o.phone === checkPhone.trim()).sort((a,b) => new Date(b.date) - new Date(a.date));
                     setMyOrders(filtered);
                     setHasSearched(true);
                 } finally {
